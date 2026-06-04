@@ -1,0 +1,33 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String
+  price         Float
+  category      String   // "rings", "bracelets", "pendants", "earrings"
+  imageUrl      String?
+  sku           String?  // Артикул
+  metalType     String?  // Метал
+  metalColor    String?  // Колір металу
+  metalStandard String?  // Проба
+  gemstone      String?  // Вставка / Каміння
+  weight        Float?   // Вага
+  clasp         String?  // Застібка
+  design        String?  // Дизайн
+  style         String?  // Стиль
+  productType   String?  // Тип виробу
+  technology    String?  // Технологія виготовлення
+  width         Float?   // Ширина, мм
+  thickness     Float?   // Товщина, мм
+  length        Float?   // Довжина, мм
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
