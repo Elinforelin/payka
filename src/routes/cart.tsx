@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { resolveProductImageUrl } from "@/lib/product-images";
-import { getUAWordEnding } from "@/utils/string-formatters";
+import { resolveProductImageUrl } from "@/lib/product-images.ts";
+import { getUAWordEnding } from "@/utils/string-formatters.ts";
 
 export const Route = createFileRoute("/cart")({ component: CartPage });
 
