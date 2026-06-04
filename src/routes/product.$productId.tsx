@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star } from "lucide-react";
-import { prisma } from "@/lib/prisma";
-import { resolveProductImageUrl } from "@/lib/product-images";
+import { prisma } from "@/lib/prisma.ts";
+import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { useState } from "react";
 
 const getProduct = createServerFn({ method: "GET" })
