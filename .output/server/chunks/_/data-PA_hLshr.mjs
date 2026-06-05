@@ -1,35 +1,9 @@
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  imageUrl: string | null;
-  images?: string[];
-  createdAt: string;
-  updatedAt: string;
-  clasp?: string | null;
-  design?: string | null;
-  gemstone?: string | null;
-  length?: number | null;
-  metalColor?: string | null;
-  metalStandard?: string | null;
-  metalType?: string | null;
-  productType?: string | null;
-  sku?: string | null;
-  style?: string | null;
-  technology?: string | null;
-  thickness?: number | null;
-  weight?: number | null;
-  width?: number | null;
-}
-
-export const products: Product[] = [
+const products = [
   {
     "id": 6,
     "name": "Small Gold Bangle",
     "description": "Elegant gold bangle for everyday wear",
-    "price": 3000,
+    "price": 3e3,
     "category": "Bangles",
     "imageUrl": "/assets/619792737_18417153727189140_5984683189343682714_n.jpg",
     "images": [
@@ -82,7 +56,7 @@ export const products: Product[] = [
     "id": 8,
     "name": "Embossed Earrings",
     "description": "Beautifully crafted embossed earrings",
-    "price": 3000,
+    "price": 3e3,
     "category": "Earrings",
     "imageUrl": "/assets/5346354635465.png",
     "createdAt": "2026-06-04T07:17:07.886Z",
@@ -130,7 +104,7 @@ export const products: Product[] = [
     "id": 10,
     "name": "Gold Ring",
     "description": "Classic gold ring",
-    "price": 2000,
+    "price": 2e3,
     "category": "Rings",
     "imageUrl": "/assets/2345413523454.png",
     "createdAt": "2026-06-04T07:17:07.889Z",
@@ -151,3 +125,6 @@ export const products: Product[] = [
     "width": 3
   }
 ];
+export {
+  products as p
+};

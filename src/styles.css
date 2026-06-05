@@ -4,6 +4,15 @@
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
     "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+  --font-ermilov: "Ermilov", "Inter", sans-serif;
+}
+
+@font-face {
+  font-family: "Ermilov";
+  src: url("/fonts/Ermilov-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
 body {
