@@ -1,9 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star, X, ChevronRight, Bell, Plus, Minus } from "lucide-react";
 import { products } from "@/lib/data";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useCart } from "@/lib/cart-context";
+import { useFavorites } from "@/lib/favorites-context";
+import { MiniCart } from "@/components/MiniCart";
 
 const getProduct = createServerFn({ method: "GET" })
   .inputValidator((data: { productId: number }) => data)
@@ -30,59 +34,148 @@ export const Route = createFileRoute("/product/$productId")({
 });
 
 function ProductPage() {
+  const { t } = useTranslation();
   const product = Route.useLoaderData();
+  const { addToCart } = useCart();
+  const { addToFavorites, removeFromFavorites, isFavorited, categories: favCategories } = useFavorites();
+  const [showFavPrompt, setShowFavPrompt] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  const images = product.images && product.images.length > 0 
+    ? product.images 
+    : [product.imageUrl];
+
+  const nextImage = () => {
+    setActiveImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setActiveImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isLightboxOpen) return;
+      if (e.key === "Escape") setIsLightboxOpen(false);
+      if (e.key === "ArrowRight") nextImage();
+      if (e.key === "ArrowLeft") prevImage();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isLightboxOpen]);
 
   const productDetails = [
-    { label: "Артикул", value: product.sku },
-    { label: "Проба", value: product.metalStandard },
-    { label: "Метал", value: product.metalType },
-    { label: "Колір металу", value: product.metalColor },
-    { label: "Застібка", value: product.clasp },
-    { label: "Вставка", value: product.gemstone },
-    { label: "Дизайн", value: product.design },
-    { label: "Стиль", value: product.style },
-    { label: "Тип виробу", value: product.productType },
-    { label: "Технологія виготовлення", value: product.technology },
-    { label: "Ширина, мм", value: product.width },
-    { label: "Товщина, мм", value: product.thickness },
-    { label: "Довжина, мм", value: product.length },
-    { label: "Вага, г", value: product.weight },
+    { label: t('product.sku'), value: product.sku },
+    { label: t('product.metal_standard'), value: product.metalStandard },
+    { label: t('product.metal_type'), value: product.metalType },
+    { label: t('product.metal_color'), value: product.metalColor },
+    { label: t('product.clasp'), value: product.clasp },
+    { label: t('product.gemstone'), value: product.gemstone },
+    { label: t('product.design'), value: product.design },
+    { label: t('product.style'), value: product.style },
+    { label: t('product.product_type'), value: product.productType },
+    { label: t('product.technology'), value: product.technology },
+    { label: t('product.width'), value: product.width },
+    { label: t('product.thickness'), value: product.thickness },
+    { label: t('product.length'), value: product.length },
+    { label: t('product.weight'), value: product.weight },
   ].filter((detail) => detail.value !== null && detail.value !== undefined);
   console.log(product)
   return (
+    <>
     <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12">
       <header className="flex items-center justify-between">
         <Link
           to="/catalog"
-          className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
+          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
         >
-          <ChevronLeft className="h-6 w-6 text-[#1a1a1a]" />
+          <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
         </Link>
-        <h1 className="text-xl font-bold text-[#1a1a1a]">Detail</h1>
-        <div className="flex items-center gap-3">
-          <button className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
-            <Heart className="h-6 w-6 text-[#1a1a1a]" />
-          </button>
+        <h1 className="text-lg md:text-xl font-bold text-[#1a1a1a]">{t('product.details')}</h1>
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="relative">
+            <button 
+              onClick={() => {
+                if (isFavorited(product.id)) {
+                  removeFromFavorites(product.id);
+                } else {
+                  setShowFavPrompt(!showFavPrompt);
+                }
+              }}
+              className={`flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl shadow-sm transition-colors ${
+                isFavorited(product.id) 
+                  ? "bg-[#b3917d] text-white" 
+                  : "bg-white text-[#1a1a1a]"
+              }`}
+            >
+              <Heart className={`h-5 w-5 md:h-6 md:w-6 ${isFavorited(product.id) ? "fill-current" : ""}`} />
+            </button>
+            
+            {showFavPrompt && !isFavorited(product.id) && (
+              <div className="absolute right-0 top-14 z-20 w-48 rounded-2xl bg-white p-3 shadow-xl ring-1 ring-black/5 animate-in fade-in zoom-in-95 duration-200">
+                <p className="mb-2 px-1 text-xs font-bold text-[#a19690] uppercase tracking-wider">{t('favorites.confirm_favorite')}:</p>
+                <div className="flex flex-col gap-1">
+                  {favCategories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => {
+                        addToFavorites(product, cat);
+                        setShowFavPrompt(false);
+                      }}
+                      className="rounded-xl px-3 py-2 text-left text-sm font-medium text-[#1a1a1a] hover:bg-[#fdfaf7] hover:text-[#b3917d] transition-colors"
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <MiniCart />
         </div>
       </header>
 
-      <div className="mt-8 flex flex-col gap-10 md:flex-row">
+      <div className="mt-6 md:mt-8 flex flex-col gap-8 md:gap-10 md:flex-row">
         <div className="flex-1">
-          <div className="aspect-square w-full overflow-hidden rounded-[48px] bg-[#f7f3ef] shadow-inner">
+          <div 
+            className="relative aspect-square w-full overflow-hidden rounded-[32px] md:rounded-[48px] bg-[#f7f3ef] shadow-inner cursor-zoom-in"
+            onClick={() => setIsLightboxOpen(true)}
+          >
             <img
-              src={resolveProductImageUrl(product.imageUrl)}
-              alt={product.name}
-              className="h-full w-full object-cover"
+              src={resolveProductImageUrl(images[activeImageIndex])}
+              alt={`${product.name} - image ${activeImageIndex + 1}`}
+              className="h-full w-full object-cover transition-transform duration-500"
             />
           </div>
+          
+          {images.length > 1 && (
+            <div className="mt-6 flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+              {images.map((img, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveImageIndex(index)}
+                  className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border-2 transition-all ${
+                    activeImageIndex === index ? "border-[#b3917d]" : "border-transparent"
+                  }`}
+                >
+                  <img
+                    src={resolveProductImageUrl(img)}
+                    alt={`${product.name} thumbnail ${index + 1}`}
+                    className="h-full w-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-1 flex-col">
           <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-bold text-[#1a1a1a]">{product.name}</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a]">{product.name}</h2>
             <div className="flex items-center gap-1">
-              <Star className="h-5 w-5 fill-[#b3917d] text-[#b3917d]" />
+              <Star className="h-4 w-4 md:h-5 md:w-5 fill-[#b3917d] text-[#b3917d]" />
               <span className="font-bold text-[#1a1a1a]">4.8</span>
             </div>
           </div>
@@ -94,7 +187,7 @@ function ProductPage() {
               onClick={() => setIsDetailsOpen(!isDetailsOpen)}
               className="flex w-full items-center justify-between py-4 text-left"
             >
-              <h3 className="text-xl font-bold text-[#1a1a1a]">Про виріб</h3>
+              <h3 className="text-xl font-bold text-[#1a1a1a]">{t('product.about_product')}</h3>
               {isDetailsOpen ? (
                 <ChevronUp className="h-6 w-6 text-[#1a1a1a]" />
               ) : (
@@ -120,7 +213,7 @@ function ProductPage() {
           </div>
 
           <div className="mt-8">
-            <h3 className="text-lg font-bold text-[#1a1a1a]">Select Size</h3>
+            <h3 className="text-lg font-bold text-[#1a1a1a]">{t('product.select_size')}</h3>
             <div className="mt-4 flex gap-3">
               {["S", "M", "L", "XL"].map((size) => (
                 <button
@@ -137,18 +230,67 @@ function ProductPage() {
             </div>
           </div>
 
-          <div className="mt-auto flex items-center justify-between gap-6 pt-10">
-            <div>
-              <p className="text-sm font-medium text-[#6b5f59]">Total Price</p>
-              <p className="text-3xl font-bold text-[#1a1a1a]">${product.price}</p>
+          <div className="mt-auto pt-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-6">
+              <div>
+                <p className="text-[#a19690] text-sm font-medium">{t('common.price')}</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#b3917d]">${product.price}</p>
+              </div>
+              <button 
+                onClick={() => addToCart(product)}
+                className="flex flex-1 items-center justify-center gap-3 rounded-[24px] bg-[#1a1a1a] py-4 md:py-5 text-base md:text-lg font-bold text-white shadow-xl transition-all hover:bg-black active:scale-[0.98]"
+              >
+                <ShoppingBag className="h-5 w-5 md:h-6 md:w-6" />
+                {t('common.add_to_cart')}
+              </button>
             </div>
-            <button className="flex flex-1 items-center justify-center gap-3 rounded-full bg-[#1a1a1a] py-5 text-xl font-bold text-white transition-all hover:bg-[#333]">
-              <ShoppingBag className="h-6 w-6" />
-              <span>Add to Cart</span>
-            </button>
           </div>
         </div>
       </div>
     </main>
+    
+    {isLightboxOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+          <button 
+            onClick={() => setIsLightboxOpen(false)}
+            className="absolute top-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+          >
+            <X className="h-6 w-6" />
+          </button>
+          
+          <div className="relative flex h-full w-full items-center justify-center">
+            {images.length > 1 && (
+              <button 
+                onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                className="absolute left-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+              >
+                <ChevronLeft className="h-8 w-8" />
+              </button>
+            )}
+            
+            <div className="max-h-full max-w-full overflow-hidden rounded-3xl bg-[#f7f3ef]">
+              <img
+                src={resolveProductImageUrl(images[activeImageIndex])}
+                alt={`${product.name} - detail view`}
+                className="max-h-[85vh] object-contain"
+              />
+            </div>
+            
+            {images.length > 1 && (
+              <button 
+                onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                className="absolute right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+              >
+                <ChevronRight className="h-8 w-8" />
+              </button>
+            )}
+            
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white font-medium">
+              {activeImageIndex + 1} / {images.length}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
