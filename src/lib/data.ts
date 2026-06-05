@@ -75,10 +75,9 @@ export const products: Product[] = [
     "category": Category.Rings,
     "imageUrl": "/assets/lollypop/5267491911117774004.png",
     "images": [
-      "/assets/lollypop/5267491911117774004.png",
-      "/assets/lollypop/5267491911117774004.png",
-      "/assets/lollypop/5267491911117774004.png",
-      "/assets/lollypop/5267491911117774004.png"
+      "/assets/lollypop/IMG_4831.png",
+      "/assets/lollypop/IMG_4835.png",
+      "/assets/lollypop/IMG_4837.png",
     ],
     "createdAt": "2026-06-04T07:17:07.886Z",
     "updatedAt": "2026-06-04T07:17:07.886Z",
