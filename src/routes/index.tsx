@@ -4,10 +4,10 @@ import { createServerFn } from "@tanstack/react-start";
 
 import img1 from "@/assets/619792737_18417153727189140_5984683189343682714_n.jpg";
 import img2 from "@/assets/521469718_18391966183189140_5158185447317376143_n.jpg";
-import {prisma} from "@/lib/prisma.ts";
+import { products } from "@/lib/data";
 
 const getProducts = createServerFn({ method: "GET" }).handler(async () => {
-  return await prisma.product.findMany();
+  return products;
 });
 
 export const Route = createFileRoute("/")({

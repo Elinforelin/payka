@@ -2,13 +2,13 @@ import {createFileRoute, Link} from "@tanstack/react-router";
 import {Search, SlidersHorizontal, ShoppingBag, Heart, Bell} from "lucide-react";
 import {useState} from "react";
 import {createServerFn} from "@tanstack/react-start";
-import {prisma} from "@/lib/prisma.ts";
+import {products} from "@/lib/data";
 import {resolveProductImageUrl} from "@/lib/product-images.ts";
 
 import img1 from "@/assets/619792737_18417153727189140_5984683189343682714_n.jpg";
 
 const getProducts = createServerFn({method: "GET"}).handler(async () => {
-    return await prisma.product.findMany();
+    return products;
 });
 
 export const Route = createFileRoute("/catalog")({

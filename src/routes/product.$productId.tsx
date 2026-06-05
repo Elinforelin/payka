@@ -1,16 +1,14 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star } from "lucide-react";
-import { prisma } from "@/lib/prisma.ts";
+import { products } from "@/lib/data";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { useState } from "react";
 
 const getProduct = createServerFn({ method: "GET" })
   .inputValidator((data: { productId: number }) => data)
   .handler(async ({ data }) => {
-    return await prisma.product.findUnique({
-      where: { id: data.productId },
-    });
+    return products.find(p => p.id === data.productId) || null;
   });
 
 export const Route = createFileRoute("/product/$productId")({
