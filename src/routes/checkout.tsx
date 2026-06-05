@@ -48,9 +48,6 @@ function CheckoutPage() {
 
   const shippingMethods: ShippingMethod[] = [
     { id: 'nova_poshta', name: t('checkout.methods.nova_poshta'), price: 5, time: "1-2 business days" },
-    { id: 'standard', name: t('checkout.methods.standard'), price: 0, time: "3-5 business days" },
-    { id: 'express', name: t('checkout.methods.express'), price: 15, time: "1-2 business days" },
-    { id: 'pickup', name: t('checkout.methods.pickup'), price: 0, time: "Today" },
   ];
 
   useEffect(() => {
@@ -356,33 +353,7 @@ function CheckoutPage() {
                 ) : null}
               </div>
 
-              <div className="pt-4">
-                <h3 className="text-lg font-bold text-[#1a1a1a] mb-4 flex items-center gap-2">
-                  <Truck className="h-5 w-5 text-[#b3917d]" />
-                  {t('checkout.shipping_method')}
-                </h3>
-                <div className="space-y-3">
-                  {shippingMethods.map((method) => (
-                    <button
-                      key={method.id}
-                      onClick={() => setSelectedMethod(method.id)}
-                      className={`w-full flex items-center justify-between p-4 rounded-2xl border-2 transition-all ${
-                        selectedMethod === method.id 
-                        ? 'border-[#b3917d] bg-[#fdfaf7]' 
-                        : 'border-transparent bg-[#fdfaf7]/50 hover:bg-[#fdfaf7]'
-                      }`}
-                    >
-                      <div className="text-left">
-                        <div className="font-bold text-[#1a1a1a]">{method.name}</div>
-                        <div className="text-xs text-[#6b5f59]">{method.time}</div>
-                      </div>
-                      <div className="font-bold text-[#b3917d]">
-                        {method.price === 0 ? 'Free' : `$${method.price}`}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
+
             </div>
           ) : (
             <div className="space-y-6">

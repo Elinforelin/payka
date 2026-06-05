@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product } from './data';
+import { Category, Product } from './data';
 
 export interface FavoriteItem extends Product {
-  categoryName?: string;
+  categoryName?: string | Category;
 }
 
 interface NotificationData {
@@ -12,11 +12,11 @@ interface NotificationData {
 
 interface FavoritesContextType {
   favorites: FavoriteItem[];
-  addToFavorites: (product: Product, category?: string) => void;
+  addToFavorites: (product: Product, category?: string | Category) => void;
   removeFromFavorites: (productId: number) => void;
   isFavorited: (productId: number) => boolean;
-  categories: string[];
-  addCategory: (name: string) => void;
+  categories: (string | Category)[];
+  addCategory: (name: string | Category) => void;
   notification: NotificationData | null;
 }
 

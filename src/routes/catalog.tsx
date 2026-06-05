@@ -3,7 +3,7 @@ import {Search, SlidersHorizontal, ShoppingBag, Heart, Bell, Info, X, Check, Lan
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {createServerFn} from "@tanstack/react-start";
-import {products} from "@/lib/data";
+import {Category, products} from "@/lib/data";
 import {resolveProductImageUrl} from "@/lib/product-images.ts";
 import {useCart} from "@/lib/cart-context";
 import {useFavorites} from "@/lib/favorites-context";
@@ -34,16 +34,16 @@ function CatalogPage() {
     const { addToFavorites, removeFromFavorites, isFavorited, categories: favCategories } = useFavorites();
     const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
 
-    const categories = ["All", "Rings", "Bangles", "Earrings", "Pendants"];
+    const categories = ["All", ...Object.values(Category)];
     const translatedCategories = categories.map(cat => ({
         id: cat,
-        name: cat === "All" ? t('favorites.all_items') : cat // Or use specific translation keys
+        name: cat === "All" ? t('favorites.all_items') : t(`common.category_names.${cat}`)
     }));
 
     const filteredProducts = (productsData || []).filter((product) => {
         const matchesCategory = activeCategory === "All" || product.category.toLowerCase() === activeCategory.toLowerCase();
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                             product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             t(product.description).toLowerCase().includes(searchQuery.toLowerCase()) ||
                              (product.style && product.style.toLowerCase().includes(searchQuery.toLowerCase())) ||
                              (product.design && product.design.toLowerCase().includes(searchQuery.toLowerCase())) ||
                              (product.productType && product.productType.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -339,7 +339,7 @@ function CatalogPage() {
                                                     }}
                                                     className="rounded-full bg-white px-3 py-1 text-xs font-bold text-[#1a1a1a] hover:bg-[#b3917d] hover:text-white transition-colors"
                                                 >
-                                                    {cat === 'General' ? t('favorites.general') : cat}
+                                                    {cat === 'General' ? t('favorites.general') : (Object.values(Category).includes(cat as Category) ? t(`common.category_names.${cat}`) : cat)}
                                                 </button>
                                             ))}
                                         </div>

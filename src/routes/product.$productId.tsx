@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star, X, ChevronRight, Bell, Plus, Minus } from "lucide-react";
-import { products } from "@/lib/data";
+import { Category, products } from "@/lib/data";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -68,6 +68,7 @@ function ProductPage() {
 
   const productDetails = [
     { label: t('product.sku'), value: product.sku },
+    { label: t('common.categories'), value: t(`common.category_names.${product.category}`) },
     { label: t('product.metal_standard'), value: product.metalStandard },
     { label: t('product.metal_type'), value: product.metalType },
     { label: t('product.metal_color'), value: product.metalColor },
@@ -126,7 +127,7 @@ function ProductPage() {
                       }}
                       className="rounded-xl px-3 py-2 text-left text-sm font-medium text-[#1a1a1a] hover:bg-[#fdfaf7] hover:text-[#b3917d] transition-colors"
                     >
-                      {cat}
+                      {cat === 'General' ? t('favorites.general') : (Object.values(Category).includes(cat as any) ? t(`common.category_names.${cat}`) : cat)}
                     </button>
                   ))}
                 </div>
@@ -180,7 +181,7 @@ function ProductPage() {
             </div>
           </div>
 
-          <p className="mt-2 text-[#6b5f59]">{product.description}</p>
+          <p className="mt-2 text-[#6b5f59]">{t(product.description)}</p>
 
           <div className="mt-8">
             <button
