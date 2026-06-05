@@ -42,13 +42,25 @@
     "descriptions": {
       "small_gold_bangle": "Елегантний золотий браслет для щоденного носіння",
       "diamond_eternity_ring": "Приголомшлива каблучка з діамантами",
-      "lollypop_rings": "Красиво виготовлені рельєфні каблучки",
+      "lollypop_rings": "Якщо б літо можна було носити на пальці, воно виглядало б саме так \uD83C\uDF6D",
       "silver_pendant": "Мінімалістична срібна підвіска",
       "classic_gold_ring": "Класична золота каблучка"
+    },
+    "names": {
+      "small_gold_bangle": "Малий золотий браслет",
+      "diamond_eternity_ring": "Каблучка з діамантами Eternity",
+      "lollypop": "Каблучка льодяник",
+      "silver_pendant": "Срібна підвіска",
+      "gold_ring": "Золота каблучка"
     },
     "details": "Деталі",
     "about_product": "Про виріб",
     "select_size": "Оберіть розмір",
+    "select_ring_size": "Оберіть розмір каблучки",
+    "size_in_mm": "Розмір вказано в міліметрах (мм)",
+    "select_stone": "Оберіть камінь",
+    "select_stone_color": "Оберіть колір",
+    "recommended_for_you": "Рекомендовано для вас",
     "sku": "Артикул",
     "metal_standard": "Проба",
     "metal_type": "Метал",
@@ -138,6 +150,31 @@
   "notifications": {
     "added_to_cart": "{{name}} додано до кошика!",
     "added_to_favorite": "{{name}} додано до списку {{category}}!"
+  },
+  "stones": {
+    "types": {
+      "Cubic Zirconia": "Фіаніт",
+      "Diamond": "Діамант",
+      "Sapphire": "Сапфір",
+      "Enamel": "Емаль",
+      "Topaz": "Топаз",
+      "Amethyst": "Аметист",
+      "Onyx": "Онікс",
+      "Ruby": "Рубін"
+    },
+    "colors": {
+      "Clear": "Прозорий",
+      "Pink": "Рожевий",
+      "Blue": "Блакитний",
+      "White": "Білий",
+      "Yellow": "Жовтий",
+      "Red": "Червоний",
+      "Green": "Зелений",
+      "Sky Blue": "Небесно-блакитний",
+      "London Blue": "Лондонський блакитний",
+      "Purple": "Фіолетовий",
+      "Black": "Чорний"
+    }
   },
   "favorites": {
     "title": "Моє обране",

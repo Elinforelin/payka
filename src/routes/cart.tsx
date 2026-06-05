@@ -54,7 +54,7 @@ function CartPage() {
                 >
                   <img
                     src={resolveProductImageUrl(item.imageUrl)}
-                    alt={item.name}
+                    alt={t(item.name)}
                     className="h-full w-full object-cover"
                   />
                 </Link>
@@ -65,7 +65,7 @@ function CartPage() {
                     params={{ productId: String(item.id) }}
                     className="text-base md:text-lg font-bold text-[#1a1a1a] hover:text-[#b3917d] transition-colors"
                   >
-                    {item.name}
+                    {t(item.name)}
                   </Link>
                   <p className="text-base md:text-lg font-bold text-[#b3917d]">
                     ${item.price}

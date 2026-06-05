@@ -42,6 +42,20 @@ function ProductPage() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [selectedStoneType, setSelectedStoneType] = useState(product.availableStones?.[0]?.type || "");
+  const [selectedStoneColor, setSelectedStoneColor] = useState(product.availableStones?.[0]?.colors[0] || null);
+  const [selectedRingSize, setSelectedRingSize] = useState("17.0");
+
+  useEffect(() => {
+    if (product.availableStones) {
+      const stone = product.availableStones.find(s => s.type === selectedStoneType);
+      if (stone && (!selectedStoneColor || !stone.colors.find(c => c.name === selectedStoneColor.name))) {
+        setSelectedStoneColor(stone.colors[0]);
+      }
+    }
+  }, [selectedStoneType, product.availableStones]);
+
+  const recommendedStones = product.availableStones?.filter(s => s.type !== selectedStoneType) || [];
 
   const images = product.images && product.images.length > 0 
     ? product.images 
@@ -146,9 +160,24 @@ function ProductPage() {
           >
             <img
               src={resolveProductImageUrl(images[activeImageIndex])}
-              alt={`${product.name} - image ${activeImageIndex + 1}`}
+              alt={`${t(product.name)} - image ${activeImageIndex + 1}`}
               className="h-full w-full object-cover transition-transform duration-500"
             />
+            {selectedStoneColor && (
+              <div 
+                className="absolute bottom-6 right-6 h-8 w-8 rounded-full border-2 border-white shadow-lg z-10 overflow-hidden flex items-center justify-center"
+                style={{ backgroundColor: selectedStoneColor.imageUrl ? undefined : selectedStoneColor.value }}
+                title={`${t(`stones.types.${selectedStoneType}`)}: ${t(`stones.colors.${selectedStoneColor.name}`)}`}
+              >
+                {selectedStoneColor.imageUrl ? (
+                  <img 
+                    src={resolveProductImageUrl(selectedStoneColor.imageUrl)} 
+                    alt={t(`stones.colors.${selectedStoneColor.name}`)}
+                    className="h-full w-full object-cover"
+                  />
+                ) : null}
+              </div>
+            )}
           </div>
           
           {images.length > 1 && (
@@ -163,7 +192,7 @@ function ProductPage() {
                 >
                   <img
                     src={resolveProductImageUrl(img)}
-                    alt={`${product.name} thumbnail ${index + 1}`}
+                    alt={`${t(product.name)} thumbnail ${index + 1}`}
                     className="h-full w-full object-cover"
                   />
                 </button>
@@ -174,7 +203,7 @@ function ProductPage() {
 
         <div className="flex flex-1 flex-col">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a]">{product.name}</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a]">{t(product.name)}</h2>
             <div className="flex items-center gap-1">
               <Star className="h-4 w-4 md:h-5 md:w-5 fill-[#b3917d] text-[#b3917d]" />
               <span className="font-bold text-[#1a1a1a]">4.8</span>
@@ -214,22 +243,124 @@ function ProductPage() {
           </div>
 
           <div className="mt-8">
-            <h3 className="text-lg font-bold text-[#1a1a1a]">{t('product.select_size')}</h3>
-            <div className="mt-4 flex gap-3">
-              {["S", "M", "L", "XL"].map((size) => (
-                <button
-                  key={size}
-                  className={`flex h-14 w-14 items-center justify-center rounded-2xl border-2 transition-all ${
-                    size === "M"
-                      ? "border-[#b3917d] bg-[#b3917d] text-white"
-                      : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
-                  }`}
-                >
-                  <span className="text-lg font-bold">{size}</span>
-                </button>
-              ))}
+            <h3 className="text-lg font-bold text-[#1a1a1a]">
+              {product.category === Category.Rings ? t('product.select_ring_size') : t('product.select_size')}
+            </h3>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {product.category === Category.Rings ? (
+                Array.from({ length: (22 - 15) / 0.5 + 1 }, (_, i) => (15 + i * 0.5).toFixed(1)).map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedRingSize(size)}
+                    className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border-2 transition-all ${
+                      selectedRingSize === size
+                        ? "border-[#b3917d] bg-[#b3917d] text-white"
+                        : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
+                    }`}
+                  >
+                    <span className="text-sm font-bold">{size}</span>
+                  </button>
+                ))
+              ) : (
+                ["S", "M", "L", "XL"].map((size) => (
+                  <button
+                    key={size}
+                    className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border-2 transition-all ${
+                      size === "M"
+                        ? "border-[#b3917d] bg-[#b3917d] text-white"
+                        : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
+                    }`}
+                  >
+                    <span className="text-lg font-bold">{size}</span>
+                  </button>
+                ))
+              )}
             </div>
+            {product.category === Category.Rings && (
+              <p className="mt-2 text-sm text-[#6b5f59]">
+                {t('product.size_in_mm')}
+              </p>
+            )}
           </div>
+
+          {product.availableStones && product.availableStones.length > 0 && (
+            <div className="mt-8 space-y-6">
+              <div>
+                <h3 className="text-lg font-bold text-[#1a1a1a]">{t('product.select_stone')}</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {product.availableStones.map((stone) => (
+                    <button
+                      key={stone.type}
+                      onClick={() => setSelectedStoneType(stone.type)}
+                      className={`rounded-xl px-4 py-2 text-sm font-bold transition-all ${
+                        selectedStoneType === stone.type
+                          ? "bg-[#b3917d] text-white"
+                          : "bg-white text-[#1a1a1a] ring-1 ring-inset ring-gray-200"
+                      }`}
+                    >
+                      {t(`stones.types.${stone.type}`)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {selectedStoneType && (
+                <div>
+                  <h3 className="text-lg font-bold text-[#1a1a1a]">{t('product.select_stone_color')}</h3>
+                  <div className="mt-4 flex flex-wrap gap-4">
+                    {product.availableStones.find(s => s.type === selectedStoneType)?.colors.map((color) => (
+                      <button
+                        key={color.name}
+                        onClick={() => setSelectedStoneColor(color)}
+                        className={`group relative flex flex-col items-center gap-2`}
+                        title={t(`stones.colors.${color.name}`)}
+                      >
+                        <div 
+                          className={`h-10 w-10 rounded-full border-2 transition-all overflow-hidden flex items-center justify-center ${
+                            selectedStoneColor?.name === color.name 
+                              ? "border-[#b3917d] scale-110 shadow-md" 
+                              : "border-transparent"
+                          }`}
+                          style={{ backgroundColor: color.imageUrl ? undefined : color.value }}
+                          title={t(`stones.colors.${color.name}`)}
+                        >
+                          {color.imageUrl ? (
+                            <img 
+                              src={resolveProductImageUrl(color.imageUrl)} 
+                              alt={t(`stones.colors.${color.name}`)}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : null}
+                        </div>
+                        <span className={`text-xs font-medium transition-colors ${
+                          selectedStoneColor?.name === color.name ? "text-[#b3917d]" : "text-[#6b5f59]"
+                        }`}>
+                          {t(`stones.colors.${color.name}`)}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {recommendedStones.length > 0 && (
+                <div className="rounded-2xl bg-[#f7f3ef] p-4">
+                  <h4 className="text-sm font-bold text-[#b3917d] uppercase tracking-wider">{t('product.recommended_for_you')}</h4>
+                  <div className="mt-2 flex gap-3">
+                    {recommendedStones.map((stone) => (
+                      <button
+                        key={stone.type}
+                        onClick={() => setSelectedStoneType(stone.type)}
+                        className="text-sm font-medium text-[#6b5f59] hover:text-[#1a1a1a] transition-colors underline decoration-[#b3917d]/30 underline-offset-4"
+                      >
+                        {t(`stones.types.${stone.type}`)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="mt-auto pt-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-6">
@@ -272,7 +403,7 @@ function ProductPage() {
             <div className="max-h-full max-w-full overflow-hidden rounded-3xl bg-[#f7f3ef]">
               <img
                 src={resolveProductImageUrl(images[activeImageIndex])}
-                alt={`${product.name} - detail view`}
+                alt={`${t(product.name)} - detail view`}
                 className="max-h-[85vh] object-contain"
               />
             </div>

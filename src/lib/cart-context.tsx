@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Product } from './data';
 
 export interface CartItem extends Product {
@@ -26,6 +27,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { t } = useTranslation();
   const [items, setItems] = useState<CartItem[]>(() => {
     if (typeof window !== 'undefined') {
       const savedCart = localStorage.getItem('cart');
@@ -56,7 +58,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return [...prevItems, { ...product, quantity: 1, savedForLater: false }];
     });
     
-    setNotification({ key: 'notifications.added_to_cart', params: { name: product.name } });
+    setNotification({ key: 'notifications.added_to_cart', params: { name: t(product.name) } });
     setTimeout(() => setNotification(null), 3000);
   };
 

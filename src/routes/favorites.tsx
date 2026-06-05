@@ -142,7 +142,7 @@ function FavoritesPage() {
                 >
                   <img
                     src={resolveProductImageUrl(product.imageUrl)}
-                    alt={product.name}
+                    alt={t(product.name)}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute left-4 top-4 rounded-full bg-white/80 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#b3917d] backdrop-blur-md">
@@ -154,7 +154,7 @@ function FavoritesPage() {
                   <div className="flex items-start justify-between">
                     <div>
                       <h3 className="text-lg font-bold text-[#1a1a1a] group-hover:text-[#b3917d] transition-colors">
-                        {product.name}
+                        {t(product.name)}
                       </h3>
                       <p className="mt-1 text-xl font-black text-[#b3917d]">${product.price}</p>
                     </div>

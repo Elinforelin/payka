@@ -404,12 +404,12 @@ function CheckoutPage() {
                   <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-[#f7f3ef]">
                     <img
                       src={resolveProductImageUrl(item.imageUrl)}
-                      alt={item.name}
+                      alt={t(item.name)}
                       className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-[#1a1a1a] truncate">{item.name}</p>
+                    <p className="text-sm font-bold text-[#1a1a1a] truncate">{t(item.name)}</p>
                     <p className="text-xs text-[#6b5f59]">Qty: {item.quantity}</p>
                     <p className="text-sm font-bold text-[#b3917d]">${item.price * item.quantity}</p>
                   </div>

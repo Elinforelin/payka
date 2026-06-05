@@ -23,12 +23,24 @@ export interface Product {
   metalType?: string | null;
   productType?: string | null;
   weight?: number | null;
+  availableStones?: StoneOption[];
+}
+
+export interface StoneOption {
+  type: string;
+  colors: StoneColor[];
+}
+
+export interface StoneColor {
+  name: string;
+  value: string; // Hex color or CSS color name
+  imageUrl?: string; // Optional: Image that shows this specific stone color
 }
 
 export const products: Product[] = [
   {
     "id": 6,
-    "name": "Small Gold Bangle",
+    "name": "product.names.small_gold_bangle",
     "description": "product.descriptions.small_gold_bangle",
     "price": 3000,
     "category": Category.Bangles,
@@ -48,10 +60,20 @@ export const products: Product[] = [
     "metalType": "Золото",
     "productType": "Конго (кільця)",
     "weight": 2.5,
+    "availableStones": [
+      {
+        "type": "Cubic Zirconia",
+        "colors": [
+          { "name": "Clear", "value": "#FFFFFF" },
+          { "name": "Pink", "value": "#FFC0CB" },
+          { "name": "Blue", "value": "#ADD8E6" }
+        ]
+      }
+    ]
   },
   {
     "id": 7,
-    "name": "Diamond Eternity Ring",
+    "name": "product.names.diamond_eternity_ring",
     "description": "product.descriptions.diamond_eternity_ring",
     "price": 4500,
     "category": Category.Rings,
@@ -66,33 +88,60 @@ export const products: Product[] = [
     "metalType": "Золото",
     "productType": "Каблучка",
     "weight": 3.2,
+    "availableStones": [
+      {
+        "type": "Diamond",
+        "colors": [
+          { "name": "White", "value": "#FFFFFF" },
+          { "name": "Yellow", "value": "#FFFFE0" },
+          { "name": "Pink", "value": "#FFD1DC" }
+        ]
+      },
+      {
+        "type": "Sapphire",
+        "colors": [
+          { "name": "Blue", "value": "#0000FF" },
+          { "name": "Pink", "value": "#FF69B4" }
+        ]
+      }
+    ]
   },
   {
     "id": 8,
-    "name": "🍭",
+    "name": "product.names.lollypop",
     "description": "product.descriptions.lollypop_rings",
     "price": 3000,
     "category": Category.Rings,
-    "imageUrl": "/assets/lollypop/5267491911117774004.png",
+    "imageUrl": "/assets/lollypop/IMG_4831.png",
     "images": [
       "/assets/lollypop/IMG_4831.png",
       "/assets/lollypop/IMG_4835.png",
       "/assets/lollypop/IMG_4837.png",
+      "/assets/lollypop/5267491911117774004.png",
     ],
     "createdAt": "2026-06-04T07:17:07.886Z",
     "updatedAt": "2026-06-04T07:17:07.886Z",
-    "clasp": "Англійська",
-    "design": "Геометрія",
-    "gemstone": "Без каміння",
+    "gemstone": "Фіаніт",
     "metalColor": "Сріблястий",
     "metalStandard": "925",
     "metalType": "Срібло",
-    "productType": "Сережки",
+    "productType": "Кільце",
     "weight": 4,
+    "availableStones": [
+      {
+        "type": "Cubic Zirconia",
+        "colors": [
+          { "name": "White", "value": "#FFF", "imageUrl": "/assets/cubicZirconiaColors/white.png" },
+          { "name": "Green", "value": "#008000", "imageUrl": "/assets/cubicZirconiaColors/green.png" },
+          { "name": "Blue", "value": "#0000FF", "imageUrl": "/assets/cubicZirconiaColors/blue.png" },
+          { "name": "Yellow", "value": "#FFFF00", "imageUrl": "/assets/cubicZirconiaColors/yellow.png" }
+        ]
+      }
+    ]
   },
   {
     "id": 9,
-    "name": "Silver Pendant",
+    "name": "product.names.silver_pendant",
     "description": "product.descriptions.silver_pendant",
     "price": 1500,
     "category": Category.Pendants,
@@ -107,10 +156,25 @@ export const products: Product[] = [
     "metalType": "Срібло",
     "productType": "Підвіска",
     "weight": 1.8,
+    "availableStones": [
+      {
+        "type": "Topaz",
+        "colors": [
+          { "name": "Sky Blue", "value": "#87CEEB" },
+          { "name": "London Blue", "value": "#006666" }
+        ]
+      },
+      {
+        "type": "Amethyst",
+        "colors": [
+          { "name": "Purple", "value": "#9966CC" }
+        ]
+      }
+    ]
   },
   {
     "id": 10,
-    "name": "Gold Ring",
+    "name": "product.names.gold_ring",
     "description": "product.descriptions.classic_gold_ring",
     "price": 2000,
     "category": Category.Rings,
@@ -125,5 +189,19 @@ export const products: Product[] = [
     "metalType": "Золото",
     "productType": "Каблучка",
     "weight": 2.2,
+    "availableStones": [
+      {
+        "type": "Onyx",
+        "colors": [
+          { "name": "Black", "value": "#000000" }
+        ]
+      },
+      {
+        "type": "Ruby",
+        "colors": [
+          { "name": "Red", "value": "#E0115F" }
+        ]
+      }
+    ]
   }
 ];

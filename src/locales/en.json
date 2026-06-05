@@ -46,9 +46,21 @@
       "silver_pendant": "Minimalist silver pendant",
       "classic_gold_ring": "Classic gold ring"
     },
+    "names": {
+      "small_gold_bangle": "Small Gold Bangle",
+      "diamond_eternity_ring": "Diamond Eternity Ring",
+      "lollypop": "🍭",
+      "silver_pendant": "Silver Pendant",
+      "gold_ring": "Gold Ring"
+    },
     "details": "Details",
     "about_product": "About Product",
     "select_size": "Select Size",
+    "select_ring_size": "Select Ring Size",
+    "size_in_mm": "Size is shown in millimeters (mm)",
+    "select_stone": "Select Stone",
+    "select_stone_color": "Select Color",
+    "recommended_for_you": "Recommended for you",
     "sku": "SKU",
     "metal_standard": "Metal Standard",
     "metal_type": "Metal Type",
@@ -136,6 +148,31 @@
   "notifications": {
     "added_to_cart": "{{name}} added to cart!",
     "added_to_favorite": "{{name}} added to {{category}}!"
+  },
+  "stones": {
+    "types": {
+      "Cubic Zirconia": "Cubic Zirconia",
+      "Diamond": "Diamond",
+      "Sapphire": "Sapphire",
+      "Enamel": "Enamel",
+      "Topaz": "Topaz",
+      "Amethyst": "Amethyst",
+      "Onyx": "Onyx",
+      "Ruby": "Ruby"
+    },
+    "colors": {
+      "Clear": "Clear",
+      "Pink": "Pink",
+      "Blue": "Blue",
+      "White": "White",
+      "Yellow": "Yellow",
+      "Red": "Red",
+      "Green": "Green",
+      "Sky Blue": "Sky Blue",
+      "London Blue": "London Blue",
+      "Purple": "Purple",
+      "Black": "Black"
+    }
   },
   "favorites": {
     "title": "My Favorites",

@@ -67,7 +67,7 @@ export const MiniCart: React.FC = () => {
                           >
                             <img
                               src={resolveProductImageUrl(item.imageUrl)}
-                              alt={item.name}
+                              alt={t(item.name)}
                               className="h-full w-full object-cover"
                             />
                           </Link>
@@ -80,7 +80,7 @@ export const MiniCart: React.FC = () => {
                                   onClick={() => setIsOpen(false)}
                                   className="font-bold text-[#1a1a1a] hover:text-[#b3917d] transition-colors"
                                 >
-                                  {item.name}
+                                  {t(item.name)}
                                 </Link>
                                 <button 
                                   onClick={() => removeFromCart(item.id)}
@@ -135,13 +135,13 @@ export const MiniCart: React.FC = () => {
                             <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-[#f7f3ef] grayscale">
                               <img
                                 src={resolveProductImageUrl(item.imageUrl)}
-                                alt={item.name}
+                                alt={t(item.name)}
                                 className="h-full w-full object-cover"
                               />
                             </div>
                             <div className="flex flex-1 flex-col justify-center">
                               <div className="flex items-start justify-between">
-                                <span className="text-sm font-bold text-[#1a1a1a]">{item.name}</span>
+                                <span className="text-sm font-bold text-[#1a1a1a]">{t(item.name)}</span>
                                 <button 
                                   onClick={() => removeFromCart(item.id)}
                                   className="text-[#a19690] hover:text-red-500"

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Category, Product } from './data';
 
 export interface FavoriteItem extends Product {
@@ -23,6 +24,7 @@ interface FavoritesContextType {
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { t } = useTranslation();
   const [favorites, setFavorites] = useState<FavoriteItem[]>(() => {
     if (typeof window !== 'undefined') {
       const savedFavorites = localStorage.getItem('favorites');
@@ -64,7 +66,7 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       if (prev.some(item => item.id === product.id)) return prev;
       return [...prev, { ...product, categoryName: category }];
     });
-    setNotification({ key: 'notifications.added_to_favorite', params: { name: product.name, category } });
+    setNotification({ key: 'notifications.added_to_favorite', params: { name: t(product.name), category } });
     setTimeout(() => setNotification(null), 3000);
   };
 

@@ -42,7 +42,7 @@ function CatalogPage() {
 
     const filteredProducts = (productsData || []).filter((product) => {
         const matchesCategory = activeCategory === "All" || product.category.toLowerCase() === activeCategory.toLowerCase();
-        const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        const matchesSearch = t(product.name).toLowerCase().includes(searchQuery.toLowerCase()) || 
                              t(product.description).toLowerCase().includes(searchQuery.toLowerCase()) ||
                              (product.style && product.style.toLowerCase().includes(searchQuery.toLowerCase())) ||
                              (product.design && product.design.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -60,7 +60,7 @@ function CatalogPage() {
 
     const suggestions = searchQuery.length > 0 
         ? (productsData || [])
-            .filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+            .filter(p => t(p.name).toLowerCase().includes(searchQuery.toLowerCase()))
             .slice(0, 5)
         : [];
 
@@ -138,12 +138,12 @@ function CatalogPage() {
                                     <div className="h-10 w-10 overflow-hidden rounded-lg bg-[#f7f3ef]">
                                         <img
                                             src={resolveProductImageUrl(suggestion.imageUrl)}
-                                            alt={suggestion.name}
+                                            alt={t(suggestion.name)}
                                             className="h-full w-full object-cover"
                                         />
                                     </div>
                                     <div className="flex-1">
-                                        <div className="text-sm font-bold text-[#1a1a1a]">{suggestion.name}</div>
+                                        <div className="text-sm font-bold text-[#1a1a1a]">{t(suggestion.name)}</div>
                                         <div className="text-xs text-[#b3917d]">${suggestion.price}</div>
                                     </div>
                                 </Link>
@@ -357,14 +357,14 @@ function CatalogPage() {
                                 )}
                                 <img
                                     src={resolveProductImageUrl(product.imageUrl)}
-                                    alt={product.name}
+                                    alt={t(product.name)}
                                     className="h-full w-full object-cover"
                                 />
                             </div>
                             <div className="mt-4 flex items-center justify-between px-1 md:px-2">
                                 <div>
                                     <h4 className="text-base md:text-lg font-bold text-[#1a1a1a]">
-                                        {product.name}
+                                        {t(product.name)}
                                     </h4>
                                     <p className="text-base md:text-lg font-bold text-[#b3917d]">
                                         ${product.price}
@@ -400,13 +400,13 @@ function CatalogPage() {
                             <div className="h-16 w-16 md:h-20 md:w-20 overflow-hidden rounded-2xl bg-[#f7f3ef] shrink-0">
                                 <img
                                     src={resolveProductImageUrl(product.imageUrl)}
-                                    alt={product.name}
+                                    alt={t(product.name)}
                                     className="h-full w-full object-cover"
                                 />
                             </div>
                             <div className="flex-1">
                                 <h4 className="text-base md:text-lg font-bold text-[#1a1a1a] line-clamp-1">
-                                    {product.name}
+                                    {t(product.name)}
                                 </h4>
                                 <p className="text-base md:text-lg font-bold text-[#b3917d]">
                                     ${product.price}
