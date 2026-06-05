@@ -1,4 +1,4 @@
-import defaultImage from "@/assets/619792737_18417153727189140_5984683189343682714_n.jpg";
+import defaultImage from "@/assets/lollypop/619792737_18417153727189140_5984683189343682714_n.jpg";
 
 const assetModules = import.meta.glob<string>("../assets/**/*.{jpg,jpeg,png,webp}", {
   eager: true,
