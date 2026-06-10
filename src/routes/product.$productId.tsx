@@ -366,7 +366,7 @@ function ProductPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-6">
               <div>
                 <p className="text-[#a19690] text-sm font-medium">{t('common.price')}</p>
-                <p className="text-2xl md:text-3xl font-bold text-[#b3917d]">${product.price}</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#b3917d]">₴{product.price}</p>
               </div>
               <button 
                 onClick={() => addToCart(product)}

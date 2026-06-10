@@ -150,7 +150,7 @@ export const MiniCart: React.FC = () => {
                                 </button>
                               </div>
                               <div className="mt-1 flex items-center justify-between">
-                                <p className="text-xs font-bold text-[#b3917d]">${item.price}</p>
+                                <p className="text-xs font-bold text-[#b3917d]">₴{item.price}</p>
                                 <button
                                   onClick={() => toggleSaveForLater(item.id)}
                                   className="text-xs font-bold text-[#b3917d] hover:underline"
@@ -172,7 +172,7 @@ export const MiniCart: React.FC = () => {
               <div className="border-t border-[#f0ebe7] bg-[#fdfaf7] px-6 py-6">
                 <div className="mb-4 flex items-center justify-between">
                   <span className="text-[#a19690]">{t('cart.total_amount')}</span>
-                  <span className="text-2xl font-bold text-[#1a1a1a]">${totalPrice}</span>
+                  <span className="text-2xl font-bold text-[#1a1a1a]">₴{totalPrice}</span>
                 </div>
                 <Link 
                   to="/cart"

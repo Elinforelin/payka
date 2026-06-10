@@ -367,7 +367,7 @@ function CatalogPage() {
                                         {t(product.name)}
                                     </h4>
                                     <p className="text-base md:text-lg font-bold text-[#b3917d]">
-                                        ${product.price}
+                                        ₴{product.price}
                                     </p>
                                 </div>
                                 <button
@@ -409,7 +409,7 @@ function CatalogPage() {
                                     {t(product.name)}
                                 </h4>
                                 <p className="text-base md:text-lg font-bold text-[#b3917d]">
-                                    ${product.price}
+                                    ₴{product.price}
                                 </p>
                             </div>
                             <button

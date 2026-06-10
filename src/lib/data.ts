@@ -40,36 +40,24 @@ export interface StoneColor {
 export const products: Product[] = [
   {
     "id": 6,
-    "name": "product.names.small_gold_bangle",
-    "description": "product.descriptions.small_gold_bangle",
-    "price": 3000,
-    "category": Category.Bangles,
-    "imageUrl": "/assets/619792737_18417153727189140_5984683189343682714_n.jpg",
+    "name": "product.names.ring_plava",
+    "description": "product.descriptions.ring_plava",
+    "price": 2700,
+    "category": Category.Rings,
+    "imageUrl": "/assets/plava/5267491911117774016.jpg",
     "images": [
-      "/assets/619792737_18417153727189140_5984683189343682714_n.jpg",
-      "/assets/521469718_18391966183189140_5158185447317376143_n.jpg",
-      "/assets/5346354635465.png"
+      "/assets/plava/5267491911117774016.jpg",
+      "/assets/plava/5267491911117774017.jpg",
+      "/assets/plava/5271827470149687881.jpg",
+      "/assets/plava/5271827470149687883.jpg",
+      "/assets/plava/5271827470149687884.jpg",
     ],
     "createdAt": "2026-06-04T07:17:07.873Z",
     "updatedAt": "2026-06-04T07:17:07.873Z",
-    "clasp": "Застібка конго",
-    "design": "Алмазна грань/насічка, Без каміння, Тонкі",
     "gemstone": "Без каміння",
-    "metalColor": "Червоний",
-    "metalStandard": "585",
-    "metalType": "Золото",
-    "productType": "Конго (кільця)",
-    "weight": 2.5,
-    "availableStones": [
-      {
-        "type": "Cubic Zirconia",
-        "colors": [
-          { "name": "Clear", "value": "#FFFFFF" },
-          { "name": "Pink", "value": "#FFC0CB" },
-          { "name": "Blue", "value": "#ADD8E6" }
-        ]
-      }
-    ]
+    "metalStandard": "925",
+    "metalType": "Срібло",
+    "weight": 4,
   },
   {
     "id": 7,
