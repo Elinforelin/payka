@@ -368,8 +368,14 @@ function ProductPage() {
                 <p className="text-[#a19690] text-sm font-medium">{t('common.price')}</p>
                 <p className="text-2xl md:text-3xl font-bold text-[#b3917d]">₴{product.price}</p>
               </div>
-              <button 
-                onClick={() => addToCart(product)}
+              <button
+                onClick={() => {
+                  const stoneLabel = selectedStoneType && selectedStoneColor
+                    ? `${t(`stones.types.${selectedStoneType}`)}: ${t(`stones.colors.${selectedStoneColor.name}`)}`
+                    : undefined;
+                  const sizeLabel = product.category === Category.Rings ? selectedRingSize : undefined;
+                  addToCart(product, stoneLabel, sizeLabel);
+                }}
                 className="flex flex-1 items-center justify-center gap-3 rounded-[24px] bg-[#1a1a1a] py-4 md:py-5 text-base md:text-lg font-bold text-white shadow-xl transition-all hover:bg-black active:scale-[0.98]"
               >
                 <ShoppingBag className="h-5 w-5 md:h-6 md:w-6" />

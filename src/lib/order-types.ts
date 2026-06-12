@@ -1,0 +1,34 @@
+export interface OrderItemPayload {
+  id: number;
+  name: string;
+  quantity: number;
+  price: number;
+  category?: string;
+  stone?: string;
+  size?: string;
+}
+
+export interface ShippingInfoPayload {
+  fullName: string;
+  phone: string;
+  city: string;
+  department: string;
+  address: string;
+  shippingMethod: string;
+  shippingCost: number;
+}
+
+export interface OrderSubmissionPayload {
+  items: OrderItemPayload[];
+  shipping: ShippingInfoPayload;
+  subtotal: number;
+  total: number;
+  privacyConsent: boolean;
+  consentTimestamp: string;
+}
+
+export interface OrderEmailContent {
+  subject: string;
+  text: string;
+  html: string;
+}
