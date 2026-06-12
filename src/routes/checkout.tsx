@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { useCart } from "@/lib/cart-context";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
+import { submitOrder } from "@/lib/submit-order";
 
 export const Route = createFileRoute("/checkout")({ component: CheckoutPage });
 
@@ -35,6 +36,9 @@ function CheckoutPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [selectedMethod, setSelectedMethod] = useState<string>('nova_poshta');
+  const [privacyConsent, setPrivacyConsent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const [citySearch, setCitySearch] = useState("");
   const [cities, setCities] = useState<any[]>([]);
@@ -132,11 +136,10 @@ function CheckoutPage() {
 
   const currentMethod = shippingMethods.find(m => m.id === selectedMethod)!;
 
-  const validate = () => {
+  const validateShipping = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.fullName.trim()) newErrors.fullName = t('checkout.errors.name_required');
     
-    // Simple phone validation: at least 10 digits
     const phoneRegex = /^\+?[\d\s-]{10,}$/;
     if (!phoneRegex.test(formData.phone)) newErrors.phone = t('checkout.errors.phone_invalid');
     
@@ -151,22 +154,67 @@ function CheckoutPage() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const validateOrder = () => {
+    const newErrors: Record<string, string> = {};
+    if (!privacyConsent) newErrors.privacyConsent = t('checkout.errors.consent_required');
+
+    setErrors((prev) => ({ ...prev, ...newErrors }));
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleNext = () => {
-    if (validate()) {
+    if (validateShipping()) {
       setStep('summary');
       window.scrollTo(0, 0);
     }
   };
 
-  const handlePlaceOrder = () => {
-    // Simulate data encryption and transmission
-    console.log("Encrypting data for secure transmission...");
-    const encryptedData = btoa(JSON.stringify({ ...formData, method: selectedMethod, items }));
-    console.log("Transmitting encrypted payload:", encryptedData);
-    
-    setStep('success');
-    clearCart();
-    window.scrollTo(0, 0);
+  const handlePlaceOrder = async () => {
+    if (!validateOrder()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      await submitOrder({
+        data: {
+          privacyConsent: true,
+          consentTimestamp: new Date().toISOString(),
+          subtotal: totalPrice,
+          total: totalPrice + currentMethod.price,
+          items: activeItems.map((item) => ({
+            id: item.id,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            category: item.category,
+            stone: item.selectedStone,
+            size: item.selectedSize,
+          })),
+          shipping: {
+            fullName: formData.fullName,
+            phone: formData.phone,
+            city: formData.city,
+            department: formData.department,
+            address: formData.address,
+            shippingMethod: currentMethod.name,
+            shippingCost: currentMethod.price,
+          },
+        },
+      });
+
+      setStep('success');
+      clearCart();
+      window.scrollTo(0, 0);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : t('checkout.errors.submit_failed'),
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (activeItems.length === 0 && step !== 'success') {
@@ -383,11 +431,34 @@ function CheckoutPage() {
               <div className="bg-white rounded-[32px] p-6 md:p-8 shadow-sm">
                 <h3 className="text-lg font-bold text-[#1a1a1a] mb-4 flex items-center gap-2">
                   <ShieldCheck className="h-5 w-5 text-green-600" />
-                  Security Information
+                  {t('checkout.privacy_title')}
                 </h3>
-                <p className="text-sm text-[#6b5f59] leading-relaxed">
-                  {t('checkout.encrypt_note')} All sensitive data is hashed before transmission.
+                <p className="text-sm text-[#6b5f59] leading-relaxed mb-4">
+                  {t('checkout.privacy_note')}
                 </p>
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={privacyConsent}
+                    onChange={(e) => {
+                      setPrivacyConsent(e.target.checked);
+                      if (e.target.checked && errors.privacyConsent) {
+                        setErrors((prev) => {
+                          const next = { ...prev };
+                          delete next.privacyConsent;
+                          return next;
+                        });
+                      }
+                    }}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-[#b3917d] focus:ring-[#b3917d]"
+                  />
+                  <span className="text-sm text-[#6b5f59] leading-relaxed">
+                    {t('checkout.privacy_consent')}
+                  </span>
+                </label>
+                {errors.privacyConsent && (
+                  <p className="mt-2 text-xs text-red-500">{errors.privacyConsent}</p>
+                )}
               </div>
             </div>
           )}
@@ -434,12 +505,22 @@ function CheckoutPage() {
               </div>
             </div>
 
+            {submitError && (
+              <p className="mt-4 text-sm text-red-500 text-center">{submitError}</p>
+            )}
+
             <button
               onClick={step === 'shipping' ? handleNext : handlePlaceOrder}
-              className="w-full mt-8 rounded-[24px] bg-[#1a1a1a] py-4 md:py-5 text-base md:text-lg font-bold text-white shadow-xl transition-all hover:bg-black active:scale-[0.98] flex items-center justify-center gap-2"
+              disabled={isSubmitting}
+              className="w-full mt-8 rounded-[24px] bg-[#1a1a1a] py-4 md:py-5 text-base md:text-lg font-bold text-white shadow-xl transition-all hover:bg-black active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {step === 'shipping' ? (
                 <>Next Step</>
+              ) : isSubmitting ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  {t('checkout.submitting')}
+                </>
               ) : (
                 <>
                   <CreditCard className="h-5 w-5" />

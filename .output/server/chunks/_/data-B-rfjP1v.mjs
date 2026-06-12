@@ -1,76 +1,39 @@
-export enum Category {
-  Bangles = "Bangles",
-  Rings = "Rings",
-  Earrings = "Earrings",
-  Pendants = "Pendants",
-}
-
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  category: Category;
-  imageUrl: string | null;
-  images?: string[];
-  createdAt: string;
-  updatedAt: string;
-  clasp?: string | null;
-  design?: string | null;
-  gemstone?: string | null;
-  metalColor?: string | null;
-  metalStandard?: string | null;
-  metalType?: string | null;
-  productType?: string | null;
-  weight?: number | null;
-  availableStones?: StoneOption[];
-}
-
-export interface StoneOption {
-  type: string;
-  colors: StoneColor[];
-}
-
-export interface StoneColor {
-  name: string;
-  value: string; // Hex color or CSS color name
-  imageUrl?: string; // Optional: Image that shows this specific stone color
-}
-
-export const products: Product[] = [
+var Category = /* @__PURE__ */ ((Category2) => {
+  Category2["Bangles"] = "Bangles";
+  Category2["Rings"] = "Rings";
+  Category2["Earrings"] = "Earrings";
+  Category2["Pendants"] = "Pendants";
+  return Category2;
+})(Category || {});
+const products = [
   {
     "id": 6,
     "name": "product.names.ring_plava",
     "description": "product.descriptions.ring_plava",
     "price": 2700,
-    "category": Category.Rings,
+    "category": "Rings",
     "imageUrl": "/assets/plava/5267491911117774016.jpg",
     "images": [
       "/assets/plava/5267491911117774016.jpg",
       "/assets/plava/5267491911117774017.jpg",
       "/assets/plava/5271827470149687881.jpg",
       "/assets/plava/5271827470149687883.jpg",
-      "/assets/plava/5271827470149687884.jpg",
+      "/assets/plava/5271827470149687884.jpg"
     ],
     "createdAt": "2026-06-04T07:17:07.873Z",
     "updatedAt": "2026-06-04T07:17:07.873Z",
     "gemstone": "Без каміння",
     "metalStandard": "925",
     "metalType": "Срібло",
-    "weight": 4,
+    "weight": 4
   },
   {
     "id": 7,
-    "name": "product.names.bubochki_ring",
-    "description": "product.descriptions.bubochki_ring",
-    "price": 1700,
-    "category": Category.Rings,
-    "imageUrl": "/assets/bubochki/5282821220627849158.jpg",
-    "images": [
-      "/assets/bubochki/5282821220627849158.jpg",
-      "/assets/bubochki/5282821220627849159.jpg",
-      "/assets/bubochki/5282821220627849160.jpg",
-    ],
+    "name": "product.names.diamond_eternity_ring",
+    "description": "product.descriptions.diamond_eternity_ring",
+    "price": 4500,
+    "category": "Rings",
+    "imageUrl": "/assets/521469718_18391966183189140_5158185447317376143_n.jpg",
     "createdAt": "2026-06-04T07:17:07.884Z",
     "updatedAt": "2026-06-04T07:17:07.884Z",
     "clasp": "Крапанова закріпка",
@@ -81,19 +44,36 @@ export const products: Product[] = [
     "metalType": "Золото",
     "productType": "Каблучка",
     "weight": 3.2,
+    "availableStones": [
+      {
+        "type": "Diamond",
+        "colors": [
+          { "name": "White", "value": "#FFFFFF" },
+          { "name": "Yellow", "value": "#FFFFE0" },
+          { "name": "Pink", "value": "#FFD1DC" }
+        ]
+      },
+      {
+        "type": "Sapphire",
+        "colors": [
+          { "name": "Blue", "value": "#0000FF" },
+          { "name": "Pink", "value": "#FF69B4" }
+        ]
+      }
+    ]
   },
   {
     "id": 8,
     "name": "product.names.lollypop",
     "description": "product.descriptions.lollypop_rings",
-    "price": 3000,
-    "category": Category.Rings,
+    "price": 3e3,
+    "category": "Rings",
     "imageUrl": "/assets/lollypop/IMG_4831.png",
     "images": [
       "/assets/lollypop/IMG_4831.png",
       "/assets/lollypop/IMG_4835.png",
       "/assets/lollypop/IMG_4837.png",
-      "/assets/lollypop/5267491911117774004.png",
+      "/assets/lollypop/5267491911117774004.png"
     ],
     "createdAt": "2026-06-04T07:17:07.886Z",
     "updatedAt": "2026-06-04T07:17:07.886Z",
@@ -117,29 +97,43 @@ export const products: Product[] = [
   },
   {
     "id": 9,
-    "name": "product.names.silver_pendant_cup",
-    "description": "product.descriptions.silver_pendant_cup",
+    "name": "product.names.silver_pendant",
+    "description": "product.descriptions.silver_pendant",
     "price": 1500,
-    "category": Category.Pendants,
-    "imageUrl": "/assets/cup/5282821220627849167.jpg",
-    "images": [
-      "/assets/5282821220627849167.jpg",
-      "/assets/5282821220627849168.jpg",
-      "/assets/5282821220627849169.jpg",
-    ],
+    "category": "Pendants",
+    "imageUrl": "/assets/45875674576754.png",
     "createdAt": "2026-06-04T07:17:07.888Z",
     "updatedAt": "2026-06-04T07:17:07.888Z",
+    "clasp": "Вушко",
+    "design": "Мінімалізм",
+    "gemstone": "Фіаніт",
+    "metalColor": "Сріблястий",
     "metalStandard": "925",
     "metalType": "Срібло",
     "productType": "Підвіска",
-    "weight": 5,
+    "weight": 1.8,
+    "availableStones": [
+      {
+        "type": "Topaz",
+        "colors": [
+          { "name": "Sky Blue", "value": "#87CEEB" },
+          { "name": "London Blue", "value": "#006666" }
+        ]
+      },
+      {
+        "type": "Amethyst",
+        "colors": [
+          { "name": "Purple", "value": "#9966CC" }
+        ]
+      }
+    ]
   },
   {
     "id": 10,
     "name": "product.names.gold_ring",
     "description": "product.descriptions.classic_gold_ring",
-    "price": 2000,
-    "category": Category.Rings,
+    "price": 2e3,
+    "category": "Rings",
     "imageUrl": "/assets/2345413523454.png",
     "createdAt": "2026-06-04T07:17:07.889Z",
     "updatedAt": "2026-06-04T07:17:07.889Z",
@@ -167,3 +161,7 @@ export const products: Product[] = [
     ]
   }
 ];
+export {
+  Category as C,
+  products as p
+};

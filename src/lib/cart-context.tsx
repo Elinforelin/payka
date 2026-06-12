@@ -5,6 +5,8 @@ import { Product } from './data';
 export interface CartItem extends Product {
   quantity: number;
   savedForLater?: boolean;
+  selectedStone?: string;
+  selectedSize?: string;
 }
 
 interface NotificationData {
@@ -14,7 +16,7 @@ interface NotificationData {
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, selectedStone?: string, selectedSize?: string) => void;
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   toggleSaveForLater: (productId: number) => void;
@@ -47,15 +49,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, selectedStone?: string, selectedSize?: string) => {
     setItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id);
       if (existingItem) {
         return prevItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1, savedForLater: false } : item
+          item.id === product.id ? { ...item, quantity: item.quantity + 1, savedForLater: false, selectedStone, selectedSize } : item
         );
       }
-      return [...prevItems, { ...product, quantity: 1, savedForLater: false }];
+      return [...prevItems, { ...product, quantity: 1, savedForLater: false, selectedStone, selectedSize }];
     });
     
     setNotification({ key: 'notifications.added_to_cart', params: { name: t(product.name) } });

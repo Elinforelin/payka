@@ -41,16 +41,16 @@
     "description": "Description",
     "descriptions": {
       "ring_plava": "Freedom that needs no explanation",
-      "diamond_eternity_ring": "Stunning diamond eternity ring",
+      "bubochki_ring": "Bubochki for every day to feel special",
       "lollypop_rings": "Beautifully crafted embossed earrings",
-      "silver_pendant": "Minimalist silver pendant",
+      "silver_pendant_cup": "Minimalist silver cup pendant",
       "classic_gold_ring": "Classic gold ring"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
-      "diamond_eternity_ring": "Diamond Eternity Ring",
+      "bubochki_ring": "Bubochki Ring",
       "lollypop": "🍭",
-      "silver_pendant": "Silver Pendant",
+      "silver_pendant_cup": "Silver Cup Pendant",
       "gold_ring": "Gold Ring"
     },
     "details": "Details",
@@ -137,13 +137,19 @@
       "phone_invalid": "Invalid phone number format",
       "address_required": "Shipping address is required",
       "city_required": "Please select a city",
-      "department_required": "Please select a department"
+      "department_required": "Please select a department",
+      "consent_required": "Please confirm consent to process your personal data",
+      "submit_failed": "Unable to submit your order. Please try again."
     },
     "methods": {
       "nova_poshta": "Nova Poshta (to Department)"
     },
     "success": "Order placed successfully! Securely encrypted during transmission.",
-    "encrypt_note": "Your data is encrypted using 256-bit SSL security."
+    "encrypt_note": "Your data is encrypted using 256-bit SSL security.",
+    "privacy_title": "Data Protection",
+    "privacy_note": "We collect only the information needed to fulfill your order. Personal data is transmitted securely to our team and processed solely for order fulfillment in accordance with GDPR.",
+    "privacy_consent": "I agree to the processing of my personal data for order fulfillment.",
+    "submitting": "Submitting order..."
   },
   "notifications": {
     "added_to_cart": "{{name}} added to cart!",
