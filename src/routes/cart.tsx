@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, Minus, Plus, Trash2 } from "lucide-react";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { useTranslation } from "react-i18next";
 
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
@@ -22,7 +23,7 @@ function CartPage() {
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
         </Link>
         <h1 className="text-lg md:text-xl font-bold text-[#1a1a1a]">{t('cart.title')}</h1>
-        <div className="w-10 md:w-12" /> {/* Spacer */}
+        <LanguageToggle />
       </header>
 
       <div className="mx-auto max-w-2xl">
@@ -60,15 +61,25 @@ function CartPage() {
                 </Link>
 
                 <div className="flex-1 text-center sm:text-left">
-                  <Link 
-                    to="/product/$productId" 
+                  <Link
+                    to="/product/$productId"
                     params={{ productId: String(item.id) }}
                     className="text-base md:text-lg font-bold text-[#1a1a1a] hover:text-[#b3917d] transition-colors"
                   >
                     {t(item.name)}
                   </Link>
+                  {item.selectedSize && (
+                    <p className="text-xs text-[#a19690]">
+                      {t('cart.size')}: <span className="font-medium text-[#6b5f59]">{item.selectedSize}</span>
+                    </p>
+                  )}
+                  {item.selectedStone && (
+                    <p className="text-xs text-[#a19690]">
+                      {t('cart.stone')}: <span className="font-medium text-[#6b5f59]">{item.selectedStone}</span>
+                    </p>
+                  )}
                   <p className="text-base md:text-lg font-bold text-[#b3917d]">
-                    ${item.price}
+                    ₴{item.price}
                   </p>
                 </div>
 

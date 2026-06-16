@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ChevronLeft, ShieldCheck, Truck, Package, CreditCard, CheckCircle2, Search as SearchIcon, MapPin, Loader2 } from "lucide-react";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useRef } from "react";
 
@@ -33,6 +34,7 @@ function CheckoutPage() {
     cityRef: "",
     department: "",
     departmentRef: "",
+    comment: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [selectedMethod, setSelectedMethod] = useState<string>('nova_poshta');
@@ -202,6 +204,7 @@ function CheckoutPage() {
             shippingMethod: currentMethod.name,
             shippingCost: currentMethod.price,
           },
+          comment: formData.comment || undefined,
         },
       });
 
@@ -264,7 +267,7 @@ function CheckoutPage() {
         <h1 className="text-lg md:text-xl font-bold text-[#1a1a1a]">
           {step === 'shipping' ? t('checkout.shipping_info') : t('checkout.confirm_order')}
         </h1>
-        <div className="w-10 md:w-12" />
+        <LanguageToggle />
       </header>
 
       <div className="mx-auto max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -399,6 +402,18 @@ function CheckoutPage() {
                     {errors.address && <p className="mt-1 text-xs text-red-500 px-1">{errors.address}</p>}
                   </div>
                 ) : null}
+
+                <div>
+                  <label className="block text-sm font-medium text-[#6b5f59] mb-2 px-1">
+                    {t('checkout.comment')}
+                  </label>
+                  <textarea
+                    value={formData.comment}
+                    onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
+                    className="w-full h-28 rounded-2xl bg-[#fdfaf7] p-4 outline-none border-2 border-transparent focus:border-[#b3917d] transition-all resize-none"
+                    placeholder={t('checkout.comment_placeholder')}
+                  />
+                </div>
               </div>
 
 
@@ -425,6 +440,9 @@ function CheckoutPage() {
                     <Truck className="h-4 w-4" />
                     {currentMethod.name}
                   </p>
+                  {formData.comment && (
+                    <p className="pt-2 text-sm italic text-[#6b5f59]">"{formData.comment}"</p>
+                  )}
                 </div>
               </div>
 

@@ -89,7 +89,7 @@ export const MiniCart: React.FC = () => {
                                   <Trash2 className="h-4 w-4" />
                                 </button>
                               </div>
-                              <p className="text-sm font-bold text-[#b3917d]">${item.price}</p>
+                              <p className="text-sm font-bold text-[#b3917d]">₴{item.price}</p>
                             </div>
                             <div className="flex items-center justify-between mt-2">
                               <div className="flex items-center gap-3 rounded-xl bg-[#fdfaf7] p-1 shadow-inner">

@@ -21,6 +21,15 @@
     "apply": "Apply",
     "reset": "Reset",
     "back": "Back",
+    "metal_types": {
+      "silver": "Silver",
+      "gold": "Gold"
+    },
+    "metal_colors": {
+      "white": "White",
+      "silvery": "Silvery",
+      "yellow": "Yellow"
+    },
     "category_names": {
       "Bangles": "Bangles",
       "Rings": "Rings",
@@ -33,7 +42,9 @@
     "advanced_filters": "Advanced Filters",
     "price_range": "Price Range",
     "min": "Min",
-    "max": "Max"
+    "max": "Max",
+    "reset_all": "Reset All",
+    "show_results": "Show {{count}} Results"
   },
   "product": {
     "add_to_favorites": "Add to favorites",
@@ -58,6 +69,31 @@
     "select_size": "Select Size",
     "select_ring_size": "Select Ring Size",
     "size_in_mm": "Size is shown in millimeters (mm)",
+    "size_guide": "Size Guide",
+    "size_guide_ring_title": "Ring Size Chart",
+    "size_guide_ring_col_mm": "Diameter (mm)",
+    "size_guide_ring_col_eu": "EU Size",
+    "size_guide_necklace_title": "Necklace Length Guide",
+    "size_guide_necklace_col_cm": "Length",
+    "size_guide_necklace_col_name": "Style",
+    "size_guide_necklace_col_desc": "Where it sits",
+    "size_guide_necklace_choker": "Choker",
+    "size_guide_necklace_choker_desc": "Base of the neck",
+    "size_guide_necklace_princess": "Princess",
+    "size_guide_necklace_princess_desc": "At the collarbone",
+    "size_guide_necklace_matinee": "Matinee",
+    "size_guide_necklace_matinee_desc": "Below the collarbone",
+    "size_guide_necklace_opera": "Opera",
+    "size_guide_necklace_opera_desc": "Below the bust",
+    "size_guide_tips_title": "How to Measure",
+    "size_guide_tips_ring_title": "Ring size",
+    "size_guide_tips_ring_1": "Cut a thin strip of paper or use a piece of string.",
+    "size_guide_tips_ring_2": "Wrap it snugly around the base of your finger (measure at the knuckle for a comfortable fit).",
+    "size_guide_tips_ring_3": "Mark where the ends meet and measure the length in millimeters — that is your diameter.",
+    "size_guide_tips_ring_note": "Fingers swell slightly during the day — measure in the evening for the best result.",
+    "size_guide_tips_necklace_title": "Necklace length",
+    "size_guide_tips_necklace_1": "Hold a measuring tape or a piece of string around your neck at the position you prefer.",
+    "size_guide_tips_necklace_2": "Note the length in centimeters and match it to the chart above.",
     "select_stone": "Select Stone",
     "select_stone_color": "Select Color",
     "recommended_for_you": "Recommended for you",
@@ -109,9 +145,11 @@
     "empty": "Your cart is empty",
     "continue_shopping": "Continue Shopping",
     "total_amount": "Total Amount",
-    "proceed_to_payment": "Proceed to Payment",
+    "proceed_to_payment": "Go To Checkout",
     "empty_desc": "Add some beautiful jewelry to your collection",
-    "saved_for_later": "Saved for later"
+    "saved_for_later": "Saved for later",
+    "size": "Size",
+    "stone": "Stone"
   },
   "checkout": {
     "title": "Checkout",
@@ -149,6 +187,8 @@
     "privacy_title": "Data Protection",
     "privacy_note": "We collect only the information needed to fulfill your order. Personal data is transmitted securely to our team and processed solely for order fulfillment in accordance with GDPR.",
     "privacy_consent": "I agree to the processing of my personal data for order fulfillment.",
+    "comment": "Comment",
+    "comment_placeholder": "Any special requests or notes for your order...",
     "submitting": "Submitting order..."
   },
   "notifications": {

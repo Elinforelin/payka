@@ -58,7 +58,7 @@ export function formatOrderEmail(
   order: OrderSubmissionPayload,
   orderId: string,
 ): OrderEmailContent {
-  const { shipping, items, subtotal, total, consentTimestamp } = order;
+  const { shipping, items, subtotal, total, consentTimestamp, comment } = order;
 
   const productLines = items.map(formatItemLine).join("\n");
   const productRows = items.map(formatItemHtml).join("");
@@ -74,6 +74,7 @@ export function formatOrderEmail(
     `Address: ${shipping.address || "—"}`,
     `Shipping method: ${shipping.shippingMethod}`,
     "",
+    ...(comment ? ["Comment", comment, ""] : []),
     "Ordered products",
     productLines,
     "",
@@ -102,6 +103,8 @@ export function formatOrderEmail(
       <li><strong>Address:</strong> ${escapeHtml(shipping.address || "—")}</li>
       <li><strong>Shipping method:</strong> ${escapeHtml(shipping.shippingMethod)}</li>
     </ul>
+
+    ${comment ? `<h3>Comment</h3><p style="background:#fdfaf7;border-left:3px solid #b3917d;padding:10px 14px;margin:0;border-radius:4px;">${escapeHtml(comment)}</p>` : ""}
 
     <h3>Ordered products</h3>
     <table style="border-collapse:collapse;width:100%;max-width:640px;">
@@ -358,5 +361,6 @@ export function normalizeOrderSubmission(
       shippingMethod: sanitizeText(input.shipping.shippingMethod, 120),
       shippingCost: Math.max(0, Number(input.shipping.shippingCost)),
     },
+    comment: input.comment ? sanitizeText(input.comment, 500) : undefined,
   };
 }

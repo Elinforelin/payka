@@ -21,7 +21,6 @@ export interface Product {
   metalColor?: string | null;
   metalStandard?: string | null;
   metalType?: string | null;
-  productType?: string | null;
   weight?: number | null;
   availableStones?: StoneOption[];
 }
@@ -56,7 +55,7 @@ export const products: Product[] = [
     "updatedAt": "2026-06-04T07:17:07.873Z",
     "gemstone": "Без каміння",
     "metalStandard": "925",
-    "metalType": "Срібло",
+    "metalType": "common.metal_types.silver",
     "weight": 4,
   },
   {
@@ -73,13 +72,8 @@ export const products: Product[] = [
     ],
     "createdAt": "2026-06-04T07:17:07.884Z",
     "updatedAt": "2026-06-04T07:17:07.884Z",
-    "clasp": "Крапанова закріпка",
-    "design": "Класика",
-    "gemstone": "Діамант",
-    "metalColor": "Білий",
-    "metalStandard": "750",
-    "metalType": "Золото",
-    "productType": "Каблучка",
+    "metalStandard": "925",
+    "metalType": "common.metal_types.silver",
     "weight": 3.2,
   },
   {
@@ -98,10 +92,9 @@ export const products: Product[] = [
     "createdAt": "2026-06-04T07:17:07.886Z",
     "updatedAt": "2026-06-04T07:17:07.886Z",
     "gemstone": "Фіаніт",
-    "metalColor": "Сріблястий",
+    "metalColor": "common.metal_colors.silvery",
     "metalStandard": "925",
-    "metalType": "Срібло",
-    "productType": "Кільце",
+    "metalType": "common.metal_types.silver",
     "weight": 4,
     "availableStones": [
       {
@@ -130,8 +123,7 @@ export const products: Product[] = [
     "createdAt": "2026-06-04T07:17:07.888Z",
     "updatedAt": "2026-06-04T07:17:07.888Z",
     "metalStandard": "925",
-    "metalType": "Срібло",
-    "productType": "Підвіска",
+    "metalType": "common.metal_types.silver",
     "weight": 5,
   },
   {
@@ -146,10 +138,9 @@ export const products: Product[] = [
     "clasp": "Немає",
     "design": "Класика",
     "gemstone": "Без каміння",
-    "metalColor": "Жовтий",
+    "metalColor": "common.metal_colors.yellow",
     "metalStandard": "585",
-    "metalType": "Золото",
-    "productType": "Каблучка",
+    "metalType": "common.metal_types.gold",
     "weight": 2.2,
     "availableStones": [
       {

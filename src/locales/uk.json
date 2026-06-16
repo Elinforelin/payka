@@ -21,6 +21,15 @@
     "apply": "Застосувати",
     "reset": "Скинути",
     "back": "Назад",
+    "metal_types": {
+      "silver": "Срібло",
+      "gold": "Золото"
+    },
+    "metal_colors": {
+      "white": "Білий",
+      "silvery": "Сріблястий",
+      "yellow": "Жовтий"
+    },
     "category_names": {
       "Bangles": "Браслети",
       "Rings": "Каблучки",
@@ -33,7 +42,9 @@
     "advanced_filters": "Розширені фільтри",
     "price_range": "Діапазон цін",
     "min": "Від",
-    "max": "До"
+    "max": "До",
+    "reset_all": "Скинути все",
+    "show_results": "Показати {{count}} результатів"
   },
   "product": {
     "add_to_favorites": "Додати в обране",
@@ -58,6 +69,31 @@
     "select_size": "Оберіть розмір",
     "select_ring_size": "Оберіть розмір каблучки",
     "size_in_mm": "Розмір вказано в міліметрах (мм)",
+    "size_guide": "Таблиця розмірів",
+    "size_guide_ring_title": "Таблиця розмірів каблучок",
+    "size_guide_ring_col_mm": "Діаметр (мм)",
+    "size_guide_ring_col_eu": "Розмір EU",
+    "size_guide_necklace_title": "Довжина кольє",
+    "size_guide_necklace_col_cm": "Довжина",
+    "size_guide_necklace_col_name": "Назва",
+    "size_guide_necklace_col_desc": "Де лежить",
+    "size_guide_necklace_choker": "Чокер",
+    "size_guide_necklace_choker_desc": "Біля основи шиї",
+    "size_guide_necklace_princess": "Принцеса",
+    "size_guide_necklace_princess_desc": "На рівні ключиці",
+    "size_guide_necklace_matinee": "Матіне",
+    "size_guide_necklace_matinee_desc": "Нижче ключиці",
+    "size_guide_necklace_opera": "Опера",
+    "size_guide_necklace_opera_desc": "Нижче грудей",
+    "size_guide_tips_title": "Як виміряти",
+    "size_guide_tips_ring_title": "Розмір каблучки",
+    "size_guide_tips_ring_1": "Відріжте вузьку смужку паперу або візьміть нитку.",
+    "size_guide_tips_ring_2": "Обмотайте її навколо основи пальця (вимірюйте на кісточці для комфортної посадки).",
+    "size_guide_tips_ring_3": "Відмітьте місце перетину і виміряйте довжину в міліметрах — це ваш діаметр.",
+    "size_guide_tips_ring_note": "Пальці злегка набрякають протягом дня — вимірюйте ввечері для найкращого результату.",
+    "size_guide_tips_necklace_title": "Довжина ланцюжка",
+    "size_guide_tips_necklace_1": "Прикладіть сантиметрову стрічку або нитку до шиї на потрібній висоті.",
+    "size_guide_tips_necklace_2": "Запишіть довжину в сантиметрах і знайдіть її в таблиці вище.",
     "select_stone": "Оберіть камінь",
     "select_stone_color": "Оберіть колір",
     "recommended_for_you": "Рекомендовано для вас",
@@ -111,9 +147,11 @@
     "empty": "Ваш кошик порожній",
     "continue_shopping": "Продовжити покупки",
     "total_amount": "Загальна сума",
-    "proceed_to_payment": "Перейти до оплати",
+    "proceed_to_payment": "Перейти до оформлення замовлення",
     "empty_desc": "Додайте прекрасні прикраси до своєї колекції",
-    "saved_for_later": "Збережено на потім"
+    "saved_for_later": "Збережено на потім",
+    "size": "Розмір",
+    "stone": "Камінь"
   },
   "checkout": {
     "title": "Оформлення",
@@ -151,6 +189,8 @@
     "privacy_title": "Захист даних",
     "privacy_note": "Ми збираємо лише інформацію, необхідну для виконання вашого замовлення. Персональні дані передаються нашій команді безпечно та обробляються виключно для виконання замовлення відповідно до GDPR.",
     "privacy_consent": "Я погоджуюся на обробку моїх персональних даних для виконання замовлення.",
+    "comment": "Коментар",
+    "comment_placeholder": "Особливі побажання або нотатки до замовлення...",
     "submitting": "Надсилання замовлення..."
   },
   "notifications": {

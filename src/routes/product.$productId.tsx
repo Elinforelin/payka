@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import { useCart } from "@/lib/cart-context";
 import { useFavorites } from "@/lib/favorites-context";
 import { MiniCart } from "@/components/MiniCart";
+import { SizeGuide } from "@/components/SizeGuide";
+import { LanguageToggle } from "@/components/LanguageToggle";
 
 const getProduct = createServerFn({ method: "GET" })
   .inputValidator((data: { productId: number }) => data)
@@ -45,6 +47,7 @@ function ProductPage() {
   const [selectedStoneType, setSelectedStoneType] = useState(product.availableStones?.[0]?.type || "");
   const [selectedStoneColor, setSelectedStoneColor] = useState(product.availableStones?.[0]?.colors[0] || null);
   const [selectedRingSize, setSelectedRingSize] = useState("17.0");
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
 
   useEffect(() => {
     if (product.availableStones) {
@@ -84,20 +87,15 @@ function ProductPage() {
     { label: t('product.sku'), value: product.sku },
     { label: t('common.categories'), value: t(`common.category_names.${product.category}`) },
     { label: t('product.metal_standard'), value: product.metalStandard },
-    { label: t('product.metal_type'), value: product.metalType },
-    { label: t('product.metal_color'), value: product.metalColor },
+    { label: t('product.metal_type'), value: product.metalType ? t(product.metalType) : undefined },
+    { label: t('product.metal_color'), value: product.metalColor ? t(product.metalColor) : undefined },
     { label: t('product.clasp'), value: product.clasp },
     { label: t('product.gemstone'), value: product.gemstone },
     { label: t('product.design'), value: product.design },
-    { label: t('product.style'), value: product.style },
     { label: t('product.product_type'), value: product.productType },
-    { label: t('product.technology'), value: product.technology },
-    { label: t('product.width'), value: product.width },
-    { label: t('product.thickness'), value: product.thickness },
-    { label: t('product.length'), value: product.length },
     { label: t('product.weight'), value: product.weight },
   ].filter((detail) => detail.value !== null && detail.value !== undefined);
-  console.log(product)
+
   return (
     <>
     <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12">
@@ -110,6 +108,7 @@ function ProductPage() {
         </Link>
         <h1 className="text-lg md:text-xl font-bold text-[#1a1a1a]">{t('product.details')}</h1>
         <div className="flex items-center gap-2 md:gap-3">
+          <LanguageToggle />
           <div className="relative">
             <button 
               onClick={() => {
@@ -155,7 +154,7 @@ function ProductPage() {
       <div className="mt-6 md:mt-8 flex flex-col gap-8 md:gap-10 md:flex-row">
         <div className="flex-1">
           <div 
-            className="relative aspect-square w-full overflow-hidden rounded-[32px] md:rounded-[48px] bg-[#f7f3ef] shadow-inner cursor-zoom-in"
+            className="relative aspect-square w-full overflow-hidden rounded-[32px] md:rounded-[48px] bg-[#f7f3ef] shadow-inner cursor-zoom-in max-w-500"
             onClick={() => setIsLightboxOpen(true)}
           >
             <img
@@ -243,9 +242,17 @@ function ProductPage() {
           </div>
 
           <div className="mt-8">
-            <h3 className="text-lg font-bold text-[#1a1a1a]">
-              {product.category === Category.Rings ? t('product.select_ring_size') : t('product.select_size')}
-            </h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold text-[#1a1a1a]">
+                {product.category === Category.Rings ? t('product.select_ring_size') : t('product.select_size')}
+              </h3>
+              <button
+                onClick={() => setShowSizeGuide(true)}
+                className="text-sm font-medium text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+              >
+                {t('product.size_guide')}
+              </button>
+            </div>
             <div className="mt-4 flex flex-wrap gap-3">
               {product.category === Category.Rings ? (
                 Array.from({ length: (22 - 15) / 0.5 + 1 }, (_, i) => (15 + i * 0.5).toFixed(1)).map((size) => (
@@ -387,6 +394,8 @@ function ProductPage() {
       </div>
     </main>
     
+    {showSizeGuide && <SizeGuide onClose={() => setShowSizeGuide(false)} />}
+
     {isLightboxOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
           <button 

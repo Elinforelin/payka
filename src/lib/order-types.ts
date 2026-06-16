@@ -25,6 +25,7 @@ export interface OrderSubmissionPayload {
   total: number;
   privacyConsent: boolean;
   consentTimestamp: string;
+  comment?: string;
 }
 
 export interface OrderEmailContent {

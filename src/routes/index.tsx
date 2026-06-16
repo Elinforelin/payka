@@ -1,5 +1,6 @@
 import {createFileRoute, useNavigate} from "@tanstack/react-router";
-import {ArrowRight, } from "lucide-react";
+import {ArrowRight} from "lucide-react";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { createServerFn } from "@tanstack/react-start";
 
 import img1 from "@/assets/619792737_18417153727189140_5984683189343682714_n.jpg";
@@ -18,7 +19,10 @@ export const Route = createFileRoute("/")({
 function LandingPage() {
     const navigate = useNavigate()
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center bg-[#fdfaf7] px-6 py-10">
+      <main className="relative flex min-h-screen flex-col items-center justify-center bg-[#fdfaf7] px-6 py-10">
+        <div className="absolute top-6 right-6">
+          <LanguageToggle />
+        </div>
         <div className="relative mb-12 h-[400px] w-full max-w-lg">
           <div className="absolute top-0 left-0 w-[60%] overflow-hidden rounded-lg shadow-2xl">
             <img src={img1} alt="Jewelry 1" className="h-full w-full object-cover" />

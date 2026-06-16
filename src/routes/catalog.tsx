@@ -1,5 +1,6 @@
 import {createFileRoute, Link} from "@tanstack/react-router";
-import {Search, SlidersHorizontal, ShoppingBag, Heart, Bell, Info, X, Check, Languages} from "lucide-react";
+import {Search, SlidersHorizontal, ShoppingBag, Heart, Bell, Info, X, Check} from "lucide-react";
+import {LanguageToggle} from "@/components/LanguageToggle";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {createServerFn} from "@tanstack/react-start";
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/catalog")({
 });
 
 function CatalogPage() {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const productsData = Route.useLoaderData();
     const [activeCategory, setActiveCategory] = useState("All");
     const [searchQuery, setSearchQuery] = useState("");
@@ -28,7 +29,6 @@ function CatalogPage() {
     
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
     const [selectedMetalTypes, setSelectedMetalTypes] = useState<string[]>([]);
-    const [selectedMetalColors, setSelectedMetalColors] = useState<string[]>([]);
 
     const { addToCart } = useCart();
     const { addToFavorites, removeFromFavorites, isFavorited, categories: favCategories } = useFavorites();
@@ -50,13 +50,10 @@ function CatalogPage() {
         
         const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
         const matchesMetalType = selectedMetalTypes.length === 0 || (product.metalType && selectedMetalTypes.includes(product.metalType));
-        const matchesMetalColor = selectedMetalColors.length === 0 || (product.metalColor && selectedMetalColors.includes(product.metalColor));
-
-        return matchesCategory && matchesSearch && matchesPrice && matchesMetalType && matchesMetalColor;
+        return matchesCategory && matchesSearch && matchesPrice && matchesMetalType;
     });
 
     const metalTypes = Array.from(new Set((productsData || []).map(p => p.metalType).filter(Boolean))) as string[];
-    const metalColors = Array.from(new Set((productsData || []).map(p => p.metalColor).filter(Boolean))) as string[];
 
     const suggestions = searchQuery.length > 0 
         ? (productsData || [])
@@ -79,16 +76,7 @@ function CatalogPage() {
                     </div>
                 </div>
                 <div className="flex flex-wrap items-center justify-end gap-2 md:gap-3">
-                    <button
-                        onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'uk' : 'en')}
-                        className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm transition-colors hover:bg-gray-50 active:scale-95"
-                        title={i18n.language === 'en' ? 'Змінити на Українську' : 'Switch to English'}
-                    >
-                        <div className="flex flex-col items-center">
-                            <Languages className="h-4 w-4 md:h-5 md:w-5 text-[#1a1a1a]"/>
-                            <span className="text-[7px] md:text-[8px] font-bold uppercase">{i18n.language}</span>
-                        </div>
-                    </button>
+                    <LanguageToggle />
                     <Link
                         to="/favorites"
                         className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
@@ -144,7 +132,7 @@ function CatalogPage() {
                                     </div>
                                     <div className="flex-1">
                                         <div className="text-sm font-bold text-[#1a1a1a]">{t(suggestion.name)}</div>
-                                        <div className="text-xs text-[#b3917d]">${suggestion.price}</div>
+                                        <div className="text-xs text-[#b3917d]">₴{suggestion.price}</div>
                                     </div>
                                 </Link>
                             ))}
@@ -164,7 +152,7 @@ function CatalogPage() {
                     <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowFilters(false)} />
                     <div className="relative h-full w-full max-w-sm bg-white p-8 shadow-2xl animate-in slide-in-from-right duration-300 overflow-y-auto">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-2xl font-bold text-[#1a1a1a]">Filters</h2>
+                            <h2 className="text-2xl font-bold text-[#1a1a1a]">{t('catalog.advanced_filters')}</h2>
                             <button 
                                 onClick={() => setShowFilters(false)}
                                 className="h-10 w-10 flex items-center justify-center rounded-full bg-[#fdfaf7]"
@@ -175,10 +163,10 @@ function CatalogPage() {
 
                         {/* Price Range */}
                         <div className="mt-8">
-                            <h3 className="text-lg font-bold text-[#1a1a1a]">Price Range</h3>
+                            <h3 className="text-lg font-bold text-[#1a1a1a]">{t('catalog.price_range')}</h3>
                             <div className="mt-4 flex items-center gap-4">
                                 <div className="flex-1">
-                                    <label className="text-xs text-[#6b5f59] mb-1 block uppercase tracking-wider">Min</label>
+                                    <label className="text-xs text-[#6b5f59] mb-1 block uppercase tracking-wider">{t('catalog.min')}</label>
                                     <input 
                                         type="number" 
                                         value={priceRange[0]}
@@ -187,7 +175,7 @@ function CatalogPage() {
                                     />
                                 </div>
                                 <div className="flex-1">
-                                    <label className="text-xs text-[#6b5f59] mb-1 block uppercase tracking-wider">Max</label>
+                                    <label className="text-xs text-[#6b5f59] mb-1 block uppercase tracking-wider">{t('catalog.max')}</label>
                                     <input 
                                         type="number" 
                                         value={priceRange[1]}
@@ -200,7 +188,7 @@ function CatalogPage() {
 
                         {/* Metal Type */}
                         <div className="mt-8">
-                            <h3 className="text-lg font-bold text-[#1a1a1a]">Metal Type</h3>
+                            <h3 className="text-lg font-bold text-[#1a1a1a]">{t('product.metal_type')}</h3>
                             <div className="mt-4 flex flex-wrap gap-2">
                                 {metalTypes.map(type => (
                                     <button
@@ -217,53 +205,28 @@ function CatalogPage() {
                                         }`}
                                     >
                                         {selectedMetalTypes.includes(type) && <Check className="h-3 w-3" />}
-                                        {type}
+                                        {t(type)}
                                     </button>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Metal Color */}
-                        <div className="mt-8">
-                            <h3 className="text-lg font-bold text-[#1a1a1a]">Metal Color</h3>
-                            <div className="mt-4 flex flex-wrap gap-2">
-                                {metalColors.map(color => (
-                                    <button
-                                        key={color}
-                                        onClick={() => {
-                                            setSelectedMetalColors(prev => 
-                                                prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]
-                                            );
-                                        }}
-                                        className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                                            selectedMetalColors.includes(color)
-                                                ? "bg-[#b3917d] text-white"
-                                                : "bg-[#fdfaf7] text-[#6b5f59]"
-                                        }`}
-                                    >
-                                        {selectedMetalColors.includes(color) && <Check className="h-3 w-3" />}
-                                        {color}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
 
                         <div className="mt-12 space-y-3">
                             <button 
                                 onClick={() => {
                                     setPriceRange([0, 10000]);
                                     setSelectedMetalTypes([]);
-                                    setSelectedMetalColors([]);
                                 }}
                                 className="w-full rounded-2xl py-4 text-sm font-bold text-[#b3917d] border border-[#b3917d] hover:bg-[#b3917d]/5 transition-colors"
                             >
-                                Reset All
+                                {t('catalog.reset_all')}
                             </button>
                             <button 
                                 onClick={() => setShowFilters(false)}
                                 className="w-full rounded-2xl bg-[#1a1a1a] py-4 text-sm font-bold text-white shadow-lg active:scale-95 transition-transform"
                             >
-                                Show {filteredProducts.length} Results
+                                {t('catalog.show_results', { count: filteredProducts.length })}
                             </button>
                         </div>
                     </div>
@@ -296,9 +259,9 @@ function CatalogPage() {
                             to="/product/$productId"
                             params={{ productId: String(product.id) }}
                             key={product.id}
-                            className="min-w-[240px] md:min-w-[280px] rounded-[32px] bg-white p-3 md:p-4 shadow-sm"
+                            className="min-w-[240px] md:w-[280px] rounded-[32px] bg-white p-3 md:p-4 shadow-sm"
                         >
-                            <div className="relative aspect-square w-full overflow-hidden rounded-[24px] bg-[#f7f3ef]">
+                            <div className="relative aspect-square w-full overflow-hidden rounded-[24px] bg-[#f7f3ef] max-w-200">
                                 <button
                                     onClick={(e) => {
                                         e.preventDefault();
@@ -358,7 +321,7 @@ function CatalogPage() {
                                 <img
                                     src={resolveProductImageUrl(product.imageUrl)}
                                     alt={t(product.name)}
-                                    className="h-full w-full object-cover"
+                                    className="h-full w-full object-cover max-w-200"
                                 />
                             </div>
                             <div className="mt-4 flex items-center justify-between px-1 md:px-2">
@@ -370,16 +333,6 @@ function CatalogPage() {
                                         ₴{product.price}
                                     </p>
                                 </div>
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        addToCart(product);
-                                    }}
-                                    className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-[#1a1a1a] text-white transition-transform active:scale-90"
-                                >
-                                    <ShoppingBag className="h-4 w-4 md:h-5 md:w-5"/>
-                                </button>
                             </div>
                         </Link>
                     ))}
@@ -412,16 +365,6 @@ function CatalogPage() {
                                     ₴{product.price}
                                 </p>
                             </div>
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    addToCart(product);
-                                }}
-                                className="mr-1 md:mr-2 flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border border-[#e5e7eb] text-[#1a1a1a] transition-transform active:scale-90"
-                            >
-                                <ShoppingBag className="h-4 w-4 md:h-5 md:w-5"/>
-                            </button>
                         </Link>
                     ))}
                 </div>
