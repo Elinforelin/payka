@@ -15,7 +15,6 @@ type Step = 'shipping' | 'summary' | 'success';
 interface ShippingMethod {
   id: string;
   name: string;
-  price: number;
   time: string;
 }
 
@@ -53,7 +52,7 @@ function CheckoutPage() {
   const citySearchRef = useRef<HTMLDivElement>(null);
 
   const shippingMethods: ShippingMethod[] = [
-    { id: 'nova_poshta', name: t('checkout.methods.nova_poshta'), price: 5, time: "1-2 business days" },
+    { id: 'nova_poshta', name: t('checkout.methods.nova_poshta'), time: "1-2 business days" },
   ];
 
   useEffect(() => {
@@ -185,7 +184,7 @@ function CheckoutPage() {
           privacyConsent: true,
           consentTimestamp: new Date().toISOString(),
           subtotal: totalPrice,
-          total: totalPrice + currentMethod.price,
+          total: totalPrice,
           items: activeItems.map((item) => ({
             id: item.id,
             name: item.name,
@@ -202,7 +201,6 @@ function CheckoutPage() {
             department: formData.department,
             address: formData.address,
             shippingMethod: currentMethod.name,
-            shippingCost: currentMethod.price,
           },
           comment: formData.comment || undefined,
         },
@@ -256,8 +254,8 @@ function CheckoutPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12 pb-24">
-      <header className="flex items-center justify-between mb-8 max-w-4xl mx-auto">
+    <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12 pb-24 w-full">
+      <header className="flex items-center justify-between mb-8 w-full">
         <button
           onClick={() => step === 'summary' ? setStep('shipping') : navigate({ to: '/cart' })}
           className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
@@ -499,8 +497,8 @@ function CheckoutPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-[#1a1a1a] truncate">{t(item.name)}</p>
-                    <p className="text-xs text-[#6b5f59]">Qty: {item.quantity}</p>
-                    <p className="text-sm font-bold text-[#b3917d]">${item.price * item.quantity}</p>
+                    <p className="text-xs text-[#6b5f59]">{t('checkout.qty')}: {item.quantity}</p>
+                    <p className="text-sm font-bold text-[#b3917d]">₴{item.price * item.quantity}</p>
                   </div>
                 </div>
               ))}
@@ -509,16 +507,12 @@ function CheckoutPage() {
             <div className="space-y-3 pt-6 border-t border-gray-100">
               <div className="flex justify-between text-[#6b5f59]">
                 <span>{t('checkout.subtotal')}</span>
-                <span>${totalPrice}</span>
-              </div>
-              <div className="flex justify-between text-[#6b5f59]">
-                <span>{t('checkout.shipping')}</span>
-                <span>{currentMethod.price === 0 ? 'Free' : `$${currentMethod.price}`}</span>
+                <span>₴{totalPrice}</span>
               </div>
               <div className="flex justify-between pt-3 border-t border-gray-100">
                 <span className="text-lg font-bold text-[#1a1a1a]">{t('checkout.total')}</span>
                 <span className="text-2xl font-bold text-[#1a1a1a]">
-                  ${totalPrice + currentMethod.price}
+                  ₴{totalPrice}
                 </span>
               </div>
             </div>
@@ -533,7 +527,7 @@ function CheckoutPage() {
               className="w-full mt-8 rounded-[24px] bg-[#1a1a1a] py-4 md:py-5 text-base md:text-lg font-bold text-white shadow-xl transition-all hover:bg-black active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {step === 'shipping' ? (
-                <>Next Step</>
+                <>{t('checkout.next_step')}</>
               ) : isSubmitting ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />

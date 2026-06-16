@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, Heart, ShoppingBag, Trash2, Tag, Plus } from "lucide-react";
+import { ChevronLeft, Heart, ShoppingBag, Trash2, Tag, Plus, X } from "lucide-react";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,8 @@ export const Route = createFileRoute("/favorites")({
 
 function FavoritesPage() {
   const { t } = useTranslation();
-  const { favorites, removeFromFavorites, categories, addCategory } = useFavorites();
+  const { favorites, removeFromFavorites, categories, addCategory, removeCategory } = useFavorites();
+  const BUILT_IN_CATEGORIES = ['General', 'Wishlist', 'Gift Ideas'];
   const { addToCart } = useCart();
   const [activeCategory, setActiveCategory] = useState("All");
   const [isAddingCategory, setIsAddingCategory] = useState(false);
@@ -58,17 +59,29 @@ function FavoritesPage() {
           {t('favorites.all_items')} ({favorites.length})
         </button>
         {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`whitespace-nowrap rounded-full px-6 py-2.5 text-sm font-bold transition-all ${
-              activeCategory === cat
-                ? "bg-[#b3917d] text-white shadow-md"
-                : "bg-white text-[#6b5f59] hover:bg-[#f7f3ef]"
-            }`}
-          >
-            {cat} ({favorites.filter(f => f.categoryName === cat).length})
-          </button>
+          <div key={cat} className="flex flex-shrink-0 items-center gap-1 relative">
+            <button
+              onClick={() => setActiveCategory(cat)}
+              className={`whitespace-nowrap rounded-full px-6 py-2.5 text-sm font-bold transition-all ${
+                activeCategory === cat
+                  ? "bg-[#b3917d] text-white shadow-md"
+                  : "bg-white text-[#6b5f59] hover:bg-[#f7f3ef]"
+              }`}
+            >
+              {cat === 'General' ? t('favorites.general') : cat === 'Wishlist' ? t('favorites.wishlist') : cat === 'Gift Ideas' ? t('favorites.gift_ideas') : cat} ({favorites.filter(f => f.categoryName === cat).length})
+            </button>
+            {!BUILT_IN_CATEGORIES.includes(cat) && (
+              <button
+                onClick={() => {
+                  if (activeCategory === cat) setActiveCategory("All");
+                  removeCategory(cat);
+                }}
+                className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-white text-[#a19690] hover:bg-red-50 hover:text-red-500 transition-colors absolute right-[-4px]"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </div>
         ))}
         <button 
           onClick={() => setIsAddingCategory(true)}

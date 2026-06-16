@@ -4,9 +4,6 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { useTranslation } from "react-i18next";
 
 import img from "@/assets/7812354786123547.png";
-import img2 from "@/assets/5346354635465.png";
-import img3 from "@/assets/45875674576754.png";
-import img4 from "@/assets/2345413523454.png";
 
 export const Route = createFileRoute("/about")({ component: AboutPage });
 

@@ -1,14 +1,14 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star, X, ChevronRight, Bell, Plus, Minus } from "lucide-react";
-import { Category, products } from "@/lib/data";
+import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star, X, ChevronRight, MessageCircle } from "lucide-react";
+import { Category, products, type Review } from "@/lib/data";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useCart } from "@/lib/cart-context";
 import { useFavorites } from "@/lib/favorites-context";
 import { MiniCart } from "@/components/MiniCart";
-import { SizeGuide } from "@/components/SizeGuide";
+import { SizeGuide, NECKLACE_LENGTHS } from "@/components/SizeGuide";
 import { LanguageToggle } from "@/components/LanguageToggle";
 
 const getProduct = createServerFn({ method: "GET" })
@@ -44,16 +44,26 @@ function ProductPage() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [selectedStoneType, setSelectedStoneType] = useState(product.availableStones?.[0]?.type || "");
-  const [selectedStoneColor, setSelectedStoneColor] = useState(product.availableStones?.[0]?.colors[0] || null);
-  const [selectedRingSize, setSelectedRingSize] = useState("17.0");
+  const [selectedStoneType, setSelectedStoneType] = useState<string | null>(
+    (product.availableStones?.length ?? 0) > 1 ? null : (product.availableStones?.[0]?.type ?? null)
+  );
+  const [selectedStoneColor, setSelectedStoneColor] = useState<typeof product.availableStones[0]["colors"][0] | null>(
+    (product.availableStones?.[0]?.colors.length ?? 0) > 1 ? null : (product.availableStones?.[0]?.colors[0] ?? null)
+  );
+  const [selectedRingSize, setSelectedRingSize] = useState<string | null>(null);
+  const [selectedPendantLength, setSelectedPendantLength] = useState<string | null>(null);
+  const [selectedGenericSize, setSelectedGenericSize] = useState<string | null>(null);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
 
   useEffect(() => {
-    if (product.availableStones) {
+    if (product.availableStones && selectedStoneType) {
       const stone = product.availableStones.find(s => s.type === selectedStoneType);
-      if (stone && (!selectedStoneColor || !stone.colors.find(c => c.name === selectedStoneColor.name))) {
-        setSelectedStoneColor(stone.colors[0]);
+      if (stone) {
+        if (stone.colors.length === 1) {
+          setSelectedStoneColor(stone.colors[0]);
+        } else {
+          setSelectedStoneColor(null);
+        }
       }
     }
   }, [selectedStoneType, product.availableStones]);
@@ -84,15 +94,13 @@ function ProductPage() {
   }, [isLightboxOpen]);
 
   const productDetails = [
-    { label: t('product.sku'), value: product.sku },
     { label: t('common.categories'), value: t(`common.category_names.${product.category}`) },
     { label: t('product.metal_standard'), value: product.metalStandard },
     { label: t('product.metal_type'), value: product.metalType ? t(product.metalType) : undefined },
     { label: t('product.metal_color'), value: product.metalColor ? t(product.metalColor) : undefined },
     { label: t('product.clasp'), value: product.clasp },
-    { label: t('product.gemstone'), value: product.gemstone },
+    { label: t('product.gemstone'), value: product.gemstone ? t(product.gemstone) : undefined },
     { label: t('product.design'), value: product.design },
-    { label: t('product.product_type'), value: product.productType },
     { label: t('product.weight'), value: product.weight },
   ].filter((detail) => detail.value !== null && detail.value !== undefined);
 
@@ -154,7 +162,7 @@ function ProductPage() {
       <div className="mt-6 md:mt-8 flex flex-col gap-8 md:gap-10 md:flex-row">
         <div className="flex-1">
           <div 
-            className="relative aspect-square w-full overflow-hidden rounded-[32px] md:rounded-[48px] bg-[#f7f3ef] shadow-inner cursor-zoom-in max-w-500"
+            className="relative aspect-square w-full max-w-200 overflow-hidden rounded-[32px] md:rounded-[48px] bg-[#f7f3ef] shadow-inner cursor-zoom-in"
             onClick={() => setIsLightboxOpen(true)}
           >
             <img
@@ -203,10 +211,7 @@ function ProductPage() {
         <div className="flex flex-1 flex-col">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a]">{t(product.name)}</h2>
-            <div className="flex items-center gap-1">
-              <Star className="h-4 w-4 md:h-5 md:w-5 fill-[#b3917d] text-[#b3917d]" />
-              <span className="font-bold text-[#1a1a1a]">4.8</span>
-            </div>
+
           </div>
 
           <p className="mt-2 text-[#6b5f59]">{t(product.description)}</p>
@@ -244,7 +249,11 @@ function ProductPage() {
           <div className="mt-8">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold text-[#1a1a1a]">
-                {product.category === Category.Rings ? t('product.select_ring_size') : t('product.select_size')}
+                {product.category === Category.Rings
+                  ? t('product.select_ring_size')
+                  : product.category === Category.Pendants
+                    ? t('product.select_necklace_length')
+                    : t('product.select_size')}
               </h3>
               <button
                 onClick={() => setShowSizeGuide(true)}
@@ -268,12 +277,30 @@ function ProductPage() {
                     <span className="text-sm font-bold">{size}</span>
                   </button>
                 ))
+              ) : product.category === Category.Pendants ? (
+                NECKLACE_LENGTHS.map((length) => (
+                  <button
+                    key={length.cm}
+                    onClick={() => setSelectedPendantLength(length.cm)}
+                    className={`flex flex-shrink-0 flex-col items-center justify-center rounded-2xl border-2 px-3 py-2 transition-all ${
+                      selectedPendantLength === length.cm
+                        ? "border-[#b3917d] bg-[#b3917d] text-white"
+                        : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
+                    }`}
+                  >
+                    <span className="text-xs font-bold">{length.cm}</span>
+                    <span className={`text-[10px] mt-0.5 ${selectedPendantLength === length.cm ? "text-white/80" : "text-[#6b5f59]"}`}>
+                      {t(`product.${length.nameKey}`)}
+                    </span>
+                  </button>
+                ))
               ) : (
                 ["S", "M", "L", "XL"].map((size) => (
                   <button
                     key={size}
+                    onClick={() => setSelectedGenericSize(size)}
                     className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border-2 transition-all ${
-                      size === "M"
+                      selectedGenericSize === size
                         ? "border-[#b3917d] bg-[#b3917d] text-white"
                         : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
                     }`}
@@ -375,25 +402,74 @@ function ProductPage() {
                 <p className="text-[#a19690] text-sm font-medium">{t('common.price')}</p>
                 <p className="text-2xl md:text-3xl font-bold text-[#b3917d]">₴{product.price}</p>
               </div>
-              <button
-                onClick={() => {
-                  const stoneLabel = selectedStoneType && selectedStoneColor
-                    ? `${t(`stones.types.${selectedStoneType}`)}: ${t(`stones.colors.${selectedStoneColor.name}`)}`
-                    : undefined;
-                  const sizeLabel = product.category === Category.Rings ? selectedRingSize : undefined;
-                  addToCart(product, stoneLabel, sizeLabel);
-                }}
-                className="flex flex-1 items-center justify-center gap-3 rounded-[24px] bg-[#1a1a1a] py-4 md:py-5 text-base md:text-lg font-bold text-white shadow-xl transition-all hover:bg-black active:scale-[0.98]"
-              >
-                <ShoppingBag className="h-5 w-5 md:h-6 md:w-6" />
-                {t('common.add_to_cart')}
-              </button>
+              {(() => {
+                const selectedSize =
+                  product.category === Category.Rings ? selectedRingSize :
+                  product.category === Category.Pendants ? selectedPendantLength :
+                  selectedGenericSize;
+                const sizeSelected = selectedSize !== null;
+                const stonesRequired = product.availableStones && product.availableStones.length > 0;
+                const stoneTypeRequired = (product.availableStones?.length ?? 0) > 1;
+                const stoneColorRequired = selectedStoneType
+                  ? (product.availableStones?.find(s => s.type === selectedStoneType)?.colors.length ?? 0) > 1
+                  : false;
+                const stoneSelected = !stonesRequired || (
+                  (!stoneTypeRequired || selectedStoneType !== null) &&
+                  (!stoneColorRequired || selectedStoneColor !== null)
+                );
+                const canAddToCart = sizeSelected && stoneSelected;
+                const hint = !sizeSelected
+                  ? t('product.size_required')
+                  : !stoneSelected
+                    ? t('product.stone_required')
+                    : null;
+                return (
+                  <div className="flex flex-1 flex-col gap-1">
+                    {hint && (
+                      <p className="text-center text-xs font-medium text-[#b3917d]">{hint}</p>
+                    )}
+                    <button
+                      disabled={!canAddToCart}
+                      onClick={() => {
+                        const stoneLabel = selectedStoneType && selectedStoneColor
+                          ? `${t(`stones.types.${selectedStoneType}`)}: ${t(`stones.colors.${selectedStoneColor.name}`)}`
+                          : undefined;
+                        addToCart(product, stoneLabel, selectedSize ?? undefined);
+                      }}
+                      className={`flex items-center justify-center gap-3 rounded-[24px] py-4 md:py-5 text-base md:text-lg font-bold text-white shadow-xl transition-all ${
+                        canAddToCart
+                          ? "bg-[#1a1a1a] hover:bg-black active:scale-[0.98]"
+                          : "bg-[#c9bdb8] cursor-not-allowed"
+                      }`}
+                    >
+                      <ShoppingBag className="h-5 w-5 md:h-6 md:w-6" />
+                      {t('common.add_to_cart')}
+                    </button>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
       </div>
+      {/* Reviews */}
+      {product.reviews && product.reviews.length > 0 && (
+        <section className="mt-10 md:mt-12 px-6 md:px-12 pb-12">
+          <div className="flex items-center gap-3 mb-6">
+            <MessageCircle className="h-5 w-5 text-[#b3917d]" />
+            <h2 className="text-xl md:text-2xl font-bold text-[#1a1a1a]">
+              {t('product.reviews')} <span className="text-[#b3917d]">({product.reviews.length})</span>
+            </h2>
+          </div>
+          <div className="space-y-4">
+            {product.reviews.map((review, i) => (
+              <ReviewCard key={i} review={review} />
+            ))}
+          </div>
+        </section>
+      )}
     </main>
-    
+
     {showSizeGuide && <SizeGuide onClose={() => setShowSizeGuide(false)} />}
 
     {isLightboxOpen && (
@@ -439,5 +515,33 @@ function ProductPage() {
         </div>
       )}
     </>
+  );
+}
+
+function ReviewCard({ review }: { review: Review }) {
+  const date = new Date(review.date).toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' });
+  return (
+    <div className="rounded-[24px] bg-white p-5 shadow-sm">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f7f3ef] text-sm font-bold text-[#b3917d]">
+            {review.author[0]}
+          </div>
+          <div>
+            <p className="text-sm font-bold text-[#1a1a1a]">{review.author}</p>
+            <p className="text-xs text-[#a19690]">{date}</p>
+          </div>
+        </div>
+        <div className="flex gap-0.5 shrink-0">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Star
+              key={i}
+              className={`h-4 w-4 ${i < review.rating ? "fill-[#b3917d] text-[#b3917d]" : "text-[#e5e7eb]"}`}
+            />
+          ))}
+        </div>
+      </div>
+      <p className="mt-3 text-sm text-[#6b5f59] leading-relaxed">{review.text}</p>
+    </div>
   );
 }

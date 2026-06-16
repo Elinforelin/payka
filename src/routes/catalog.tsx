@@ -89,9 +89,6 @@ function CatalogPage() {
                     >
                         <Info className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]"/>
                     </Link>
-                    <button className="hidden sm:flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
-                        <Bell className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]"/>
-                    </button>
                     <MiniCart />
                 </div>
             </header>
@@ -254,6 +251,13 @@ function CatalogPage() {
             <section className="mt-8">
                 <h3 className="text-xl md:text-2xl font-bold text-[#1a1a1a]">{t('catalog.title')}</h3>
                 <div className="mt-6 flex gap-4 md:gap-6 overflow-x-auto pb-4 no-scrollbar">
+                    {filteredProducts.length === 0 && (
+                        <div className="flex w-full flex-col items-center justify-center rounded-[32px] bg-white py-16 text-center shadow-sm min-w-full">
+                            <p className="text-2xl">✦</p>
+                            <p className="mt-3 text-base font-bold text-[#1a1a1a]">{t('catalog.no_results')}</p>
+                            <p className="mt-1 text-sm text-[#6b5f59]">{t('catalog.no_results_desc')}</p>
+                        </div>
+                    )}
                     {filteredProducts.map((product) => (
                         <Link
                             to="/product/$productId"

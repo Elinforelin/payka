@@ -23,7 +23,7 @@ const RING_SIZES = [
   { mm: "22.0", eu: "69" },
 ];
 
-const NECKLACE_LENGTHS = [
+export const NECKLACE_LENGTHS = [
   { cm: "38–40 cm", nameKey: "size_guide_necklace_choker", descKey: "size_guide_necklace_choker_desc" },
   { cm: "43–45 cm", nameKey: "size_guide_necklace_princess", descKey: "size_guide_necklace_princess_desc" },
   { cm: "50–55 cm", nameKey: "size_guide_necklace_matinee", descKey: "size_guide_necklace_matinee_desc" },

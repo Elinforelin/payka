@@ -23,6 +23,14 @@ export interface Product {
   metalType?: string | null;
   weight?: number | null;
   availableStones?: StoneOption[];
+  reviews?: Review[];
+}
+
+export interface Review {
+  author: string;
+  date: string;
+  rating: number;
+  text: string;
 }
 
 export interface StoneOption {
@@ -53,10 +61,15 @@ export const products: Product[] = [
     ],
     "createdAt": "2026-06-04T07:17:07.873Z",
     "updatedAt": "2026-06-04T07:17:07.873Z",
-    "gemstone": "Без каміння",
+    "gemstone": "common.gemstones.none",
     "metalStandard": "925",
     "metalType": "common.metal_types.silver",
     "weight": 4,
+    "reviews": [
+      { "author": "Оксана М.", "date": "2026-05-12", "rating": 5, "text": "Дуже гарна каблучка, виглядає елегантно і якісно. Розмір підійшов ідеально, замовлю ще!" },
+      { "author": "Дарина К.", "date": "2026-05-28", "rating": 5, "text": "Швидка доставка, упаковка чудова. Каблучка відповідає фото, дуже задоволена покупкою." },
+      { "author": "Аліна Т.", "date": "2026-06-01", "rating": 4, "text": "Гарна і легка, ношу щодня. Єдине — трохи менша, ніж очікувала, але загалом дуже подобається." },
+    ],
   },
   {
     "id": 7,
@@ -91,11 +104,15 @@ export const products: Product[] = [
     ],
     "createdAt": "2026-06-04T07:17:07.886Z",
     "updatedAt": "2026-06-04T07:17:07.886Z",
-    "gemstone": "Фіаніт",
+    "gemstone": "common.gemstones.cubic_zirconia",
     "metalColor": "common.metal_colors.silvery",
     "metalStandard": "925",
     "metalType": "common.metal_types.silver",
     "weight": 4,
+    "reviews": [
+      { "author": "Марія С.", "date": "2026-05-20", "rating": 5, "text": "Просто закохалась! Каблучка з білим фіанітом сяє, як справжній діамант. Усі подруги питають, де брала." },
+      { "author": "Юля Б.", "date": "2026-06-03", "rating": 5, "text": "Замовила з синім камінцем — виглядає розкішно. Якість срібла відмінна, потемніння немає." },
+    ],
     "availableStones": [
       {
         "type": "Cubic Zirconia",
@@ -125,36 +142,23 @@ export const products: Product[] = [
     "metalStandard": "925",
     "metalType": "common.metal_types.silver",
     "weight": 5,
+    "reviews": [
+      { "author": "Вікторія Л.", "date": "2026-06-08", "rating": 5, "text": "Підвіска неймовірна! Мінімалістичний дизайн пасує до будь-якого одягу. Вже ношу тиждень і не знімаю." },
+    ],
   },
   {
     "id": 10,
-    "name": "product.names.gold_ring",
-    "description": "product.descriptions.classic_gold_ring",
-    "price": 2000,
-    "category": Category.Rings,
+    "name": "product.names.flower_pendant",
+    "description": "product.descriptions.classic_flower_pendant",
+    "price": 5000,
+    "category": Category.Pendants,
     "imageUrl": "/assets/2345413523454.png",
     "createdAt": "2026-06-04T07:17:07.889Z",
     "updatedAt": "2026-06-04T07:17:07.889Z",
-    "clasp": "Немає",
-    "design": "Класика",
-    "gemstone": "Без каміння",
-    "metalColor": "common.metal_colors.yellow",
-    "metalStandard": "585",
-    "metalType": "common.metal_types.gold",
-    "weight": 2.2,
-    "availableStones": [
-      {
-        "type": "Onyx",
-        "colors": [
-          { "name": "Black", "value": "#000000" }
-        ]
-      },
-      {
-        "type": "Ruby",
-        "colors": [
-          { "name": "Red", "value": "#E0115F" }
-        ]
-      }
-    ]
+    "gemstone": "common.gemstones.none",
+    "metalStandard": "925",
+    "metalType": "common.metal_types.silver",
+    "weight": 7,
+
   }
 ];

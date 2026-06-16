@@ -18,6 +18,7 @@ interface FavoritesContextType {
   isFavorited: (productId: number) => boolean;
   categories: (string | Category)[];
   addCategory: (name: string | Category) => void;
+  removeCategory: (name: string) => void;
   notification: NotificationData | null;
 }
 
@@ -84,6 +85,16 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   };
 
+  const BUILT_IN_CATEGORIES = ['General', 'Wishlist', 'Gift Ideas'];
+
+  const removeCategory = (name: string) => {
+    if (BUILT_IN_CATEGORIES.includes(name)) return;
+    setCategories((prev) => prev.filter((c) => c !== name));
+    setFavorites((prev) => prev.map((item) =>
+      item.categoryName === name ? { ...item, categoryName: 'General' } : item
+    ));
+  };
+
   return (
     <FavoritesContext.Provider
       value={{
@@ -93,6 +104,7 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         isFavorited,
         categories,
         addCategory,
+        removeCategory,
         notification,
       }}
     >

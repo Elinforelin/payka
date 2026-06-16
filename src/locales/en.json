@@ -25,6 +25,10 @@
       "silver": "Silver",
       "gold": "Gold"
     },
+    "gemstones": {
+      "none": "No gemstone",
+      "cubic_zirconia": "Cubic Zirconia"
+    },
     "metal_colors": {
       "white": "White",
       "silvery": "Silvery",
@@ -44,7 +48,9 @@
     "min": "Min",
     "max": "Max",
     "reset_all": "Reset All",
-    "show_results": "Show {{count}} Results"
+    "show_results": "Show {{count}} Results",
+    "no_results": "No items found",
+    "no_results_desc": "Try a different category or adjust your filters"
   },
   "product": {
     "add_to_favorites": "Add to favorites",
@@ -55,19 +61,23 @@
       "bubochki_ring": "Bubochki for every day to feel special",
       "lollypop_rings": "Beautifully crafted embossed earrings",
       "silver_pendant_cup": "Minimalist silver cup pendant",
-      "classic_gold_ring": "Classic gold ring"
+      "classic_flower_pendant": "Classic gold ring"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
       "bubochki_ring": "Bubochki Ring",
       "lollypop": "🍭",
       "silver_pendant_cup": "Silver Cup Pendant",
-      "gold_ring": "Gold Ring"
+      "flower_pendant": "Gold Ring"
     },
     "details": "Details",
     "about_product": "About Product",
     "select_size": "Select Size",
     "select_ring_size": "Select Ring Size",
+    "select_necklace_length": "Select Chain Length",
+    "reviews": "Reviews",
+    "size_required": "Please select a size to continue",
+    "stone_required": "Please select a stone and color to continue",
     "size_in_mm": "Size is shown in millimeters (mm)",
     "size_guide": "Size Guide",
     "size_guide_ring_title": "Ring Size Chart",
@@ -114,16 +124,16 @@
   },
   "about": {
     "our_story": "Our Story",
-    "hero_title": "Crafted for Quiet Luxury",
-    "hero_desc": "Our jewelry is born slowly. Without haste, without a rigid plan, allowing the form to become what it wants to be.",
+    "hero_title": "Created with its own identity",
+    "hero_desc": "Our jewelry is born slowly. Without haste, without plan, allowing the form to become what it wants to be.",
     "history_founding": "History & Founding",
-    "history_p1": "Founded in 2022 in a small home studio, Payka began with a simple soldering iron and a vision for jewelry that feels like a second skin. What started as a personal quest for the perfect minimalist ring evolved into a brand dedicated to the beauty of imperfection and the warmth of handmade craft.",
-    "history_p2": "Our founder, Alina, spent years experimenting with metalwork, drawing inspiration from organic forms and the silent language of precious metals. Today, Payka remains true to its roots, producing limited collections that celebrate the individual journey of every wearer.",
+    "history_p1": "Payka was born in 2023 in a small home studio. With nothing more than a simple soldering iron, a few tools, and a strong desire to create jewelry meant for everyday wear.\n\nIt all began with a search for the perfect ring for myself — simple, comfortable, something that feels like a natural extension of the hand. When it couldn’t be found, we decided to create it ourselves.\n\nToday, Payka is silver jewelry, handcrafted with a love for imperfections, textures, and small details.\n",
+    "history_p2": "Behind every Payka piece is Alina — the founder and maker of the brand, who fell in love with working with metal long before the first collection came to life.\n\nInspired by organic forms and the imperfect beauty of handmade objects, she continues to craft each piece in small batches. This approach allows every item to carry its own character, the warmth of human hands, and a sense of quiet uniqueness.",
     "mission_vision": "Mission & Vision",
     "mission": "Our Mission",
-    "mission_desc": "To create timeless jewelry that resonates with the soul, focusing on intentional simplicity and long-lasting materials that honor the art of handcrafting.",
+    "mission_desc": "To create jewelry meant to be worn for years — simple, distinctive, and handcrafted in silver. We believe true beauty lives in details that stand the test of time.",
     "vision": "Our Vision",
-    "vision_desc": "To be a sanctuary for those who appreciate the silence in details, setting a standard for \"quiet luxury\" where jewelry is not just an accessory, but an heirloom.",
+    "vision_desc": "We create jewelry for those who find beauty in simplicity and detail. Pieces that don’t compete for attention, but naturally become part of everyday life and personal stories.",
     "our_team": "The Team",
     "alina_role": "Founder & Lead Jeweler",
     "alina_desc": "Specializes in organic ring designs and experimental metal textures.",
@@ -167,6 +177,9 @@
     "place_order": "Place Order",
     "back_to_cart": "Back to Cart",
     "confirm_order": "Confirm Your Order",
+    "next_step": "Next Step",
+    "qty": "Qty",
+    "free": "Free",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "total": "Total",
@@ -231,6 +244,8 @@
     "no_favorites_desc": "Items you heart will show up here.",
     "explore_collection": "Explore Collection",
     "general": "General",
+    "wishlist": "Wishlist",
+    "gift_ideas": "Gift Ideas",
     "confirm_favorite": "Add to Favorites",
     "select_category": "Select a category for this item"
   }
