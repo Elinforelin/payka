@@ -149,10 +149,15 @@ export const products: Product[] = [
   {
     "id": 10,
     "name": "product.names.flower_pendant",
-    "description": "product.descriptions.classic_flower_pendant",
+    "description": "product.descriptions.flower_pendant",
     "price": 5000,
     "category": Category.Pendants,
-    "imageUrl": "/assets/2345413523454.png",
+    "imageUrl": "/assets/flower/IMG_4923.png",
+    "images": [
+      "/assets/flower/IMG_4935.png",
+      "/assets/flower/IMG_4939.png",
+      "/assets/flower/IMG_4923.png",
+    ],
     "createdAt": "2026-06-04T07:17:07.889Z",
     "updatedAt": "2026-06-04T07:17:07.889Z",
     "gemstone": "common.gemstones.none",
