@@ -120,40 +120,13 @@ function AboutPage() {
           </div>
           <div className="space-y-6">
             {[
-              { year: "2022", event: t('about.m2022') },
               { year: "2023", event: t('about.m2023') },
               { year: "2024", event: t('about.m2024') },
+              { year: "2025", event: t('about.m2025') },
             ].map((m) => (
               <div key={m.year} className="flex gap-6">
                 <span className="text-lg font-bold text-[#b3917d] w-16">{m.year}</span>
                 <p className="text-[#6b5f59]">{m.event}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Testimonials */}
-        <section className="space-y-6">
-          <div className="flex items-center gap-3 px-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#b3917d] shadow-sm">
-              <Quote className="h-6 w-6" />
-            </div>
-            <h2 className="text-2xl font-bold text-[#1a1a1a]">{t('about.testimonials')}</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                text: t('about.t1_text'),
-                author: "Sarah J."
-              },
-              {
-                text: t('about.t2_text'),
-                author: "Michael K."
-              }
-            ].map((t, i) => (
-              <div key={i} className="rounded-[32px] bg-[#f7f3ef] p-8 relative">
-                <p className="text-[#1a1a1a] font-medium leading-relaxed italic">"{t.text}"</p>
-                <p className="mt-4 text-sm font-bold text-[#b3917d]">— {t.author}</p>
               </div>
             ))}
           </div>

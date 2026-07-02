@@ -89,7 +89,6 @@ function CheckoutPage() {
         const data = await response.json();
         if (data.success) {
           setCities(data.data);
-          setShowCitySuggestions(true);
         }
       } catch (error) {
         console.error("Error fetching cities:", error);
@@ -316,11 +315,20 @@ function CheckoutPage() {
                         <input
                           type="text"
                           value={citySearch}
+                          autoComplete="off"
                           onChange={(e) => {
-                            setCitySearch(e.target.value);
+                            const value = e.target.value;
+                            setCitySearch(value);
                             setShowCitySuggestions(true);
+                            if (value !== formData.city) {
+                              setFormData({ ...formData, city: "", cityRef: "", department: "", departmentRef: "" });
+                            }
                           }}
-                          onFocus={() => setShowCitySuggestions(true)}
+                          onFocus={() => {
+                            if (citySearch.length >= 2 && cities.length > 0) {
+                              setShowCitySuggestions(true);
+                            }
+                          }}
                           placeholder={t('checkout.search_city')}
                           className={`w-full h-14 rounded-2xl bg-[#fdfaf7] pl-12 pr-4 outline-none border-2 transition-all ${
                             errors.city ? 'border-red-200 focus:border-red-400' : 'border-transparent focus:border-[#b3917d]'
@@ -341,6 +349,7 @@ function CheckoutPage() {
                               onClick={() => {
                                 setFormData({ ...formData, city: city.Description, cityRef: city.Ref, department: "", departmentRef: "" });
                                 setCitySearch(city.Description);
+                                setCities([]);
                                 setShowCitySuggestions(false);
                               }}
                               className="w-full text-left p-3 hover:bg-[#fdfaf7] rounded-xl transition-colors text-sm"
