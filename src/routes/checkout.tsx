@@ -222,7 +222,7 @@ function CheckoutPage() {
       <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-[#1a1a1a] mb-4">{t('cart.empty')}</h2>
-          <Link to="/catalog" className="text-[#b3917d] font-bold hover:underline">
+          <Link to="/" className="text-[#b3917d] font-bold hover:underline">
             {t('cart.continue_shopping')}
           </Link>
         </div>
@@ -237,12 +237,9 @@ function CheckoutPage() {
           <div className="mx-auto w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6">
             <CheckCircle2 className="h-10 w-10 text-green-500" />
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] mb-4">{t('checkout.success')}</h1>
-          <p className="text-[#6b5f59] mb-8 leading-relaxed">
-            {t('checkout.encrypt_note')}
-          </p>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] mb-8">{t('checkout.success')}</h1>
           <Link
-            to="/catalog"
+            to="/"
             className="block w-full rounded-[24px] bg-[#1a1a1a] py-4 text-white font-bold transition-all hover:bg-black"
           >
             {t('cart.continue_shopping')}
@@ -284,7 +281,7 @@ function CheckoutPage() {
                     className={`w-full h-14 rounded-2xl bg-[#fdfaf7] px-4 outline-none border-2 transition-all ${
                       errors.fullName ? 'border-red-200 focus:border-red-400' : 'border-transparent focus:border-[#b3917d]'
                     }`}
-                    placeholder="John Doe"
+                    placeholder={t('checkout.placeholder_full_name')}
                   />
                   {errors.fullName && <p className="mt-1 text-xs text-red-500 px-1">{errors.fullName}</p>}
                 </div>

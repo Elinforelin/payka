@@ -1,6 +1,0 @@
-const img2 = "/assets/521469718_18391966183189140_5158185447317376143_n-DV7w6U8k.jpg";
-const img1 = "/assets/619792737_18417153727189140_5984683189343682714_n-D8TUxlBa.jpg";
-export {
-  img2 as a,
-  img1 as i
-};

@@ -683,7 +683,7 @@ function getResponse() {
   return event.res;
 }
 async function getStartManifest() {
-  const { tsrStartManifest } = await import("./_tanstack-start-manifest_v-uK1Dbn1D.mjs");
+  const { tsrStartManifest } = await import("./_tanstack-start-manifest_v-CRE_ZAKK.mjs");
   const startManifest = tsrStartManifest();
   const rootRoute = startManifest.routes[rootRouteId] = startManifest.routes[rootRouteId] || {};
   rootRoute.assets = rootRoute.assets || [];
@@ -718,18 +718,15 @@ async function getStartManifest() {
   };
   return manifest2;
 }
-const manifest = { "237309454c5690c32e203a1aa74c313b7a850b750559f65572a0bdfc1a3249a9": {
+const manifest = { "5d14184e791326a0e274d1e4e3681e27fd834658d2ef5f776f7a7ca880bdf3a5": {
   functionName: "getProducts_createServerFn_handler",
-  importer: () => import("./catalog-C7W0voXt.mjs")
-}, "5d14184e791326a0e274d1e4e3681e27fd834658d2ef5f776f7a7ca880bdf3a5": {
-  functionName: "getProducts_createServerFn_handler",
-  importer: () => import("./index-CHblaz-o.mjs")
+  importer: () => import("./index-VftPk9Ma.mjs")
 }, "02237705211f6fce5dafbd6be40b265cc093810759aabc102a7a61ff80e58dd5": {
   functionName: "getProduct_createServerFn_handler",
-  importer: () => import("./product._productId-D0arnCr3.mjs")
+  importer: () => import("./product._productId-ChGtV2zi.mjs")
 }, "5c64c4ecab63675a61db85176d6dbad94bc1f95268ec2c0acc215ee2739aee1c": {
   functionName: "submitOrder_createServerFn_handler",
-  importer: () => import("./submit-order--8qn6Iqe.mjs")
+  importer: () => import("./submit-order-D117Zp6D.mjs")
 } };
 async function getServerFnById(id) {
   const serverFnInfo = manifest[id];
@@ -1010,7 +1007,7 @@ let cachedRouterEntry = null;
 let cachedManifest = null;
 async function getEntries() {
   if (cachedRouterEntry === null) {
-    cachedRouterEntry = await import("./router-B0Krk2Su.mjs").then(function(n) {
+    cachedRouterEntry = await import("./router-W9GWQRv5.mjs").then(function(n) {
       return n.r;
     }).then((n) => n.r);
   }

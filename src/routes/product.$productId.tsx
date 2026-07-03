@@ -109,7 +109,7 @@ function ProductPage() {
     <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12">
       <header className="flex items-center justify-between">
         <Link
-          to="/catalog"
+          to="/"
           className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />

@@ -162,6 +162,7 @@
     "title": "Checkout",
     "shipping_info": "Shipping Information",
     "full_name": "Full Name",
+    "placeholder_full_name": "John Doe",
     "phone": "Phone Number",
     "city": "City",
     "department": "Nova Poshta Department",
@@ -192,8 +193,7 @@
     "methods": {
       "nova_poshta": "Nova Poshta (to Department)"
     },
-    "success": "Order placed successfully! Securely encrypted during transmission.",
-    "encrypt_note": "Your data is encrypted using 256-bit SSL security.",
+    "success": "Order placed successfully!",
     "privacy_title": "Data Protection",
     "privacy_note": "We collect only the information needed to fulfill your order. Personal data is transmitted securely to our team and processed solely for order fulfillment in accordance with GDPR.",
     "privacy_consent": "I agree to the processing of my personal data for order fulfillment.",

@@ -152,7 +152,7 @@ export const products: Product[] = [
     "description": "product.descriptions.flower_pendant",
     "price": 5000,
     "category": Category.Pendants,
-    "imageUrl": "/assets/flower/IMG_4923.png",
+    "imageUrl": "/assets/flower/IMG_4939.png",
     "images": [
       "/assets/flower/IMG_4935.png",
       "/assets/flower/IMG_4939.png",

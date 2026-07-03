@@ -17,7 +17,7 @@ function CartPage() {
     <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12">
       <header className="flex items-center justify-between mb-8">
         <Link
-          to="/catalog"
+          to="/"
           className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
@@ -38,7 +38,7 @@ function CartPage() {
           {activeItems.length === 0 ? (
             <div className="rounded-[32px] bg-white p-12 text-center shadow-sm">
               <p className="text-lg font-medium text-[#1a1a1a]">{t('cart.empty')}</p>
-              <Link to="/catalog" className="mt-4 inline-block font-bold text-[#b3917d] hover:underline">
+              <Link to="/" className="mt-4 inline-block font-bold text-[#b3917d] hover:underline">
                 {t('cart.continue_shopping')}
               </Link>
             </div>

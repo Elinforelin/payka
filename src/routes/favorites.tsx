@@ -37,7 +37,7 @@ function FavoritesPage() {
     <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12">
       <header className="flex items-center justify-between mb-8">
         <Link
-          to="/catalog"
+          to="/"
           className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
         >
           <ChevronLeft className="h-6 w-6 text-[#1a1a1a]" />
@@ -136,7 +136,7 @@ function FavoritesPage() {
               {t('favorites.no_favorites_desc')}
             </p>
             <Link 
-              to="/catalog" 
+              to="/" 
               className="mt-8 rounded-2xl bg-[#1a1a1a] px-8 py-4 font-bold text-white shadow-lg transition-transform hover:scale-105"
             >
               {t('about.explore_collection')}
