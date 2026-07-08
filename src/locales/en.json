@@ -27,7 +27,8 @@
     },
     "gemstones": {
       "none": "No gemstone",
-      "cubic_zirconia": "Cubic Zirconia"
+      "cubic_zirconia": "Cubic Zirconia",
+      "pearl": "Pearl Simulants"
     },
     "metal_colors": {
       "white": "White",
@@ -61,14 +62,16 @@
       "bubochki_ring": "Bubochki for every day to feel special",
       "lollypop_rings": "Beautifully crafted embossed earrings",
       "silver_pendant_cup": "Minimalist silver cup pendant",
-      "flower_pendant": "Flower pendant with a delicate design, perfect for everyday wear"
+      "flower_pendant": "Flower pendant with a delicate design, perfect for everyday wear",
+      "pearl_earrings": "Earrings with pearl, adding a touch of sophistication to any outfit"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
       "bubochki_ring": "Bubochki Ring",
       "lollypop": "🍭",
       "silver_pendant_cup": "Silver Cup Pendant",
-      "flower_pendant": "Flower Pendant"
+      "flower_pendant": "Flower Pendant",
+      "pearl_earrings": "Earrings with Pearls"
     },
     "details": "Details",
     "about_product": "About Product",

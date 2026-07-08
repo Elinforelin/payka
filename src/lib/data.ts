@@ -199,8 +199,8 @@ export const products: Product[] = [
         "id": 11,
         "name": "product.names.pearl_earrings",
         "description": "product.descriptions.pearl_earrings",
-        "price": 5000,
-        "category": Category.Pendants,
+        "price": 2700,
+        "category": Category.Earrings,
         "imageUrl": "/assets/withPearl/1000016899.png",
         "images": [
             "/assets/withPearl/1000016899.png",
@@ -210,10 +210,9 @@ export const products: Product[] = [
         ],
         "createdAt": "2026-06-04T07:17:07.889Z",
         "updatedAt": "2026-06-04T07:17:07.889Z",
-        "gemstone": "common.gemstones.none",
+        "gemstone": "common.gemstones.pearl",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
-        "weight": 7,
-
+        "weight": 5,
     }
 ];
