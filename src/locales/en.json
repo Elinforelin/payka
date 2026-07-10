@@ -44,6 +44,7 @@
   },
   "catalog": {
     "title": "Catalog",
+    "shop_by_category": "Shop by Category",
     "advanced_filters": "Advanced Filters",
     "price_range": "Price Range",
     "min": "Min",
@@ -63,7 +64,11 @@
       "lollypop_rings": "Beautifully crafted embossed earrings",
       "silver_pendant_cup": "Minimalist silver cup pendant",
       "flower_pendant": "Flower pendant with a delicate design, perfect for everyday wear",
-      "pearl_earrings": "Earrings with pearl, adding a touch of sophistication to any outfit"
+      "pearl_earrings": "Earrings with pearl, adding a touch of sophistication to any outfit",
+      "round_wrinkled_earrings": "Round wrinkled earrings with a unique texture, perfect for those who appreciate handmade jewelry",
+      "wave_ring": "Wave ring with a smooth and flowing design, inspired by the beauty of nature",
+      "smeared_ring": "A silver ring with soft contours that gently blur the line between shape and light",
+      "crumpled_ring": "A silver ring with a hammered texture, where every mark shapes its unique character"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
@@ -71,7 +76,11 @@
       "lollypop": "🍭",
       "silver_pendant_cup": "Silver Cup Pendant",
       "flower_pendant": "Flower Pendant",
-      "pearl_earrings": "Earrings with Pearls"
+      "pearl_earrings": "Earrings with Pearls",
+      "round_wrinkled_earrings": "Round Wrinkled Earrings",
+      "wave_ring": "Wave Ring",
+      "smeared_ring": "Soft Contour Ring",
+      "crumpled_ring": "Crumpled Texture Ring"
     },
     "details": "Details",
     "about_product": "About Product",

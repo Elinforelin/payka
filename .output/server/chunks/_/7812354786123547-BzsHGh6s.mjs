@@ -1,6 +1,6 @@
 import { jsx, jsxs } from "react/jsx-runtime";
 import { useTranslation } from "react-i18next";
-import { c as createLucideIcon } from "./router-W9GWQRv5.mjs";
+import { c as createLucideIcon } from "./router-CIvS-aii.mjs";
 const __iconNode = [
   ["path", { d: "m5 8 6 6", key: "1wu5hv" }],
   ["path", { d: "m4 14 6-6 2-3", key: "1k1g8d" }],

@@ -44,6 +44,16 @@ export interface StoneColor {
     imageUrl?: string; // Optional: Image that shows this specific stone color
 }
 
+export function getCategoryCoverImage(category: Category): string | null {
+    return products.find((product) => product.category === category)?.imageUrl ?? null;
+}
+
+export function getCategoriesWithProducts(): Category[] {
+    return Object.values(Category).filter((category) =>
+        products.some((product) => product.category === category)
+    );
+}
+
 export const products: Product[] = [
     {
         "id": 6,
@@ -195,22 +205,79 @@ export const products: Product[] = [
         "metalType": "common.metal_types.silver",
         "weight": 7,
 
-    }, {
-        "id": 11,
-        "name": "product.names.pearl_earrings",
-        "description": "product.descriptions.pearl_earrings",
+    },
+    {
+        "id": 12,
+        "name": "product.names.round_wrinkled_earrings",
+        "description": "product.descriptions.round_wrinkled_earrings",
         "price": 2700,
         "category": Category.Earrings,
-        "imageUrl": "/assets/withPearl/1000016899.png",
+        "imageUrl": "/assets/roundWrinkledEarrings/IMG_1482.png",
         "images": [
-            "/assets/withPearl/1000016899.png",
-            "/assets/withPearl/IMG_1339.png",
-            "/assets/withPearl/IMG_5741.png",
-            "/assets/withPearl/IMG_5742.png",
+            "/assets/roundWrinkledEarrings/IMG_1482.png",
+            "/assets/roundWrinkledEarrings/IMG_1491.png",
         ],
         "createdAt": "2026-06-04T07:17:07.889Z",
         "updatedAt": "2026-06-04T07:17:07.889Z",
-        "gemstone": "common.gemstones.pearl",
+        "gemstone": "common.gemstones.none",
+        "metalStandard": "925",
+        "metalType": "common.metal_types.silver",
+        "weight": 5,
+    }, {
+        "id": 13,
+        "name": "product.names.wave_ring",
+        "description": "product.descriptions.wave_ring",
+        "price": 2700,
+        "category": Category.Rings,
+        "imageUrl": "/assets/waveRing/IMG_8753.png",
+        "images": [
+            "/assets/waveRing/IMG_1742.png",
+            "/assets/waveRing/IMG_8727.png",
+            "/assets/waveRing/IMG_8730.png",
+            "/assets/waveRing/IMG_8745.png",
+            "/assets/waveRing/IMG_8753.png",
+        ],
+        "createdAt": "2026-06-04T07:17:07.889Z",
+        "updatedAt": "2026-06-04T07:17:07.889Z",
+        "gemstone": "common.gemstones.none",
+        "metalStandard": "925",
+        "metalType": "common.metal_types.silver",
+        "weight": 5,
+    },{
+        "id": 14,
+        "name": "product.names.smeared_ring",
+        "description": "product.descriptions.smeared_ring",
+        "price": 2700,
+        "category": Category.Rings,
+        "imageUrl": "/assets/smearedRing/IMG_1702.png",
+        "images": [
+            "/assets/smearedRing/IMG_1702.png",
+            "/assets/smearedRing/photo-86.png",
+            "/assets/smearedRing/photo-97.png",
+        ],
+        "createdAt": "2026-06-04T07:17:07.889Z",
+        "updatedAt": "2026-06-04T07:17:07.889Z",
+        "gemstone": "common.gemstones.none",
+        "metalStandard": "925",
+        "metalType": "common.metal_types.silver",
+        "weight": 5,
+    },{
+        "id": 15,
+        "name": "product.names.crumpled_ring",
+        "description": "product.descriptions.crumpled_ring",
+        "price": 2700,
+        "category": Category.Rings,
+        "imageUrl": "/assets/crumpledRing/IMG_9086.png",
+        "images": [
+            "/assets/crumpledRing/IMG_9100.png",
+            "/assets/crumpledRing/IMG_9115.png",
+            "/assets/crumpledRing/IMG_9118.png",
+            "/assets/crumpledRing/IMG_9086.png",
+            "/assets/crumpledRing/IMG_9133.png",
+        ],
+        "createdAt": "2026-06-04T07:17:07.889Z",
+        "updatedAt": "2026-06-04T07:17:07.889Z",
+        "gemstone": "common.gemstones.cubic_zirconia",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
         "weight": 5,

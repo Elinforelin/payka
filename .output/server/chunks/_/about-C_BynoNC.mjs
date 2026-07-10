@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { L as LanguageToggle, i as img } from "./7812354786123547-BzsHGh6s.mjs";
 import { useTranslation } from "react-i18next";
 import { C as ChevronLeft } from "./chevron-left.mjs";
-import { c as createLucideIcon } from "./router-W9GWQRv5.mjs";
+import { c as createLucideIcon } from "./router-CIvS-aii.mjs";
 import "react";
 import "i18next";
 import "i18next-browser-languagedetector";
@@ -24,6 +24,7 @@ import "node:path";
 import "tiny-invariant";
 import "seroval";
 import "@tanstack/react-router/ssr/server";
+import "./data-B1DXlOW8.mjs";
 const __iconNode$4 = [
   [
     "path",
