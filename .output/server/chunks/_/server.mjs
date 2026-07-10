@@ -683,7 +683,7 @@ function getResponse() {
   return event.res;
 }
 async function getStartManifest() {
-  const { tsrStartManifest } = await import("./_tanstack-start-manifest_v-CRE_ZAKK.mjs");
+  const { tsrStartManifest } = await import("./_tanstack-start-manifest_v-DHozdJR4.mjs");
   const startManifest = tsrStartManifest();
   const rootRoute = startManifest.routes[rootRouteId] = startManifest.routes[rootRouteId] || {};
   rootRoute.assets = rootRoute.assets || [];
@@ -720,10 +720,10 @@ async function getStartManifest() {
 }
 const manifest = { "5d14184e791326a0e274d1e4e3681e27fd834658d2ef5f776f7a7ca880bdf3a5": {
   functionName: "getProducts_createServerFn_handler",
-  importer: () => import("./index-VftPk9Ma.mjs")
+  importer: () => import("./index-BEx1Wl7v.mjs")
 }, "02237705211f6fce5dafbd6be40b265cc093810759aabc102a7a61ff80e58dd5": {
   functionName: "getProduct_createServerFn_handler",
-  importer: () => import("./product._productId-ChGtV2zi.mjs")
+  importer: () => import("./product._productId-DiSLBFmz.mjs")
 }, "5c64c4ecab63675a61db85176d6dbad94bc1f95268ec2c0acc215ee2739aee1c": {
   functionName: "submitOrder_createServerFn_handler",
   importer: () => import("./submit-order-D117Zp6D.mjs")
@@ -1007,7 +1007,7 @@ let cachedRouterEntry = null;
 let cachedManifest = null;
 async function getEntries() {
   if (cachedRouterEntry === null) {
-    cachedRouterEntry = await import("./router-W9GWQRv5.mjs").then(function(n) {
+    cachedRouterEntry = await import("./router-CIvS-aii.mjs").then(function(n) {
       return n.r;
     }).then((n) => n.r);
   }

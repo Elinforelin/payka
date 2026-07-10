@@ -4,11 +4,10 @@ import {LanguageToggle} from "@/components/LanguageToggle";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {createServerFn} from "@tanstack/react-start";
-import {Category, products} from "@/lib/data";
+import {getCategoriesWithProducts, getCategoryCoverImage, products} from "@/lib/data";
 import {resolveProductImageUrl} from "@/lib/product-images.ts";
-import {useCart} from "@/lib/cart-context";
-import {useFavorites} from "@/lib/favorites-context";
 import {MiniCart} from "@/components/MiniCart";
+import {ProductCard} from "@/components/ProductCard";
 
 const getProducts = createServerFn({method: "GET"}).handler(async () => {
     return products;
@@ -22,26 +21,17 @@ export const Route = createFileRoute("/")({
 function CatalogPage() {
     const { t } = useTranslation();
     const productsData = Route.useLoaderData();
-    const [activeCategory, setActiveCategory] = useState("All");
     const [searchQuery, setSearchQuery] = useState("");
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
     
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
     const [selectedMetalTypes, setSelectedMetalTypes] = useState<string[]>([]);
-
-    const { addToCart } = useCart();
-    const { addToFavorites, removeFromFavorites, isFavorited, categories: favCategories } = useFavorites();
     const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
 
-    const categories = ["All", ...Object.values(Category)];
-    const translatedCategories = categories.map(cat => ({
-        id: cat,
-        name: cat === "All" ? t('favorites.all_items') : t(`common.category_names.${cat}`)
-    }));
+    const categories = getCategoriesWithProducts();
 
     const filteredProducts = (productsData || []).filter((product) => {
-        const matchesCategory = activeCategory === "All" || product.category.toLowerCase() === activeCategory.toLowerCase();
         const matchesSearch = t(product.name).toLowerCase().includes(searchQuery.toLowerCase()) || 
                              t(product.description).toLowerCase().includes(searchQuery.toLowerCase()) ||
                              (product.style && product.style.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -50,7 +40,7 @@ function CatalogPage() {
         
         const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
         const matchesMetalType = selectedMetalTypes.length === 0 || (product.metalType && selectedMetalTypes.includes(product.metalType));
-        return matchesCategory && matchesSearch && matchesPrice && matchesMetalType;
+        return matchesSearch && matchesPrice && matchesMetalType;
     });
 
     const metalTypes = Array.from(new Set((productsData || []).map(p => p.metalType).filter(Boolean))) as string[];
@@ -230,117 +220,66 @@ function CatalogPage() {
                 </div>
             )}
 
-            {/* Categories */}
-            <div className="mt-6 md:mt-8 flex gap-2 md:gap-3 overflow-x-auto pb-2 no-scrollbar">
-                {translatedCategories.map((cat) => (
-                    <button
-                        key={cat.id}
-                        onClick={() => setActiveCategory(cat.id)}
-                        className={`whitespace-nowrap rounded-full px-5 md:px-8 py-2 md:py-3 text-sm md:text-lg font-medium transition-all cursor-pointer ${
-                            activeCategory === cat.id
-                                ? "bg-[#b3917d] text-white"
-                                : "bg-white text-[#6b5f59]"
-                        }`}
-                    >
-                        {cat.name}
-                    </button>
-                ))}
-            </div>
+            {/* Shop by Category */}
+            {categories.length > 0 && (
+            <section className="mt-8 md:mt-10">
+                <h3 className="text-center text-sm md:text-base font-ermilov font-bold uppercase tracking-[0.2em] text-[#1a1a1a]">
+                    {t('catalog.shop_by_category')}
+                </h3>
+                <div className="mt-6 flex gap-3 md:gap-4">
+                    {categories.map((category) => {
+                        const coverImage = getCategoryCoverImage(category);
 
-            {/* New Arrivals */}
-            <section className="mt-8">
-                <h3 className="text-xl md:text-2xl font-bold text-[#1a1a1a]">{t('catalog.title')}</h3>
-                <div className="mt-6 flex gap-4 md:gap-6 overflow-x-auto pb-4 no-scrollbar">
-                    {filteredProducts.length === 0 && (
-                        <div className="flex w-full flex-col items-center justify-center rounded-[32px] bg-white py-16 text-center shadow-sm min-w-full">
-                            <p className="text-2xl">✦</p>
-                            <p className="mt-3 text-base font-bold text-[#1a1a1a]">{t('catalog.no_results')}</p>
-                            <p className="mt-1 text-sm text-[#6b5f59]">{t('catalog.no_results_desc')}</p>
-                        </div>
-                    )}
-                    {filteredProducts.map((product) => (
-                        <Link
-                            to="/product/$productId"
-                            params={{ productId: String(product.id) }}
-                            key={product.id}
-                            className="min-w-[240px] md:w-[280px] rounded-[32px] bg-white p-3 md:p-4 shadow-sm"
-                        >
-                            <div className="relative aspect-square w-full overflow-hidden rounded-[24px] bg-[#f7f3ef] max-w-200">
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        if (isFavorited(product.id)) {
-                                            removeFromFavorites(product.id);
-                                        } else {
-                                            setShowFavPrompt(product.id);
-                                        }
-                                    }}
-                                    className={`absolute right-3 top-3 md:right-4 md:top-4 flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full backdrop-blur-md transition-colors ${
-                                        isFavorited(product.id) 
-                                            ? "bg-[#b3917d] text-white" 
-                                            : "bg-white/60 text-[#1a1a1a]"
-                                    }`}
-                                >
-                                    <Heart className={`h-4 w-4 md:h-5 md:w-5 ${isFavorited(product.id) ? "fill-current" : ""}`}/>
-                                </button>
-
-                                {showFavPrompt === product.id && (
-                                    <div 
-                                        className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 p-4 text-center backdrop-blur-sm"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                        }}
-                                    >
-                                        <p className="mb-3 text-sm font-bold text-white">{t('favorites.confirm_favorite')}?</p>
-                                        <div className="flex flex-wrap justify-center gap-2">
-                                            {favCategories.map((cat) => (
-                                                <button
-                                                    key={cat}
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        e.stopPropagation();
-                                                        addToFavorites(product, cat);
-                                                        setShowFavPrompt(null);
-                                                    }}
-                                                    className="rounded-full bg-white px-3 py-1 text-xs font-bold text-[#1a1a1a] hover:bg-[#b3917d] hover:text-white transition-colors"
-                                                >
-                                                    {cat === 'General' ? t('favorites.general') : (Object.values(Category).includes(cat as Category) ? t(`common.category_names.${cat}`) : cat)}
-                                                </button>
-                                            ))}
-                                        </div>
-                                        <button 
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                setShowFavPrompt(null);
-                                            }}
-                                            className="mt-3 text-xs font-medium text-white underline"
-                                        >
-                                            {t('favorites.cancel')}
-                                        </button>
-                                    </div>
+                        return (
+                            <Link
+                                key={category}
+                                to="/catalog/$category"
+                                params={{ category }}
+                                className="group relative aspect-square min-w-0 flex-1 cursor-pointer overflow-hidden rounded-2xl bg-[#f7f3ef] shadow-sm transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-md"
+                            >
+                                {coverImage ? (
+                                    <img
+                                        src={resolveProductImageUrl(coverImage)}
+                                        alt={t(`common.category_names.${category}`)}
+                                        className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                                    />
+                                ) : (
+                                    <div className="h-full w-full bg-[#e8dfd8]" />
                                 )}
-                                <img
-                                    src={resolveProductImageUrl(product.imageUrl)}
-                                    alt={t(product.name)}
-                                    className="h-full w-full object-cover max-w-200"
-                                />
-                            </div>
-                            <div className="mt-4 flex items-center justify-between px-1 md:px-2">
-                                <div>
-                                    <h4 className="text-base md:text-lg font-bold text-[#1a1a1a]">
-                                        {t(product.name)}
-                                    </h4>
-                                    <p className="text-base md:text-lg font-bold text-[#b3917d]">
-                                        ₴{product.price}
-                                    </p>
+                                <div className="absolute inset-0 bg-black/30 transition-colors duration-300 group-hover:bg-black/40" />
+                                <div className="absolute inset-0 flex items-center justify-center p-3 md:p-4">
+                                    <span className="text-center text-[11px] sm:text-xs md:text-sm font-ermilov font-bold uppercase tracking-[0.12em] text-white">
+                                        {t(`common.category_names.${category}`)}
+                                    </span>
                                 </div>
-                            </div>
-                        </Link>
-                    ))}
+                            </Link>
+                        );
+                    })}
                 </div>
+            </section>
+            )}
+
+            {/* Catalog */}
+            <section className="mt-10">
+                <h3 className="text-xl md:text-2xl font-bold text-[#1a1a1a]">{t('catalog.title')}</h3>
+                {filteredProducts.length === 0 ? (
+                    <div className="mt-6 flex w-full flex-col items-center justify-center rounded-[32px] bg-white py-16 text-center shadow-sm">
+                        <p className="text-2xl">✦</p>
+                        <p className="mt-3 text-base font-bold text-[#1a1a1a]">{t('catalog.no_results')}</p>
+                        <p className="mt-1 text-sm text-[#6b5f59]">{t('catalog.no_results_desc')}</p>
+                    </div>
+                ) : (
+                    <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+                        {filteredProducts.map((product) => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                showFavPrompt={showFavPrompt}
+                                onFavPromptChange={setShowFavPrompt}
+                            />
+                        ))}
+                    </div>
+                )}
             </section>
 
             {/* We Recommend */}

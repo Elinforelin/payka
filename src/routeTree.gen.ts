@@ -19,6 +19,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductProductIdRouteImport } from './routes/product.$productId'
+import { Route as CatalogCategoryRouteImport } from './routes/catalog.$category'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -70,6 +71,11 @@ const ProductProductIdRoute = ProductProductIdRouteImport.update({
   path: '/$productId',
   getParentRoute: () => ProductRoute,
 } as any)
+const CatalogCategoryRoute = CatalogCategoryRouteImport.update({
+  id: '/catalog/$category',
+  path: '/catalog/$category',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/product': typeof ProductRouteWithChildren
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/catalog/$category': typeof CatalogCategoryRoute
   '/product/$productId': typeof ProductProductIdRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/product': typeof ProductRouteWithChildren
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/catalog/$category': typeof CatalogCategoryRoute
   '/product/$productId': typeof ProductProductIdRoute
 }
 export interface FileRoutesById {
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/product': typeof ProductRouteWithChildren
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/catalog/$category': typeof CatalogCategoryRoute
   '/product/$productId': typeof ProductProductIdRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/product'
     | '/signin'
     | '/signup'
+    | '/catalog/$category'
     | '/product/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/product'
     | '/signin'
     | '/signup'
+    | '/catalog/$category'
     | '/product/$productId'
   id:
     | '__root__'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/product'
     | '/signin'
     | '/signup'
+    | '/catalog/$category'
     | '/product/$productId'
   fileRoutesById: FileRoutesById
 }
@@ -157,6 +169,7 @@ export interface RootRouteChildren {
   ProductRoute: typeof ProductRouteWithChildren
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
+  CatalogCategoryRoute: typeof CatalogCategoryRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -231,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductProductIdRouteImport
       parentRoute: typeof ProductRoute
     }
+    '/catalog/$category': {
+      id: '/catalog/$category'
+      path: '/catalog/$category'
+      fullPath: '/catalog/$category'
+      preLoaderRoute: typeof CatalogCategoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -255,6 +275,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductRoute: ProductRouteWithChildren,
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
+  CatalogCategoryRoute: CatalogCategoryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
