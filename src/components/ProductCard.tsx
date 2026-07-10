@@ -1,0 +1,101 @@
+import { Link } from "@tanstack/react-router";
+import { Heart } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Category, type Product } from "@/lib/data";
+import { resolveProductImageUrl } from "@/lib/product-images.ts";
+import { useFavorites } from "@/lib/favorites-context";
+
+interface ProductCardProps {
+  product: Product;
+  showFavPrompt: number | null;
+  onFavPromptChange: (id: number | null) => void;
+}
+
+export function ProductCard({ product, showFavPrompt, onFavPromptChange }: ProductCardProps) {
+  const { t } = useTranslation();
+  const { addToFavorites, removeFromFavorites, isFavorited, categories: favCategories } = useFavorites();
+
+  return (
+    <Link
+      to="/product/$productId"
+      params={{ productId: String(product.id) }}
+      className="rounded-[32px] bg-white p-3 md:p-4 shadow-sm"
+    >
+      <div className="relative aspect-square w-full overflow-hidden rounded-[24px] bg-[#f7f3ef]">
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (isFavorited(product.id)) {
+              removeFromFavorites(product.id);
+            } else {
+              onFavPromptChange(product.id);
+            }
+          }}
+          className={`absolute right-3 top-3 md:right-4 md:top-4 flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full backdrop-blur-md transition-colors ${
+            isFavorited(product.id)
+              ? "bg-[#b3917d] text-white"
+              : "bg-white/60 text-[#1a1a1a]"
+          }`}
+        >
+          <Heart className={`h-4 w-4 md:h-5 md:w-5 ${isFavorited(product.id) ? "fill-current" : ""}`} />
+        </button>
+
+        {showFavPrompt === product.id && (
+          <div
+            className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 p-4 text-center backdrop-blur-sm"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            <p className="mb-3 text-sm font-bold text-white">{t('favorites.confirm_favorite')}?</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {favCategories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addToFavorites(product, cat);
+                    onFavPromptChange(null);
+                  }}
+                  className="rounded-full bg-white px-3 py-1 text-xs font-bold text-[#1a1a1a] hover:bg-[#b3917d] hover:text-white transition-colors"
+                >
+                  {cat === 'General'
+                    ? t('favorites.general')
+                    : Object.values(Category).includes(cat as Category)
+                      ? t(`common.category_names.${cat}`)
+                      : cat}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onFavPromptChange(null);
+              }}
+              className="mt-3 text-xs font-medium text-white underline"
+            >
+              {t('favorites.cancel')}
+            </button>
+          </div>
+        )}
+        <img
+          src={resolveProductImageUrl(product.imageUrl)}
+          alt={t(product.name)}
+          className="h-full w-full object-cover"
+        />
+      </div>
+      <div className="mt-4 px-1 md:px-2">
+        <h4 className="text-base md:text-lg font-bold text-[#1a1a1a]">
+          {t(product.name)}
+        </h4>
+        <p className="text-base md:text-lg font-bold text-[#b3917d]">
+          ₴{product.price}
+        </p>
+      </div>
+    </Link>
+  );
+}
