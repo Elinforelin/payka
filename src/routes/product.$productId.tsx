@@ -246,76 +246,78 @@ function ProductPage() {
             )}
           </div>
 
-          <div className="mt-8">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-[#1a1a1a]">
-                {product.category === Category.Rings
-                  ? t('product.select_ring_size')
-                  : product.category === Category.Pendants
-                    ? t('product.select_necklace_length')
-                    : t('product.select_size')}
-              </h3>
-              <button
-                onClick={() => setShowSizeGuide(true)}
-                className="text-sm font-medium text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
-              >
-                {t('product.size_guide')}
-              </button>
-            </div>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {product.category === Category.Rings ? (
-                Array.from({ length: (22 - 15) / 0.5 + 1 }, (_, i) => (15 + i * 0.5).toFixed(1)).map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedRingSize(size)}
-                    className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border-2 transition-all ${
-                      selectedRingSize === size
-                        ? "border-[#b3917d] bg-[#b3917d] text-white"
-                        : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
-                    }`}
-                  >
-                    <span className="text-sm font-bold">{size}</span>
-                  </button>
-                ))
-              ) : product.category === Category.Pendants ? (
-                NECKLACE_LENGTHS.map((length) => (
-                  <button
-                    key={length.cm}
-                    onClick={() => setSelectedPendantLength(length.cm)}
-                    className={`flex flex-shrink-0 flex-col items-center justify-center rounded-2xl border-2 px-3 py-2 transition-all ${
-                      selectedPendantLength === length.cm
-                        ? "border-[#b3917d] bg-[#b3917d] text-white"
-                        : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
-                    }`}
-                  >
-                    <span className="text-xs font-bold">{length.cm}</span>
-                    <span className={`text-[10px] mt-0.5 ${selectedPendantLength === length.cm ? "text-white/80" : "text-[#6b5f59]"}`}>
-                      {t(`product.${length.nameKey}`)}
-                    </span>
-                  </button>
-                ))
-              ) : (
-                ["S", "M", "L", "XL"].map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedGenericSize(size)}
-                    className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border-2 transition-all ${
-                      selectedGenericSize === size
-                        ? "border-[#b3917d] bg-[#b3917d] text-white"
-                        : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
-                    }`}
-                  >
-                    <span className="text-lg font-bold">{size}</span>
-                  </button>
-                ))
+          {product.category !== Category.Earrings && (
+            <div className="mt-8">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-[#1a1a1a]">
+                  {product.category === Category.Rings
+                    ? t('product.select_ring_size')
+                    : product.category === Category.Pendants
+                      ? t('product.select_necklace_length')
+                      : t('product.select_size')}
+                </h3>
+                <button
+                  onClick={() => setShowSizeGuide(true)}
+                  className="text-sm font-medium text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+                >
+                  {t('product.size_guide')}
+                </button>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-3">
+                {product.category === Category.Rings ? (
+                  Array.from({ length: (22 - 15) / 0.5 + 1 }, (_, i) => (15 + i * 0.5).toFixed(1)).map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedRingSize(size)}
+                      className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border-2 transition-all ${
+                        selectedRingSize === size
+                          ? "border-[#b3917d] bg-[#b3917d] text-white"
+                          : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
+                      }`}
+                    >
+                      <span className="text-sm font-bold">{size}</span>
+                    </button>
+                  ))
+                ) : product.category === Category.Pendants ? (
+                  NECKLACE_LENGTHS.map((length) => (
+                    <button
+                      key={length.cm}
+                      onClick={() => setSelectedPendantLength(length.cm)}
+                      className={`flex flex-shrink-0 flex-col items-center justify-center rounded-2xl border-2 px-3 py-2 transition-all ${
+                        selectedPendantLength === length.cm
+                          ? "border-[#b3917d] bg-[#b3917d] text-white"
+                          : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
+                      }`}
+                    >
+                      <span className="text-xs font-bold">{length.cm}</span>
+                      <span className={`text-[10px] mt-0.5 ${selectedPendantLength === length.cm ? "text-white/80" : "text-[#6b5f59]"}`}>
+                        {t(`product.${length.nameKey}`)}
+                      </span>
+                    </button>
+                  ))
+                ) : (
+                  ["S", "M", "L", "XL"].map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedGenericSize(size)}
+                      className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border-2 transition-all ${
+                        selectedGenericSize === size
+                          ? "border-[#b3917d] bg-[#b3917d] text-white"
+                          : "border-[#e5e7eb] bg-white text-[#1a1a1a]"
+                      }`}
+                    >
+                      <span className="text-lg font-bold">{size}</span>
+                    </button>
+                  ))
+                )}
+              </div>
+              {product.category === Category.Rings && (
+                <p className="mt-2 text-sm text-[#6b5f59]">
+                  {t('product.size_in_mm')}
+                </p>
               )}
             </div>
-            {product.category === Category.Rings && (
-              <p className="mt-2 text-sm text-[#6b5f59]">
-                {t('product.size_in_mm')}
-              </p>
-            )}
-          </div>
+          )}
 
           {product.availableStones && product.availableStones.length > 0 && (
             <div className="mt-8 space-y-6">
@@ -403,11 +405,13 @@ function ProductPage() {
                 <p className="text-2xl md:text-3xl font-bold text-[#b3917d]">₴{product.price}</p>
               </div>
               {(() => {
+                const sizeRequired = product.category !== Category.Earrings;
                 const selectedSize =
                   product.category === Category.Rings ? selectedRingSize :
                   product.category === Category.Pendants ? selectedPendantLength :
+                  product.category === Category.Earrings ? null :
                   selectedGenericSize;
-                const sizeSelected = selectedSize !== null;
+                const sizeSelected = !sizeRequired || selectedSize !== null;
                 const stonesRequired = product.availableStones && product.availableStones.length > 0;
                 const stoneTypeRequired = (product.availableStones?.length ?? 0) > 1;
                 const stoneColorRequired = selectedStoneType
