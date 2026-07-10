@@ -281,5 +281,24 @@ export const products: Product[] = [
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
         "weight": 5,
-    }
+    },{
+        "id": 16,
+        "name": "product.names.vase_earring",
+        "description": "product.descriptions.vase_earring",
+        "price": 1700,
+        "category": Category.Earrings,
+        "imageUrl": "/assets/crumpledRing/IMG_1444.png",
+        "images": [
+            "/assets/vaseEarring/IMG_1449.png",
+            "/assets/vaseEarring/IMG_1462.png",
+            "/assets/vaseEarring/IMG_1444.png",
+            "/assets/vaseEarring/IMG_1761.png",
+        ],
+        "createdAt": "2026-06-04T07:17:07.889Z",
+        "updatedAt": "2026-06-04T07:17:07.889Z",
+        "gemstone": "common.gemstones.none",
+        "metalStandard": "925",
+        "metalType": "common.metal_types.silver",
+        "weight": 5,
+    },
 ];
