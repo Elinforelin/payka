@@ -342,7 +342,7 @@ export function normalizeOrderSubmission(
     quantity: Math.max(1, Math.min(99, Math.floor(Number(item.quantity)))),
     price: Math.max(0, Number(item.price)),
     category: item.category ? sanitizeText(item.category, 80) : undefined,
-    stone: item.stone ? sanitizeText(item.stone, 120) : undefined,
+    stone: item.stone ? sanitizeText(item.stone, 200) : undefined,
     size: item.size ? sanitizeText(item.size, 20) : undefined,
   }));
 

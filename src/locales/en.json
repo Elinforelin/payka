@@ -120,6 +120,8 @@
     "size_guide_tips_necklace_2": "Note the length in centimeters and match it to the chart above.",
     "select_stone": "Select Stone",
     "select_stone_color": "Select Color",
+    "select_stone_n": "Stone {{n}}",
+    "select_stone_colors": "Select colors for each stone",
     "recommended_for_you": "Recommended for you",
     "sku": "SKU",
     "metal_standard": "Metal Standard",

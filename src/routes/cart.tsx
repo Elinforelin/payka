@@ -118,7 +118,7 @@ function CartPage() {
           <div className="rounded-[32px] bg-white p-6 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <span className="text-base md:text-lg text-[#a19690]">{t('cart.total_amount')}</span>
-              <span className="text-2xl md:text-3xl font-bold text-[#1a1a1a]">${totalPrice}</span>
+              <span className="text-2xl md:text-3xl font-bold text-[#1a1a1a]">₴{totalPrice}</span>
             </div>
 
             <Link

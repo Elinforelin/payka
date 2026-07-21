@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star, X, ChevronRight, MessageCircle } from "lucide-react";
-import { Category, products, type Review } from "@/lib/data";
+import { Category, products, type Review, type StoneColor } from "@/lib/data";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -44,12 +44,18 @@ function ProductPage() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const stoneCount = product.stoneCount ?? 1;
   const [selectedStoneType, setSelectedStoneType] = useState<string | null>(
     (product.availableStones?.length ?? 0) > 1 ? null : (product.availableStones?.[0]?.type ?? null)
   );
-  const [selectedStoneColor, setSelectedStoneColor] = useState<typeof product.availableStones[0]["colors"][0] | null>(
-    (product.availableStones?.[0]?.colors.length ?? 0) > 1 ? null : (product.availableStones?.[0]?.colors[0] ?? null)
-  );
+  const [selectedStoneColors, setSelectedStoneColors] = useState<(StoneColor | null)[]>(() => {
+    const initialColor =
+      stoneCount === 1 && (product.availableStones?.[0]?.colors.length ?? 0) === 1
+        ? product.availableStones![0].colors[0]
+        : null;
+    return Array.from({ length: stoneCount }, () => initialColor);
+  });
+  const [activeStoneIndex, setActiveStoneIndex] = useState(0);
   const [selectedRingSize, setSelectedRingSize] = useState<string | null>(null);
   const [selectedPendantLength, setSelectedPendantLength] = useState<string | null>(null);
   const [selectedGenericSize, setSelectedGenericSize] = useState<string | null>(null);
@@ -60,13 +66,36 @@ function ProductPage() {
       const stone = product.availableStones.find(s => s.type === selectedStoneType);
       if (stone) {
         if (stone.colors.length === 1) {
-          setSelectedStoneColor(stone.colors[0]);
+          setSelectedStoneColors(Array.from({ length: stoneCount }, () => stone.colors[0]));
         } else {
-          setSelectedStoneColor(null);
+          setSelectedStoneColors(Array.from({ length: stoneCount }, () => null));
+          setActiveStoneIndex(0);
         }
       }
     }
-  }, [selectedStoneType, product.availableStones]);
+  }, [selectedStoneType, product.availableStones, stoneCount]);
+
+  const selectedStoneColor = selectedStoneColors[0] ?? null;
+  const allStoneColorsSelected = selectedStoneColors.every((color) => color !== null);
+
+  const selectStoneColor = (color: StoneColor) => {
+    setSelectedStoneColors((prev) => {
+      const next = [...prev];
+      next[activeStoneIndex] = color;
+      return next;
+    });
+    if (stoneCount > 1) {
+      setActiveStoneIndex((prev) => {
+        const updated = [...selectedStoneColors];
+        updated[prev] = color;
+        const nextEmpty = updated.findIndex((c, i) => i > prev && c === null);
+        if (nextEmpty !== -1) return nextEmpty;
+        const firstEmpty = updated.findIndex((c) => c === null);
+        if (firstEmpty !== -1) return firstEmpty;
+        return (prev + 1) % stoneCount;
+      });
+    }
+  };
 
   const recommendedStones = product.availableStones?.filter(s => s.type !== selectedStoneType) || [];
 
@@ -114,7 +143,6 @@ function ProductPage() {
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
         </Link>
-        <h1 className="text-lg md:text-xl font-bold text-[#1a1a1a]">{t('product.details')}</h1>
         <div className="flex items-center gap-2 md:gap-3">
           <LanguageToggle />
           <div className="relative">
@@ -170,19 +198,26 @@ function ProductPage() {
               alt={`${t(product.name)} - image ${activeImageIndex + 1}`}
               className="h-full w-full object-cover transition-transform duration-500"
             />
-            {selectedStoneColor && (
-              <div 
-                className="absolute bottom-6 right-6 h-8 w-8 rounded-full border-2 border-white shadow-lg z-10 overflow-hidden flex items-center justify-center"
-                style={{ backgroundColor: selectedStoneColor.imageUrl ? undefined : selectedStoneColor.value }}
-                title={`${t(`stones.types.${selectedStoneType}`)}: ${t(`stones.colors.${selectedStoneColor.name}`)}`}
-              >
-                {selectedStoneColor.imageUrl ? (
-                  <img 
-                    src={resolveProductImageUrl(selectedStoneColor.imageUrl)} 
-                    alt={t(`stones.colors.${selectedStoneColor.name}`)}
-                    className="h-full w-full object-cover"
-                  />
-                ) : null}
+            {selectedStoneColors.some(Boolean) && (
+              <div className="absolute bottom-6 right-6 z-10 flex gap-1.5">
+                {selectedStoneColors.map((color, index) =>
+                  color ? (
+                    <div
+                      key={index}
+                      className="h-8 w-8 rounded-full border-2 border-white shadow-lg overflow-hidden flex items-center justify-center"
+                      style={{ backgroundColor: color.imageUrl ? undefined : color.value }}
+                      title={`${t(`stones.types.${selectedStoneType}`)} ${index + 1}: ${t(`stones.colors.${color.name}`)}`}
+                    >
+                      {color.imageUrl ? (
+                        <img
+                          src={resolveProductImageUrl(color.imageUrl)}
+                          alt={t(`stones.colors.${color.name}`)}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : null}
+                    </div>
+                  ) : null
+                )}
               </div>
             )}
           </div>
@@ -342,39 +377,89 @@ function ProductPage() {
 
               {selectedStoneType && (
                 <div>
-                  <h3 className="text-lg font-bold text-[#1a1a1a]">{t('product.select_stone_color')}</h3>
-                  <div className="mt-4 flex flex-wrap gap-4">
-                    {product.availableStones.find(s => s.type === selectedStoneType)?.colors.map((color) => (
-                      <button
-                        key={color.name}
-                        onClick={() => setSelectedStoneColor(color)}
-                        className={`group relative flex flex-col items-center gap-2`}
-                        title={t(`stones.colors.${color.name}`)}
-                      >
-                        <div 
-                          className={`h-10 w-10 rounded-full border-2 transition-all overflow-hidden flex items-center justify-center ${
-                            selectedStoneColor?.name === color.name 
-                              ? "border-[#b3917d] scale-110 shadow-md" 
-                              : "border-transparent"
+                  <h3 className="text-lg font-bold text-[#1a1a1a]">
+                    {stoneCount > 1 ? t('product.select_stone_colors') : t('product.select_stone_color')}
+                  </h3>
+
+                  {stoneCount > 1 && (
+                    <div className="mt-4 flex flex-wrap gap-3">
+                      {selectedStoneColors.map((color, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => setActiveStoneIndex(index)}
+                          className={`flex items-center gap-2 rounded-2xl border-2 px-3 py-2 transition-all ${
+                            activeStoneIndex === index
+                              ? "border-[#b3917d] bg-[#b3917d]/10"
+                              : "border-[#e5e7eb] bg-white"
                           }`}
-                          style={{ backgroundColor: color.imageUrl ? undefined : color.value }}
+                        >
+                          <div
+                            className={`h-8 w-8 rounded-full border-2 overflow-hidden flex items-center justify-center ${
+                              color ? "border-white shadow-sm" : "border-dashed border-[#d1ccc8] bg-[#f7f3ef]"
+                            }`}
+                            style={{ backgroundColor: color && !color.imageUrl ? color.value : undefined }}
+                          >
+                            {color?.imageUrl ? (
+                              <img
+                                src={resolveProductImageUrl(color.imageUrl)}
+                                alt={t(`stones.colors.${color.name}`)}
+                                className="h-full w-full object-cover"
+                              />
+                            ) : !color ? (
+                              <span className="text-xs font-bold text-[#a19690]">{index + 1}</span>
+                            ) : null}
+                          </div>
+                          <div className="text-left">
+                            <p className={`text-xs font-bold ${activeStoneIndex === index ? "text-[#b3917d]" : "text-[#1a1a1a]"}`}>
+                              {t('product.select_stone_n', { n: index + 1 })}
+                            </p>
+                            <p className="text-[11px] text-[#6b5f59]">
+                              {color ? t(`stones.colors.${color.name}`) : "—"}
+                            </p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="mt-4 flex flex-wrap gap-4">
+                    {product.availableStones.find(s => s.type === selectedStoneType)?.colors.map((color) => {
+                      const isSelected = stoneCount > 1
+                        ? selectedStoneColors[activeStoneIndex]?.name === color.name
+                        : selectedStoneColor?.name === color.name;
+                      return (
+                        <button
+                          key={color.name}
+                          onClick={() => selectStoneColor(color)}
+                          className={`group relative flex flex-col items-center gap-2`}
                           title={t(`stones.colors.${color.name}`)}
                         >
-                          {color.imageUrl ? (
-                            <img 
-                              src={resolveProductImageUrl(color.imageUrl)} 
-                              alt={t(`stones.colors.${color.name}`)}
-                              className="h-full w-full object-cover"
-                            />
-                          ) : null}
-                        </div>
-                        <span className={`text-xs font-medium transition-colors ${
-                          selectedStoneColor?.name === color.name ? "text-[#b3917d]" : "text-[#6b5f59]"
-                        }`}>
-                          {t(`stones.colors.${color.name}`)}
-                        </span>
-                      </button>
-                    ))}
+                          <div
+                            className={`h-10 w-10 rounded-full border-2 transition-all overflow-hidden flex items-center justify-center ${
+                              isSelected
+                                ? "border-[#b3917d] scale-110 shadow-md"
+                                : "border-transparent"
+                            }`}
+                            style={{ backgroundColor: color.imageUrl ? undefined : color.value }}
+                            title={t(`stones.colors.${color.name}`)}
+                          >
+                            {color.imageUrl ? (
+                              <img
+                                src={resolveProductImageUrl(color.imageUrl)}
+                                alt={t(`stones.colors.${color.name}`)}
+                                className="h-full w-full object-cover"
+                              />
+                            ) : null}
+                          </div>
+                          <span className={`text-xs font-medium transition-colors ${
+                            isSelected ? "text-[#b3917d]" : "text-[#6b5f59]"
+                          }`}>
+                            {t(`stones.colors.${color.name}`)}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -419,7 +504,7 @@ function ProductPage() {
                   : false;
                 const stoneSelected = !stonesRequired || (
                   (!stoneTypeRequired || selectedStoneType !== null) &&
-                  (!stoneColorRequired || selectedStoneColor !== null)
+                  (!stoneColorRequired || allStoneColorsSelected)
                 );
                 const canAddToCart = sizeSelected && stoneSelected;
                 const hint = !sizeSelected
@@ -435,8 +520,12 @@ function ProductPage() {
                     <button
                       disabled={!canAddToCart}
                       onClick={() => {
-                        const stoneLabel = selectedStoneType && selectedStoneColor
-                          ? `${t(`stones.types.${selectedStoneType}`)}: ${t(`stones.colors.${selectedStoneColor.name}`)}`
+                        const stoneLabel = selectedStoneType && allStoneColorsSelected
+                          ? stoneCount > 1
+                            ? `${t(`stones.types.${selectedStoneType}`)}: ${selectedStoneColors
+                                .map((color, i) => `${i + 1}. ${t(`stones.colors.${color!.name}`)}`)
+                                .join(', ')}`
+                            : `${t(`stones.types.${selectedStoneType}`)}: ${t(`stones.colors.${selectedStoneColor!.name}`)}`
                           : undefined;
                         addToCart(product, stoneLabel, selectedSize ?? undefined);
                       }}

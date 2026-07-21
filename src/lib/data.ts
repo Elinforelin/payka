@@ -23,6 +23,8 @@ export interface Product {
     metalType?: string | null;
     weight?: number | null;
     availableStones?: StoneOption[];
+    /** How many stones the customer must choose colors for (default: 1) */
+    stoneCount?: number;
     reviews?: Review[];
 }
 
@@ -43,6 +45,23 @@ export interface StoneColor {
     value: string; // Hex color or CSS color name
     imageUrl?: string; // Optional: Image that shows this specific stone color
 }
+
+export const CUBIC_ZIRCONIA_COLORS: StoneColor[] = [
+    {"name": "White", "value": "#FFF", "imageUrl": "/assets/cubicZirconiaColors/white.png"},
+    {"name": "Green", "value": "#008000", "imageUrl": "/assets/cubicZirconiaColors/green.png"},
+    {"name": "Blue", "value": "#0000FF", "imageUrl": "/assets/cubicZirconiaColors/blue.png"},
+    {"name": "Yellow", "value": "#FFFF00", "imageUrl": "/assets/cubicZirconiaColors/yellow.png"},
+    {"name": "Amethyst", "value": "#9966CC", "imageUrl": "/assets/cubicZirconiaColors/amethyst.png"},
+    {"name": "Azure", "value": "#007FFF", "imageUrl": "/assets/cubicZirconiaColors/azure.png"},
+    {"name": "Black", "value": "#000000", "imageUrl": "/assets/cubicZirconiaColors/black.png"},
+    {"name": "Champagne", "value": "#F7E7CE", "imageUrl": "/assets/cubicZirconiaColors/champagne.png"},
+    {"name": "Garnet", "value": "#733635", "imageUrl": "/assets/cubicZirconiaColors/garnet.png"},
+    {"name": "Lavender", "value": "#E6E6FA", "imageUrl": "/assets/cubicZirconiaColors/lavender.png"},
+    {"name": "Olive", "value": "#808000", "imageUrl": "/assets/cubicZirconiaColors/olive.png"},
+    {"name": "Peridot", "value": "#9CB071", "imageUrl": "/assets/cubicZirconiaColors/peridot.png"},
+    {"name": "Pink", "value": "#FFC0CB", "imageUrl": "/assets/cubicZirconiaColors/pink.png"},
+    {"name": "Red", "value": "#FF0000", "imageUrl": "/assets/cubicZirconiaColors/red.png"},
+];
 
 export function getCategoryCoverImage(category: Category): string | null {
     return products.find((product) => product.category === category)?.imageUrl ?? null;
@@ -149,22 +168,7 @@ export const products: Product[] = [
         "availableStones": [
             {
                 "type": "Cubic Zirconia",
-                "colors": [
-                    {"name": "White", "value": "#FFF", "imageUrl": "/assets/cubicZirconiaColors/white.png"},
-                    {"name": "Green", "value": "#008000", "imageUrl": "/assets/cubicZirconiaColors/green.png"},
-                    {"name": "Blue", "value": "#0000FF", "imageUrl": "/assets/cubicZirconiaColors/blue.png"},
-                    {"name": "Yellow", "value": "#FFFF00", "imageUrl": "/assets/cubicZirconiaColors/yellow.png"},
-                    {"name": "Amethyst", "value": "#9966CC", "imageUrl": "/assets/cubicZirconiaColors/amethyst.png"},
-                    {"name": "Azure", "value": "#007FFF", "imageUrl": "/assets/cubicZirconiaColors/azure.png"},
-                    {"name": "Black", "value": "#000000", "imageUrl": "/assets/cubicZirconiaColors/black.png"},
-                    {"name": "Champagne", "value": "#F7E7CE", "imageUrl": "/assets/cubicZirconiaColors/champagne.png"},
-                    {"name": "Garnet", "value": "#733635", "imageUrl": "/assets/cubicZirconiaColors/garnet.png"},
-                    {"name": "Lavender", "value": "#E6E6FA", "imageUrl": "/assets/cubicZirconiaColors/lavender.png"},
-                    {"name": "Olive", "value": "#808000", "imageUrl": "/assets/cubicZirconiaColors/olive.png"},
-                    {"name": "Peridot", "value": "#9CB071", "imageUrl": "/assets/cubicZirconiaColors/peridot.png"},
-                    {"name": "Pink", "value": "#FFC0CB", "imageUrl": "/assets/cubicZirconiaColors/pink.png"},
-                    {"name": "Red", "value": "#FF0000", "imageUrl": "/assets/cubicZirconiaColors/red.png"},
-                ]
+                "colors": CUBIC_ZIRCONIA_COLORS,
             }
         ]
     },
@@ -289,6 +293,13 @@ export const products: Product[] = [
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
         "weight": 5,
+        "stoneCount": 3,
+        "availableStones": [
+            {
+                "type": "Cubic Zirconia",
+                "colors": CUBIC_ZIRCONIA_COLORS,
+            }
+        ]
     },{
         "id": 16,
         "name": "product.names.vase_earring",

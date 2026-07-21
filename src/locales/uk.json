@@ -120,6 +120,8 @@
     "size_guide_tips_necklace_2": "Запишіть довжину в сантиметрах і знайдіть її в таблиці вище.",
     "select_stone": "Оберіть камінь",
     "select_stone_color": "Оберіть колір",
+    "select_stone_n": "Камінь {{n}}",
+    "select_stone_colors": "Оберіть колір для кожного каменя",
     "recommended_for_you": "Рекомендовано для вас",
     "sku": "Артикул",
     "metal_standard": "Проба",
