@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Quote, Award, History, Target, Eye, Users, ChevronLeft } from "lucide-react";
+import { Award, History, Target, Eye, Users, ChevronLeft, Instagram, Mail, Phone } from "lucide-react";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useTranslation } from "react-i18next";
+import { CONTACT_INFO } from "@/lib/contact";
 
-import img from "@/assets/7812354786123547.png";
+import img from "@/assets/me.png";
 
 export const Route = createFileRoute("/about")({ component: AboutPage });
 
@@ -129,6 +130,59 @@ function AboutPage() {
                 <p className="text-[#6b5f59]">{m.event}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Contact Us */}
+        <section className="rounded-[40px] bg-white p-8 md:p-12 shadow-sm border border-[#f0ebe7]">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f7f3ef] text-[#b3917d]">
+              <Mail className="h-6 w-6" />
+            </div>
+            <h2 className="text-2xl font-bold text-[#1a1a1a]">{t('about.contact_us')}</h2>
+          </div>
+          <p className="text-[#6b5f59] mb-8 max-w-xl">
+            {t('about.contact_desc')}
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <a
+              href={CONTACT_INFO.instagram.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-3 rounded-[24px] bg-[#f7f3ef] p-6 text-center transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-[#b3917d] shadow-sm">
+                <Instagram className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-[#a19690] font-bold">{t('about.instagram')}</p>
+                <p className="mt-1 text-sm font-semibold text-[#1a1a1a]">@{CONTACT_INFO.instagram.handle}</p>
+              </div>
+            </a>
+            <a
+              href={`mailto:${CONTACT_INFO.email}`}
+              className="flex flex-col items-center gap-3 rounded-[24px] bg-[#f7f3ef] p-6 text-center transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-[#b3917d] shadow-sm">
+                <Mail className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-[#a19690] font-bold">{t('about.email')}</p>
+                <p className="mt-1 text-sm font-semibold text-[#1a1a1a] break-all">{CONTACT_INFO.email}</p>
+              </div>
+            </a>
+            <a
+              href={CONTACT_INFO.phoneHref}
+              className="flex flex-col items-center gap-3 rounded-[24px] bg-[#f7f3ef] p-6 text-center transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-[#b3917d] shadow-sm">
+                <Phone className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-[#a19690] font-bold">{t('about.phone')}</p>
+                <p className="mt-1 text-sm font-semibold text-[#1a1a1a]">{CONTACT_INFO.phone}</p>
+              </div>
+            </a>
           </div>
         </section>
 

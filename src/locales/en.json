@@ -68,7 +68,8 @@
       "round_wrinkled_earrings": "Round wrinkled earrings with a unique texture, perfect for those who appreciate handmade jewelry",
       "wave_ring": "Wave ring with a smooth and flowing design, inspired by the beauty of nature",
       "smeared_ring": "A silver ring with soft contours that gently blur the line between shape and light",
-      "crumpled_ring": "A silver ring with a hammered texture, where every mark shapes its unique character"
+      "crumpled_ring": "A silver ring with a hammered texture, where every mark shapes its unique character",
+      "vase_earring": "A silver earring with a vase-like shape, perfect for those who appreciate unique and artistic jewelry"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
@@ -80,7 +81,8 @@
       "round_wrinkled_earrings": "Round Wrinkled Earrings",
       "wave_ring": "Wave Ring",
       "smeared_ring": "Soft Contour Ring",
-      "crumpled_ring": "Crumpled Texture Ring"
+      "crumpled_ring": "Crumpled Texture Ring",
+      "vase_earring": "Vase-Shaped Earring"
     },
     "details": "Details",
     "about_product": "About Product",
@@ -155,7 +157,12 @@
     "m2024": "Expansion into international markets.",
     "m2025": "Beginning of another partnership with a retail store in the Vinnytsia region.",
     "footer_desc": "We invite you to explore our collection and find a piece that speaks to your heart.",
-    "explore_collection": "Explore Collection"
+    "explore_collection": "Explore Collection",
+    "contact_us": "Contact Us",
+    "contact_desc": "Have questions about a piece or a custom order? We'd love to hear from you.",
+    "instagram": "Instagram",
+    "email": "Email",
+    "phone": "Phone"
   },
   "cart": {
     "title": "My Cart",
@@ -239,7 +246,14 @@
       "Sky Blue": "Sky Blue",
       "London Blue": "London Blue",
       "Purple": "Purple",
-      "Black": "Black"
+      "Black": "Black",
+      "Amethyst": "Amethyst",
+      "Azure": "Azure",
+      "Champagne": "Champagne",
+      "Garnet": "Garnet",
+      "Lavender": "Lavender",
+      "Olive": "Olive",
+      "Peridot": "Peridot"
     }
   },
   "favorites": {

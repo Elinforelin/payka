@@ -73,8 +73,7 @@ export const products: Product[] = [
         "updatedAt": "2026-06-04T07:17:07.873Z",
         "gemstone": "common.gemstones.none",
         "metalStandard": "925",
-        "metalType": "common.metal_types.silver",
-        "weight": 4,
+        "weight": 6,
         "reviews": [
             {
                 "author": "Оксана М.",
@@ -112,13 +111,13 @@ export const products: Product[] = [
         "updatedAt": "2026-06-04T07:17:07.884Z",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
-        "weight": 3.2,
+        "weight": 3.5,
     },
     {
         "id": 8,
         "name": "product.names.lollypop",
         "description": "product.descriptions.lollypop_rings",
-        "price": 3000,
+        "price": 2000,
         "category": Category.Rings,
         "imageUrl": "/assets/lollypop/IMG_4831.png",
         "images": [
@@ -130,7 +129,6 @@ export const products: Product[] = [
         "createdAt": "2026-06-04T07:17:07.886Z",
         "updatedAt": "2026-06-04T07:17:07.886Z",
         "gemstone": "common.gemstones.cubic_zirconia",
-        "metalColor": "common.metal_colors.silvery",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
         "weight": 4,
@@ -155,7 +153,17 @@ export const products: Product[] = [
                     {"name": "White", "value": "#FFF", "imageUrl": "/assets/cubicZirconiaColors/white.png"},
                     {"name": "Green", "value": "#008000", "imageUrl": "/assets/cubicZirconiaColors/green.png"},
                     {"name": "Blue", "value": "#0000FF", "imageUrl": "/assets/cubicZirconiaColors/blue.png"},
-                    {"name": "Yellow", "value": "#FFFF00", "imageUrl": "/assets/cubicZirconiaColors/yellow.png"}
+                    {"name": "Yellow", "value": "#FFFF00", "imageUrl": "/assets/cubicZirconiaColors/yellow.png"},
+                    {"name": "Amethyst", "value": "#9966CC", "imageUrl": "/assets/cubicZirconiaColors/amethyst.png"},
+                    {"name": "Azure", "value": "#007FFF", "imageUrl": "/assets/cubicZirconiaColors/azure.png"},
+                    {"name": "Black", "value": "#000000", "imageUrl": "/assets/cubicZirconiaColors/black.png"},
+                    {"name": "Champagne", "value": "#F7E7CE", "imageUrl": "/assets/cubicZirconiaColors/champagne.png"},
+                    {"name": "Garnet", "value": "#733635", "imageUrl": "/assets/cubicZirconiaColors/garnet.png"},
+                    {"name": "Lavender", "value": "#E6E6FA", "imageUrl": "/assets/cubicZirconiaColors/lavender.png"},
+                    {"name": "Olive", "value": "#808000", "imageUrl": "/assets/cubicZirconiaColors/olive.png"},
+                    {"name": "Peridot", "value": "#9CB071", "imageUrl": "/assets/cubicZirconiaColors/peridot.png"},
+                    {"name": "Pink", "value": "#FFC0CB", "imageUrl": "/assets/cubicZirconiaColors/pink.png"},
+                    {"name": "Red", "value": "#FF0000", "imageUrl": "/assets/cubicZirconiaColors/red.png"},
                 ]
             }
         ]
@@ -164,7 +172,7 @@ export const products: Product[] = [
         "id": 9,
         "name": "product.names.silver_pendant_cup",
         "description": "product.descriptions.silver_pendant_cup",
-        "price": 1500,
+        "price": 4100,
         "category": Category.Pendants,
         "imageUrl": "/assets/cup/5282821220627849167.jpg",
         "images": [
@@ -176,7 +184,7 @@ export const products: Product[] = [
         "updatedAt": "2026-06-04T07:17:07.888Z",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
-        "weight": 5,
+        "weight": 7,
         "reviews": [
             {
                 "author": "Вікторія Л.",
@@ -190,7 +198,7 @@ export const products: Product[] = [
         "id": 10,
         "name": "product.names.flower_pendant",
         "description": "product.descriptions.flower_pendant",
-        "price": 5000,
+        "price": 4100,
         "category": Category.Pendants,
         "imageUrl": "/assets/flower/IMG_4939.png",
         "images": [
@@ -210,7 +218,7 @@ export const products: Product[] = [
         "id": 12,
         "name": "product.names.round_wrinkled_earrings",
         "description": "product.descriptions.round_wrinkled_earrings",
-        "price": 2700,
+        "price": 1800,
         "category": Category.Earrings,
         "imageUrl": "/assets/roundWrinkledEarrings/IMG_1482.png",
         "images": [
@@ -227,7 +235,7 @@ export const products: Product[] = [
         "id": 13,
         "name": "product.names.wave_ring",
         "description": "product.descriptions.wave_ring",
-        "price": 2700,
+        "price": 1900,
         "category": Category.Rings,
         "imageUrl": "/assets/waveRing/IMG_8753.png",
         "images": [
@@ -242,7 +250,7 @@ export const products: Product[] = [
         "gemstone": "common.gemstones.none",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
-        "weight": 5,
+        "weight": 4,
     },{
         "id": 14,
         "name": "product.names.smeared_ring",
@@ -265,7 +273,7 @@ export const products: Product[] = [
         "id": 15,
         "name": "product.names.crumpled_ring",
         "description": "product.descriptions.crumpled_ring",
-        "price": 2700,
+        "price": 2900,
         "category": Category.Rings,
         "imageUrl": "/assets/crumpledRing/IMG_9086.png",
         "images": [
