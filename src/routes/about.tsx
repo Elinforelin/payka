@@ -184,6 +184,14 @@ function AboutPage() {
               </div>
             </a>
           </div>
+          <div className="mt-8 text-center">
+            <Link
+              to="/shipping"
+              className="text-sm font-bold text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+            >
+              {t('about.shipping_returns_link')}
+            </Link>
+          </div>
         </section>
 
         {/* Footer Link */}

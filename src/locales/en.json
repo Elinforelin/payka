@@ -47,6 +47,7 @@
     "shop_by_category": "Shop by Category",
     "advanced_filters": "Advanced Filters",
     "price_range": "Price Range",
+    "price_range_hint": "Prices in the catalog: from ₴{{min}} to ₴{{max}}",
     "min": "Min",
     "max": "Max",
     "reset_all": "Reset All",
@@ -90,6 +91,16 @@
     "select_ring_size": "Select Ring Size",
     "select_necklace_length": "Select Chain Length",
     "reviews": "Reviews",
+    "packaging_title": "Gift packaging",
+    "packaging_desc": "Every order arrives gift-ready: a branded Payka box, a soft pouch for safekeeping, and a care card. Ready to give as-is — no extra wrapping needed.",
+    "packaging_includes_title": "What's included",
+    "packaging_item_box": "Branded gift box",
+    "packaging_item_pouch": "Soft jewelry pouch",
+    "packaging_item_card": "Care & thank-you card",
+    "packaging_alt_closed": "Closed Payka gift box",
+    "packaging_alt_open": "Open gift box with jewelry",
+    "packaging_alt_includes": "Order contents: box, pouch, and card",
+    "shipping_returns": "Shipping & returns",
     "size_required": "Please select a size to continue",
     "stone_required": "Please select a stone and color to continue",
     "size_in_mm": "Size is shown in millimeters (mm)",
@@ -164,7 +175,31 @@
     "contact_desc": "Have questions about a piece or a custom order? We'd love to hear from you.",
     "instagram": "Instagram",
     "email": "Email",
-    "phone": "Phone"
+    "phone": "Phone",
+    "shipping_returns_link": "Shipping, exchanges & returns"
+  },
+  "shipping": {
+    "title": "Shipping, exchanges & returns",
+    "intro": "Everything you need to know before ordering — so shopping feels clear and calm.",
+    "view_full_page": "Open full shipping page",
+    "shipping_title": "Shipping",
+    "shipping_intro": "We ship across Ukraine after your order is confirmed with us.",
+    "shipping_method": "Method: Nova Poshta delivery to a department (branch).",
+    "shipping_time": "Estimated delivery: usually 1–2 business days after the parcel is handed to Nova Poshta (may vary by city).",
+    "shipping_cost": "Shipping cost is confirmed when we message you about the order — before payment or dispatch.",
+    "shipping_process": "Process: place order → we contact you to confirm details → we make / prepare the piece → we send the tracking number.",
+    "exchange_title": "Size exchanges",
+    "exchange_intro": "Ordered the wrong ring size? We can usually help with an exchange.",
+    "exchange_eligibility": "Eligible if the piece is unused, undamaged, and returned in the original packaging.",
+    "exchange_window": "Please contact us within 7 days of receiving your order to arrange a size exchange.",
+    "exchange_process": "Process: message us with your order number and the correct size → we agree on the exchange → you send the piece back via Nova Poshta → we remake or resize and ship the replacement.",
+    "returns_title": "Returns",
+    "returns_intro": "Because each piece is handmade, returns are considered case by case.",
+    "returns_eligibility": "A return may be possible if the item is unused, in original condition and packaging, and you contact us within 7 days of delivery.",
+    "returns_not_eligible": "Custom or made-to-order pieces, and items showing signs of wear, are generally not eligible for return.",
+    "returns_process": "Process: message us with your order number and reason → we confirm eligibility → return shipping via Nova Poshta is arranged → refund or store credit is agreed once we receive and check the piece.",
+    "contact_title": "Need help?",
+    "contact_desc": "Write to us on Instagram with your order number — we’ll guide you through shipping, an exchange, or a return."
   },
   "cart": {
     "title": "My Cart",
@@ -215,6 +250,11 @@
       "nova_poshta": "Nova Poshta (to Department)"
     },
     "success": "Order placed successfully!",
+    "success_title": "Thank you for your order",
+    "success_subtitle": "Your order has been received and is already with our team.",
+    "success_order_number": "Order number",
+    "success_next_title": "What happens next",
+    "success_next_desc": "We'll message you shortly via Instagram or your phone number to confirm the order and discuss any details — size, shipping, or gift packaging.",
     "privacy_title": "Data Protection",
     "privacy_note": "We collect only the information needed to fulfill your order. Personal data is transmitted securely to our team and processed solely for order fulfillment in accordance with GDPR.",
     "privacy_consent": "I agree to the processing of my personal data for order fulfillment.",
@@ -224,7 +264,9 @@
   },
   "notifications": {
     "added_to_cart": "{{name}} added to cart!",
-    "added_to_favorite": "{{name}} added to {{category}}!"
+    "added_to_favorite": "{{name}} added to {{category}}!",
+    "go_to_cart": "Go to cart",
+    "continue_shopping": "Continue shopping"
   },
   "stones": {
     "types": {

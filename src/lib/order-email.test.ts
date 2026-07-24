@@ -7,6 +7,7 @@ import {
   normalizeOrderSubmission,
   sendOrderNotification,
 } from "./order-email";
+import { formatDisplayOrderNumber } from "./order-utils";
 import type { OrderSubmissionPayload } from "./order-types";
 
 const sampleOrder: OrderSubmissionPayload = {
@@ -38,7 +39,10 @@ describe("formatOrderEmail", () => {
   it("includes customer, product, totals, and consent metadata", () => {
     const content = formatOrderEmail(sampleOrder, "order-123");
 
-    expect(content.subject).toContain("order-123");
+    expect(content.subject).toContain("ORDER123");
+    expect(content.text).toContain("ORDER123");
+    expect(content.text).toContain("order-123");
+    expect(content.html).toContain("ORDER123");
     expect(content.text).toContain("Alina Mamenko");
     expect(content.text).toContain("+380 99 123 45 67");
     expect(content.text).toContain("Kyiv");
@@ -65,6 +69,12 @@ describe("formatOrderEmail", () => {
 
     expect(content.html).not.toContain("<script>");
     expect(content.html).toContain("&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;");
+  });
+});
+
+describe("formatDisplayOrderNumber", () => {
+  it("formats a short customer-facing order number", () => {
+    expect(formatDisplayOrderNumber("a1b2c3d4-e5f6-7890-abcd-ef1234567890")).toBe("A1B2C3D4");
   });
 });
 
@@ -95,6 +105,7 @@ describe("sendOrderNotification", () => {
   it("delivers all order data through the mail transport", async () => {
     const transport = nodemailer.createTransport({ jsonTransport: true });
     const orderId = "test-order-789";
+    const orderNumber = formatDisplayOrderNumber(orderId);
 
     const info = await sendOrderNotification(sampleOrder, orderId, transport);
     const message = JSON.parse(String(info.message));
@@ -103,7 +114,10 @@ describe("sendOrderNotification", () => {
       : message.to;
 
     expect(recipient).toBe(getOrderNotificationRecipient());
-    expect(message.subject).toContain(orderId);
+    expect(message.subject).toContain(orderNumber);
+    expect(message.text).toContain(orderNumber);
+    expect(message.text).toContain(orderId);
+    expect(message.html).toContain(orderNumber);
     expect(message.text).toContain("Alina Mamenko");
     expect(message.text).toContain("product.names.ring_plava");
     expect(message.text).toContain("₴5705");

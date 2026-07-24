@@ -43,14 +43,16 @@ export function ProductCard({ product, showFavPrompt, onFavPromptChange }: Produ
 
         {showFavPrompt === product.id && (
           <div
-            className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 p-4 text-center backdrop-blur-sm"
+            className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/60 p-4 text-center backdrop-blur-md"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
             }}
           >
-            <p className="mb-3 text-sm font-bold text-white">{t('favorites.confirm_favorite')}?</p>
-            <div className="flex flex-wrap justify-center gap-2">
+            <p className="mb-2 text-xs sm:text-sm font-bold text-white leading-tight px-1">
+              {t('favorites.confirm_favorite')}?
+            </p>
+            <div className="flex flex-col w-full gap-1 sm:gap-1.5 max-w-[130px] sm:max-w-[140px]">
               {favCategories.map((cat) => (
                 <button
                   key={cat}
@@ -60,7 +62,7 @@ export function ProductCard({ product, showFavPrompt, onFavPromptChange }: Produ
                     addToFavorites(product, cat);
                     onFavPromptChange(null);
                   }}
-                  className="rounded-full bg-white px-3 py-1 text-xs font-bold text-[#1a1a1a] hover:bg-[#b3917d] hover:text-white transition-colors"
+                  className="rounded-full bg-white py-1 sm:py-1.5 text-[10px] sm:text-xs font-bold text-[#1a1a1a] hover:bg-[#b3917d] hover:text-white transition-colors"
                 >
                   {cat === 'General'
                     ? t('favorites.general')
@@ -76,7 +78,7 @@ export function ProductCard({ product, showFavPrompt, onFavPromptChange }: Produ
                 e.stopPropagation();
                 onFavPromptChange(null);
               }}
-              className="mt-3 text-xs font-medium text-white underline"
+              className="mt-2 sm:mt-4 text-[10px] sm:text-xs font-medium text-white/80 underline underline-offset-2 hover:text-white transition-colors"
             >
               {t('favorites.cancel')}
             </button>

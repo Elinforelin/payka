@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ChevronLeft, ShieldCheck, Truck, Package, CreditCard, CheckCircle2, Search as SearchIcon, MapPin, Loader2 } from "lucide-react";
+import { ChevronLeft, ShieldCheck, Truck, Package, CreditCard, CheckCircle2, Search as SearchIcon, MapPin, Loader2, MessageCircle, Instagram } from "lucide-react";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useRef } from "react";
@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import { useCart } from "@/lib/cart-context";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { submitOrder } from "@/lib/submit-order";
+import { CONTACT_INFO } from "@/lib/contact";
 
 export const Route = createFileRoute("/checkout")({ component: CheckoutPage });
 
@@ -40,6 +41,7 @@ function CheckoutPage() {
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
 
   const [citySearch, setCitySearch] = useState("");
   const [cities, setCities] = useState<any[]>([]);
@@ -178,7 +180,7 @@ function CheckoutPage() {
     setSubmitError(null);
 
     try {
-      await submitOrder({
+      const result = await submitOrder({
         data: {
           privacyConsent: true,
           consentTimestamp: new Date().toISOString(),
@@ -205,6 +207,7 @@ function CheckoutPage() {
         },
       });
 
+      setOrderId(result.orderId);
       setStep('success');
       clearCart();
       window.scrollTo(0, 0);
@@ -231,16 +234,44 @@ function CheckoutPage() {
   }
 
   if (step === 'success') {
+
     return (
       <main className="min-h-screen bg-[#fdfaf7] px-6 py-12 md:py-24 flex items-center justify-center">
         <div className="max-w-md w-full bg-white rounded-[40px] p-8 md:p-12 shadow-sm text-center">
-          <div className="mx-auto w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6">
-            <CheckCircle2 className="h-10 w-10 text-green-500" />
+          <div className="mx-auto w-20 h-20 bg-[#f7f3ef] rounded-full flex items-center justify-center mb-6">
+            <CheckCircle2 className="h-10 w-10 text-[#b3917d]" />
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] mb-8">{t('checkout.success')}</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#1a1a1a]">
+            {t('checkout.success_title')}
+          </h1>
+          <p className="mt-3 text-sm md:text-base text-[#6b5f59] leading-relaxed">
+            {t('checkout.success_subtitle')}
+          </p>
+
+          <div className="mt-6 rounded-[28px] bg-[#f7f3ef] p-5 text-left">
+            <div className="flex items-center gap-2 mb-3">
+              <MessageCircle className="h-4 w-4 text-[#b3917d]" />
+              <h2 className="text-sm font-bold text-[#1a1a1a]">
+                {t('checkout.success_next_title')}
+              </h2>
+            </div>
+            <p className="text-sm text-[#6b5f59] leading-relaxed">
+              {t('checkout.success_next_desc')}
+            </p>
+            <a
+              href={CONTACT_INFO.instagram.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-bold text-[#1a1a1a] shadow-sm transition-colors hover:text-[#b3917d]"
+            >
+              <Instagram className="h-4 w-4" />
+              @{CONTACT_INFO.instagram.handle}
+            </a>
+          </div>
+
           <Link
             to="/"
-            className="block w-full rounded-[24px] bg-[#1a1a1a] py-4 text-white font-bold transition-all hover:bg-black"
+            className="mt-8 block w-full rounded-[24px] bg-[#1a1a1a] py-4 text-white font-bold transition-all hover:bg-black"
           >
             {t('cart.continue_shopping')}
           </Link>

@@ -25,7 +25,7 @@ function CatalogPage() {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
     
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
+    const [priceRange, setPriceRange] = useState<[string, string]>(["", ""]);
     const [selectedMetalTypes, setSelectedMetalTypes] = useState<string[]>([]);
     const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
 
@@ -38,12 +38,18 @@ function CatalogPage() {
                              (product.design && product.design.toLowerCase().includes(searchQuery.toLowerCase())) ||
                              (product.productType && product.productType.toLowerCase().includes(searchQuery.toLowerCase()));
         
-        const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
+        const minPrice = priceRange[0] === "" ? 0 : Number(priceRange[0]);
+        const maxPrice = priceRange[1] === "" ? Infinity : Number(priceRange[1]);
+        const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
         const matchesMetalType = selectedMetalTypes.length === 0 || (product.metalType && selectedMetalTypes.includes(product.metalType));
         return matchesSearch && matchesPrice && matchesMetalType;
     });
 
     const metalTypes = Array.from(new Set((productsData || []).map(p => p.metalType).filter(Boolean))) as string[];
+
+    const catalogPrices = (productsData || []).map((p) => p.price);
+    const catalogMinPrice = catalogPrices.length > 0 ? Math.min(...catalogPrices) : 0;
+    const catalogMaxPrice = catalogPrices.length > 0 ? Math.max(...catalogPrices) : 0;
 
     const suggestions = searchQuery.length > 0 
         ? (productsData || [])
@@ -151,23 +157,44 @@ function CatalogPage() {
                         {/* Price Range */}
                         <div className="mt-8">
                             <h3 className="text-lg font-bold text-[#1a1a1a]">{t('catalog.price_range')}</h3>
+                            <p className="mt-1 text-xs text-[#a19690]">
+                                {t('catalog.price_range_hint', { min: catalogMinPrice, max: catalogMaxPrice })}
+                            </p>
                             <div className="mt-4 flex items-center gap-4">
                                 <div className="flex-1">
                                     <label className="text-xs text-[#6b5f59] mb-1 block uppercase tracking-wider">{t('catalog.min')}</label>
                                     <input 
-                                        type="number" 
+                                        type="text" 
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
                                         value={priceRange[0]}
-                                        onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
-                                        className="w-full rounded-xl bg-[#fdfaf7] px-4 py-3 text-sm outline-none border border-transparent focus:border-[#b3917d]"
+                                        placeholder={String(catalogMinPrice)}
+                                        onChange={(e) => {
+                                            let val = e.target.value.replace(/[^0-9]/g, '');
+                                            if (val.length > 1 && val.startsWith('0')) {
+                                                val = val.replace(/^0+/, '');
+                                            }
+                                            setPriceRange([val, priceRange[1]]);
+                                        }}
+                                        className="w-full rounded-xl bg-[#fdfaf7] px-4 py-3 text-sm outline-none border border-transparent focus:border-[#b3917d] placeholder:text-[#c9bdb8]"
                                     />
                                 </div>
                                 <div className="flex-1">
                                     <label className="text-xs text-[#6b5f59] mb-1 block uppercase tracking-wider">{t('catalog.max')}</label>
                                     <input 
-                                        type="number" 
+                                        type="text" 
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
                                         value={priceRange[1]}
-                                        onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-                                        className="w-full rounded-xl bg-[#fdfaf7] px-4 py-3 text-sm outline-none border border-transparent focus:border-[#b3917d]"
+                                        placeholder={String(catalogMaxPrice)}
+                                        onChange={(e) => {
+                                            let val = e.target.value.replace(/[^0-9]/g, '');
+                                            if (val.length > 1 && val.startsWith('0')) {
+                                                val = val.replace(/^0+/, '');
+                                            }
+                                            setPriceRange([priceRange[0], val]);
+                                        }}
+                                        className="w-full rounded-xl bg-[#fdfaf7] px-4 py-3 text-sm outline-none border border-transparent focus:border-[#b3917d] placeholder:text-[#c9bdb8]"
                                     />
                                 </div>
                             </div>
@@ -202,7 +229,7 @@ function CatalogPage() {
                         <div className="mt-12 space-y-3">
                             <button 
                                 onClick={() => {
-                                    setPriceRange([0, 10000]);
+                                    setPriceRange(["", ""]);
                                     setSelectedMetalTypes([]);
                                 }}
                                 className="w-full rounded-2xl py-4 text-sm font-bold text-[#b3917d] border border-[#b3917d] hover:bg-[#b3917d]/5 transition-colors"

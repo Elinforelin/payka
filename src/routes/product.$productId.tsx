@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star, X, ChevronRight, MessageCircle } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star, X, ChevronRight, MessageCircle, Truck } from "lucide-react";
 import { Category, products, type Review, type StoneColor } from "@/lib/data";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { useState, useEffect } from "react";
@@ -9,6 +9,8 @@ import { useCart } from "@/lib/cart-context";
 import { useFavorites } from "@/lib/favorites-context";
 import { MiniCart } from "@/components/MiniCart";
 import { SizeGuide, NECKLACE_LENGTHS } from "@/components/SizeGuide";
+import { PackagingGuide } from "@/components/PackagingGuide";
+import { ShippingReturnsGuide } from "@/components/ShippingReturnsInfo";
 import { LanguageToggle } from "@/components/LanguageToggle";
 
 const getProduct = createServerFn({ method: "GET" })
@@ -60,6 +62,8 @@ function ProductPage() {
   const [selectedPendantLength, setSelectedPendantLength] = useState<string | null>(null);
   const [selectedGenericSize, setSelectedGenericSize] = useState<string | null>(null);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
+  const [showPackagingGuide, setShowPackagingGuide] = useState(false);
+  const [showShippingGuide, setShowShippingGuide] = useState(false);
 
   useEffect(() => {
     if (product.availableStones && selectedStoneType) {
@@ -135,7 +139,7 @@ function ProductPage() {
 
   return (
     <>
-    <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12">
+    <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12 pb-12">
       <header className="flex items-center justify-between">
         <Link
           to="/"
@@ -164,9 +168,9 @@ function ProductPage() {
             </button>
             
             {showFavPrompt && !isFavorited(product.id) && (
-              <div className="absolute right-0 top-14 z-20 w-48 rounded-2xl bg-white p-3 shadow-xl ring-1 ring-black/5 animate-in fade-in zoom-in-95 duration-200">
-                <p className="mb-2 px-1 text-xs font-bold text-[#a19690] uppercase tracking-wider">{t('favorites.confirm_favorite')}:</p>
-                <div className="flex flex-col gap-1">
+              <div className="absolute right-0 top-14 z-20 w-48 rounded-2xl bg-white p-2 sm:p-3 shadow-xl ring-1 ring-black/5 animate-in fade-in zoom-in-95 duration-200">
+                <p className="mb-1.5 sm:mb-2 px-1 text-[10px] sm:text-xs font-bold text-[#a19690] uppercase tracking-wider">{t('favorites.confirm_favorite')}:</p>
+                <div className="flex flex-col gap-0.5 sm:gap-1">
                   {favCategories.map((cat) => (
                     <button
                       key={cat}
@@ -174,11 +178,19 @@ function ProductPage() {
                         addToFavorites(product, cat);
                         setShowFavPrompt(false);
                       }}
-                      className="rounded-xl px-3 py-2 text-left text-sm font-medium text-[#1a1a1a] hover:bg-[#fdfaf7] hover:text-[#b3917d] transition-colors"
+                      className="rounded-xl px-3 py-1.5 sm:py-2 text-left text-xs sm:text-sm font-medium text-[#1a1a1a] hover:bg-[#fdfaf7] hover:text-[#b3917d] transition-colors"
                     >
                       {cat === 'General' ? t('favorites.general') : (Object.values(Category).includes(cat as any) ? t(`common.category_names.${cat}`) : cat)}
                     </button>
                   ))}
+                  <div className="mt-1 border-t border-gray-50 pt-1">
+                    <button
+                      onClick={() => setShowFavPrompt(false)}
+                      className="w-full rounded-xl px-3 py-1.5 text-left text-xs font-medium text-[#a19690] hover:bg-gray-50 transition-colors"
+                    >
+                      {t('favorites.cancel')}
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -351,6 +363,35 @@ function ProductPage() {
                   {t('product.size_in_mm')}
                 </p>
               )}
+              <button
+                onClick={() => setShowPackagingGuide(true)}
+                className="mt-3 text-sm font-medium text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+              >
+                {t('product.packaging_title')}
+              </button>
+              <button
+                onClick={() => setShowShippingGuide(true)}
+                className="mt-2 block text-sm font-medium text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+              >
+                {t('product.shipping_returns')}
+              </button>
+            </div>
+          )}
+
+          {product.category === Category.Earrings && (
+            <div className="mt-8 flex flex-col items-start gap-2">
+              <button
+                onClick={() => setShowPackagingGuide(true)}
+                className="text-sm font-medium text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+              >
+                {t('product.packaging_title')}
+              </button>
+              <button
+                onClick={() => setShowShippingGuide(true)}
+                className="text-sm font-medium text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+              >
+                {t('product.shipping_returns')}
+              </button>
             </div>
           )}
 
@@ -545,9 +586,10 @@ function ProductPage() {
           </div>
         </div>
       </div>
+
       {/* Reviews */}
       {product.reviews && product.reviews.length > 0 && (
-        <section className="mt-10 md:mt-12 px-6 md:px-12 pb-12">
+        <section className="mt-10 md:mt-12">
           <div className="flex items-center gap-3 mb-6">
             <MessageCircle className="h-5 w-5 text-[#b3917d]" />
             <h2 className="text-xl md:text-2xl font-bold text-[#1a1a1a]">
@@ -564,6 +606,8 @@ function ProductPage() {
     </main>
 
     {showSizeGuide && <SizeGuide onClose={() => setShowSizeGuide(false)} />}
+    {showPackagingGuide && <PackagingGuide onClose={() => setShowPackagingGuide(false)} />}
+    {showShippingGuide && <ShippingReturnsGuide onClose={() => setShowShippingGuide(false)} />}
 
     {isLightboxOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">

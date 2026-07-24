@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SigninRouteImport } from './routes/signin'
+import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ProductRouteImport } from './routes/product'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -29,6 +30,11 @@ const SignupRoute = SignupRouteImport.update({
 const SigninRoute = SigninRouteImport.update({
   id: '/signin',
   path: '/signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShippingRoute = ShippingRouteImport.update({
+  id: '/shipping',
+  path: '/shipping',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductRoute = ProductRouteImport.update({
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
   '/product': typeof ProductRouteWithChildren
+  '/shipping': typeof ShippingRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/catalog/$category': typeof CatalogCategoryRoute
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
   '/product': typeof ProductRouteWithChildren
+  '/shipping': typeof ShippingRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/catalog/$category': typeof CatalogCategoryRoute
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
   '/product': typeof ProductRouteWithChildren
+  '/shipping': typeof ShippingRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/catalog/$category': typeof CatalogCategoryRoute
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/favorites'
     | '/product'
+    | '/shipping'
     | '/signin'
     | '/signup'
     | '/catalog/$category'
@@ -140,6 +150,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/favorites'
     | '/product'
+    | '/shipping'
     | '/signin'
     | '/signup'
     | '/catalog/$category'
@@ -153,6 +164,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/favorites'
     | '/product'
+    | '/shipping'
     | '/signin'
     | '/signup'
     | '/catalog/$category'
@@ -167,6 +179,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   FavoritesRoute: typeof FavoritesRoute
   ProductRoute: typeof ProductRouteWithChildren
+  ShippingRoute: typeof ShippingRoute
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
   CatalogCategoryRoute: typeof CatalogCategoryRoute
@@ -186,6 +199,13 @@ declare module '@tanstack/react-router' {
       path: '/signin'
       fullPath: '/signin'
       preLoaderRoute: typeof SigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipping': {
+      id: '/shipping'
+      path: '/shipping'
+      fullPath: '/shipping'
+      preLoaderRoute: typeof ShippingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/product': {
@@ -273,6 +293,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   FavoritesRoute: FavoritesRoute,
   ProductRoute: ProductRouteWithChildren,
+  ShippingRoute: ShippingRoute,
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
   CatalogCategoryRoute: CatalogCategoryRoute,

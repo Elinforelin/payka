@@ -5,6 +5,9 @@ import type {
   OrderItemPayload,
   OrderSubmissionPayload,
 } from "./order-types";
+import { formatDisplayOrderNumber } from "./order-utils";
+
+export { formatDisplayOrderNumber } from "./order-utils";
 
 const DEFAULT_RECIPIENT = "mamenkooo@gmail.com";
 const MAX_FIELD_LENGTH = 500;
@@ -59,12 +62,14 @@ export function formatOrderEmail(
   orderId: string,
 ): OrderEmailContent {
   const { shipping, items, subtotal, total, consentTimestamp, comment } = order;
+  const orderNumber = formatDisplayOrderNumber(orderId);
 
   const productLines = items.map(formatItemLine).join("\n");
   const productRows = items.map(formatItemHtml).join("");
 
   const text = [
-    `New Payka order: ${orderId}`,
+    `New Payka order #${orderNumber}`,
+    `Order ID: ${orderId}`,
     "",
     "Customer information",
     `Name: ${shipping.fullName}`,
@@ -92,7 +97,11 @@ export function formatOrderEmail(
 <html>
   <body style="font-family:Arial,sans-serif;color:#1a1a1a;line-height:1.5;">
     <h2 style="margin-bottom:4px;">New Payka order</h2>
-    <p style="color:#6b5f59;margin-top:0;">Order ID: <strong>${escapeHtml(orderId)}</strong></p>
+    <p style="margin:12px 0;padding:14px 16px;background:#f7f3ef;border-radius:12px;">
+      <span style="display:block;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#a19690;font-weight:bold;">Order number</span>
+      <span style="display:block;margin-top:4px;font-size:22px;font-weight:bold;letter-spacing:0.12em;">${escapeHtml(orderNumber)}</span>
+    </p>
+    <p style="color:#6b5f59;margin-top:0;font-size:12px;">Full Order ID: ${escapeHtml(orderId)}</p>
 
     <h3>Customer information</h3>
     <ul>
@@ -131,7 +140,7 @@ export function formatOrderEmail(
 </html>`;
 
   return {
-    subject: `New Payka order ${orderId}`,
+    subject: `New Payka order #${orderNumber}`,
     text,
     html,
   };

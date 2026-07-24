@@ -12,6 +12,7 @@ export interface CartItem extends Product {
 interface NotificationData {
   key: string;
   params?: Record<string, any>;
+  withCartActions?: boolean;
 }
 
 interface CartContextType {
@@ -21,6 +22,7 @@ interface CartContextType {
   updateQuantity: (productId: number, quantity: number) => void;
   toggleSaveForLater: (productId: number) => void;
   clearCart: () => void;
+  clearNotification: () => void;
   totalItems: number;
   totalPrice: number;
   notification: NotificationData | null;
@@ -44,10 +46,27 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return [];
   });
   const [notification, setNotification] = useState<NotificationData | null>(null);
+  const notificationTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearNotification = () => {
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current);
+      notificationTimeoutRef.current = null;
+    }
+    setNotification(null);
+  };
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
+
+  useEffect(() => {
+    return () => {
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const addToCart = (product: Product, selectedStone?: string, selectedSize?: string) => {
     setItems((prevItems) => {
@@ -59,9 +78,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return [...prevItems, { ...product, quantity: 1, savedForLater: false, selectedStone, selectedSize }];
     });
-    
-    setNotification({ key: 'notifications.added_to_cart', params: { name: t(product.name) } });
-    setTimeout(() => setNotification(null), 3000);
+
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current);
+    }
+    setNotification({
+      key: 'notifications.added_to_cart',
+      params: { name: t(product.name) },
+      withCartActions: true,
+    });
+    notificationTimeoutRef.current = setTimeout(() => setNotification(null), 8000);
   };
 
   const removeFromCart = (productId: number) => {
@@ -103,6 +129,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateQuantity,
         toggleSaveForLater,
         clearCart,
+        clearNotification,
         totalItems,
         totalPrice,
         notification,
