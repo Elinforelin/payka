@@ -3,7 +3,7 @@ export const CONTACT_INFO = {
     handle: "payka.jwlr",
     url: "https://www.instagram.com/payka.jwlr/",
   },
-  email: "mamenkooo@gmail.com",
-  phone: "+380 97 000 00 00",
-  phoneHref: "tel:+380970000000",
+  email: "payka.jwlr@gmail.com",
+  phone: "+380 73 375 78 99",
+  phoneHref: "tel:+380733757899",
 } as const;
