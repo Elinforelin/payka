@@ -9,7 +9,7 @@ interface PackagingGuideProps {
 const PACKAGING_PHOTOS = [
   { src: "/assets/packaging/box-closed.png", altKey: "packaging_alt_closed" },
   { src: "/assets/packaging/box-open.png", altKey: "packaging_alt_open" },
-  { src: "/assets/packaging/includes.jpg", altKey: "packaging_alt_includes" },
+  { src: "/assets/packaging/includes.png", altKey: "packaging_alt_includes" },
 ] as const;
 
 export function PackagingGuide({ onClose }: PackagingGuideProps) {
