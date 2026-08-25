@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useCanGoBack, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { ChevronDown, ChevronLeft, ChevronUp, Heart, ShoppingBag, Star, X, ChevronRight, MessageCircle, Truck } from "lucide-react";
 import { Category, products, type Review, type StoneColor } from "@/lib/data";
@@ -12,6 +12,7 @@ import { SizeGuide, NECKLACE_LENGTHS } from "@/components/SizeGuide";
 import { PackagingGuide } from "@/components/PackagingGuide";
 import { ShippingReturnsGuide } from "@/components/ShippingReturnsInfo";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { DiscountBadge, CharityBadge, CharityNote, ProductPrice } from "@/components/ProductPrice";
 
 const getProduct = createServerFn({ method: "GET" })
   .inputValidator((data: { productId: number }) => data)
@@ -40,12 +41,16 @@ export const Route = createFileRoute("/product/$productId")({
 function ProductPage() {
   const { t } = useTranslation();
   const product = Route.useLoaderData();
+  const router = useRouter();
+  const canGoBack = useCanGoBack();
   const { addToCart } = useCart();
   const { addToFavorites, removeFromFavorites, isFavorited, categories: favCategories } = useFavorites();
   const [showFavPrompt, setShowFavPrompt] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [isImageZoomed, setIsImageZoomed] = useState(false);
+  const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
   const stoneCount = product.stoneCount ?? 1;
   const [selectedStoneType, setSelectedStoneType] = useState<string | null>(
     (product.availableStones?.length ?? 0) > 1 ? null : (product.availableStones?.[0]?.type ?? null)
@@ -131,6 +136,10 @@ function ProductPage() {
     { label: t('product.metal_standard'), value: product.metalStandard },
     { label: t('product.metal_type'), value: product.metalType ? t(product.metalType) : undefined },
     { label: t('product.metal_color'), value: product.metalColor ? t(product.metalColor) : undefined },
+    {
+      label: t('product.rhodium_plating'),
+      value: t(product.rhodiumPlating ? "common.yes" : "common.no"),
+    },
     { label: t('product.clasp'), value: product.clasp },
     { label: t('product.gemstone'), value: product.gemstone ? t(product.gemstone) : undefined },
     { label: t('product.design'), value: product.design },
@@ -141,12 +150,23 @@ function ProductPage() {
     <>
     <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12 pb-12">
       <header className="flex items-center justify-between">
-        <Link
-          to="/"
+        <button
+          type="button"
+          onClick={() => {
+            if (canGoBack) {
+              router.history.back();
+            } else {
+              void router.navigate({
+                to: "/catalog/$category",
+                params: { category: product.category },
+              });
+            }
+          }}
           className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
+          aria-label={t("common.back")}
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
-        </Link>
+        </button>
         <div className="flex items-center gap-2 md:gap-3">
           <LanguageToggle />
           <div className="relative">
@@ -204,12 +224,31 @@ function ProductPage() {
           <div 
             className="relative aspect-square w-full max-w-200 overflow-hidden rounded-[32px] md:rounded-[48px] bg-[#f7f3ef] shadow-inner cursor-zoom-in"
             onClick={() => setIsLightboxOpen(true)}
+            onMouseEnter={() => setIsImageZoomed(true)}
+            onMouseLeave={() => setIsImageZoomed(false)}
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              setZoomOrigin({
+                x: ((e.clientX - rect.left) / rect.width) * 100,
+                y: ((e.clientY - rect.top) / rect.height) * 100,
+              });
+            }}
           >
             <img
               src={resolveProductImageUrl(images[activeImageIndex])}
               alt={`${t(product.name)} - image ${activeImageIndex + 1}`}
-              className="h-full w-full object-cover transition-transform duration-500"
+              className={`h-full w-full object-cover will-change-transform ${
+                isImageZoomed ? "duration-150" : "duration-300"
+              } transition-transform ease-out`}
+              style={{
+                transform: isImageZoomed ? "scale(2.5)" : "scale(1)",
+                transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
+              }}
             />
+            <div className="absolute left-6 bottom-6 right-20 z-10 flex flex-col items-start gap-1.5 pointer-events-none">
+              <DiscountBadge product={product} />
+              <CharityBadge product={product} />
+            </div>
             {selectedStoneColors.some(Boolean) && (
               <div className="absolute bottom-6 right-6 z-10 flex gap-1.5">
                 {selectedStoneColors.map((color, index) =>
@@ -262,6 +301,7 @@ function ProductPage() {
           </div>
 
           <p className="mt-2 text-[#6b5f59]">{t(product.description)}</p>
+          <CharityNote product={product} className="mt-4" />
 
           <div className="mt-8">
             <button
@@ -528,7 +568,7 @@ function ProductPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-6">
               <div>
                 <p className="text-[#a19690] text-sm font-medium">{t('common.price')}</p>
-                <p className="text-2xl md:text-3xl font-bold text-[#b3917d]">₴{product.price}</p>
+                <ProductPrice product={product} size="lg" className="mt-1" />
               </div>
               {(() => {
                 const sizeRequired = product.category !== Category.Earrings;

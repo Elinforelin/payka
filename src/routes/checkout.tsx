@@ -8,6 +8,7 @@ import { useCart } from "@/lib/cart-context";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { submitOrder } from "@/lib/submit-order";
 import { CONTACT_INFO } from "@/lib/contact";
+import { formatDisplayOrderNumber } from "@/lib/order-utils";
 
 export const Route = createFileRoute("/checkout")({ component: CheckoutPage });
 
@@ -20,7 +21,7 @@ interface ShippingMethod {
 }
 
 function CheckoutPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { items, totalPrice, clearCart } = useCart();
   const activeItems = items.filter(item => !item.savedForLater);
@@ -29,6 +30,7 @@ function CheckoutPage() {
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
+    email: "",
     address: "",
     city: "",
     cityRef: "",
@@ -144,6 +146,11 @@ function CheckoutPage() {
     
     const phoneRegex = /^\+?[\d\s-]{10,}$/;
     if (!phoneRegex.test(formData.phone)) newErrors.phone = t('checkout.errors.phone_invalid');
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      newErrors.email = t('checkout.errors.email_invalid');
+    }
     
     if (selectedMethod === 'nova_poshta') {
       if (!formData.cityRef) newErrors.city = t('checkout.errors.city_required');
@@ -198,12 +205,15 @@ function CheckoutPage() {
           shipping: {
             fullName: formData.fullName,
             phone: formData.phone,
+            email: formData.email.trim(),
             city: formData.city,
             department: formData.department,
             address: formData.address,
             shippingMethod: currentMethod.name,
+            shippingCost: 0,
           },
           comment: formData.comment || undefined,
+          locale: i18n.language,
         },
       });
 
@@ -247,6 +257,20 @@ function CheckoutPage() {
           <p className="mt-3 text-sm md:text-base text-[#6b5f59] leading-relaxed">
             {t('checkout.success_subtitle')}
           </p>
+
+          {orderId && (
+            <div className="mt-6 rounded-[28px] bg-[#f7f3ef] p-5 text-left">
+              <p className="text-[11px] uppercase tracking-[0.15em] font-bold text-[#a19690]">
+                {t('checkout.success_order_number')}
+              </p>
+              <p className="mt-1 text-2xl font-bold tracking-[0.12em] text-[#1a1a1a]">
+                {formatDisplayOrderNumber(orderId)}
+              </p>
+              <p className="mt-2 text-sm text-[#6b5f59]">
+                {t('checkout.success_email_sent', { email: formData.email })}
+              </p>
+            </div>
+          )}
 
           <div className="mt-6 rounded-[28px] bg-[#f7f3ef] p-5 text-left">
             <div className="flex items-center gap-2 mb-3">
@@ -323,6 +347,9 @@ function CheckoutPage() {
                   </label>
                   <input
                     type="tel"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    name="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className={`w-full h-14 rounded-2xl bg-[#fdfaf7] px-4 outline-none border-2 transition-all ${
@@ -331,6 +358,24 @@ function CheckoutPage() {
                     placeholder="+380 99 999 99 99"
                   />
                   {errors.phone && <p className="mt-1 text-xs text-red-500 px-1">{errors.phone}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-[#6b5f59] mb-2 px-1">
+                    {t('checkout.email')}
+                  </label>
+                  <input
+                    type="email"
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className={`w-full h-14 rounded-2xl bg-[#fdfaf7] px-4 outline-none border-2 transition-all ${
+                      errors.email ? 'border-red-200 focus:border-red-400' : 'border-transparent focus:border-[#b3917d]'
+                    }`}
+                    placeholder={t('checkout.placeholder_email')}
+                  />
+                  {errors.email && <p className="mt-1 text-xs text-red-500 px-1">{errors.email}</p>}
+                  <p className="mt-1.5 text-xs text-[#a19690] px-1">{t('checkout.email_hint')}</p>
                 </div>
 
                 {selectedMethod === 'nova_poshta' ? (
@@ -463,6 +508,7 @@ function CheckoutPage() {
                 <div className="space-y-2 text-[#6b5f59]">
                   <p className="font-bold text-[#1a1a1a]">{formData.fullName}</p>
                   <p>{formData.phone}</p>
+                  <p>{formData.email}</p>
                   {selectedMethod === 'nova_poshta' ? (
                     <>
                       <p>{formData.city}</p>

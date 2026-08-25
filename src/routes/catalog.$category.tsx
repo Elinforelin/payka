@@ -4,9 +4,12 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Category, products } from "@/lib/data";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
+import { getEffectivePrice, getProductPricing } from "@/lib/product-price";
+import { getCharityPercent } from "@/lib/product-charity";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { MiniCart } from "@/components/MiniCart";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductPrice } from "@/components/ProductPrice";
 
 export const Route = createFileRoute("/catalog/$category")({
   loader: async ({ params }) => {
@@ -36,6 +39,8 @@ function CategoryPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [selectedMetalTypes, setSelectedMetalTypes] = useState<string[]>([]);
+  const [filterOnSale, setFilterOnSale] = useState(false);
+  const [filterCharity, setFilterCharity] = useState(false);
   const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
 
   const filteredProducts = categoryProducts.filter((product) => {
@@ -44,12 +49,17 @@ function CategoryPage() {
       t(product.description).toLowerCase().includes(searchQuery.toLowerCase()) ||
       (product.design && product.design.toLowerCase().includes(searchQuery.toLowerCase()));
 
-    const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
+    const matchesPrice =
+      getEffectivePrice(product) >= priceRange[0] && getEffectivePrice(product) <= priceRange[1];
     const matchesMetalType =
       selectedMetalTypes.length === 0 ||
       (product.metalType && selectedMetalTypes.includes(product.metalType));
+    const matchesOffers =
+      (!filterOnSale && !filterCharity) ||
+      (filterOnSale && getProductPricing(product).isOnSale) ||
+      (filterCharity && getCharityPercent(product) !== null);
 
-    return matchesSearch && matchesPrice && matchesMetalType;
+    return matchesSearch && matchesPrice && matchesMetalType && matchesOffers;
   });
 
   const metalTypes = Array.from(
@@ -127,7 +137,7 @@ function CategoryPage() {
                   </div>
                   <div className="flex-1">
                     <div className="text-sm font-bold text-[#1a1a1a]">{t(suggestion.name)}</div>
-                    <div className="text-xs text-[#b3917d]">₴{suggestion.price}</div>
+                    <ProductPrice product={suggestion} size="sm" />
                   </div>
                 </Link>
               ))}
@@ -206,11 +216,43 @@ function CategoryPage() {
               </div>
             )}
 
+            <div className="mt-8">
+              <h3 className="text-lg font-bold text-[#1a1a1a]">{t('catalog.offers')}</h3>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => setFilterOnSale((prev) => !prev)}
+                  className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                    filterOnSale
+                      ? "bg-[#e85d4c] text-white"
+                      : "bg-[#fdfaf7] text-[#6b5f59]"
+                  }`}
+                >
+                  {filterOnSale && <Check className="h-3 w-3" />}
+                  {t('common.sale')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFilterCharity((prev) => !prev)}
+                  className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                    filterCharity
+                      ? "bg-[#5a7a5c] text-white"
+                      : "bg-[#fdfaf7] text-[#6b5f59]"
+                  }`}
+                >
+                  {filterCharity && <Check className="h-3 w-3" />}
+                  {t('catalog.filter_charity')}
+                </button>
+              </div>
+            </div>
+
             <div className="mt-12 space-y-3">
               <button
                 onClick={() => {
                   setPriceRange([0, 10000]);
                   setSelectedMetalTypes([]);
+                  setFilterOnSale(false);
+                  setFilterCharity(false);
                 }}
                 className="w-full rounded-2xl py-4 text-sm font-bold text-[#b3917d] border border-[#b3917d] hover:bg-[#b3917d]/5 transition-colors"
               >

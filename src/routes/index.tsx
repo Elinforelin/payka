@@ -6,10 +6,13 @@ import {useTranslation} from "react-i18next";
 import {createServerFn} from "@tanstack/react-start";
 import {getCategoriesWithProducts, getCategoryCoverImage, products} from "@/lib/data";
 import {resolveProductImageUrl} from "@/lib/product-images.ts";
-import {MiniCart} from "@/components/MiniCart";
-import {ProductCard} from "@/components/ProductCard";
+import { getEffectivePrice, getProductPricing } from "@/lib/product-price";
+import { getCharityPercent } from "@/lib/product-charity";
+import { MiniCart } from "@/components/MiniCart";
+import { ProductCard } from "@/components/ProductCard";
+import { ProductPrice } from "@/components/ProductPrice";
 
-const getProducts = createServerFn({method: "GET"}).handler(async () => {
+const getProducts = createServerFn({ method: "GET" }).handler(async () => {
     return products;
 });
 
@@ -27,6 +30,8 @@ function CatalogPage() {
     
     const [priceRange, setPriceRange] = useState<[string, string]>(["", ""]);
     const [selectedMetalTypes, setSelectedMetalTypes] = useState<string[]>([]);
+    const [filterOnSale, setFilterOnSale] = useState(false);
+    const [filterCharity, setFilterCharity] = useState(false);
     const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
 
     const categories = getCategoriesWithProducts();
@@ -40,14 +45,19 @@ function CatalogPage() {
         
         const minPrice = priceRange[0] === "" ? 0 : Number(priceRange[0]);
         const maxPrice = priceRange[1] === "" ? Infinity : Number(priceRange[1]);
-        const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
+        const matchesPrice =
+          getEffectivePrice(product) >= minPrice && getEffectivePrice(product) <= maxPrice;
         const matchesMetalType = selectedMetalTypes.length === 0 || (product.metalType && selectedMetalTypes.includes(product.metalType));
-        return matchesSearch && matchesPrice && matchesMetalType;
+        const matchesOffers =
+          (!filterOnSale && !filterCharity) ||
+          (filterOnSale && getProductPricing(product).isOnSale) ||
+          (filterCharity && getCharityPercent(product) !== null);
+        return matchesSearch && matchesPrice && matchesMetalType && matchesOffers;
     });
 
     const metalTypes = Array.from(new Set((productsData || []).map(p => p.metalType).filter(Boolean))) as string[];
 
-    const catalogPrices = (productsData || []).map((p) => p.price);
+    const catalogPrices = (productsData || []).map((p) => getEffectivePrice(p));
     const catalogMinPrice = catalogPrices.length > 0 ? Math.min(...catalogPrices) : 0;
     const catalogMaxPrice = catalogPrices.length > 0 ? Math.max(...catalogPrices) : 0;
 
@@ -125,7 +135,7 @@ function CatalogPage() {
                                     </div>
                                     <div className="flex-1">
                                         <div className="text-sm font-bold text-[#1a1a1a]">{t(suggestion.name)}</div>
-                                        <div className="text-xs text-[#b3917d]">₴{suggestion.price}</div>
+                                        <ProductPrice product={suggestion} size="sm" />
                                     </div>
                                 </Link>
                             ))}
@@ -225,12 +235,45 @@ function CatalogPage() {
                             </div>
                         </div>
 
+                        {/* Sale & Charity */}
+                        <div className="mt-8">
+                            <h3 className="text-lg font-bold text-[#1a1a1a]">{t('catalog.offers')}</h3>
+                            <div className="mt-4 flex flex-wrap gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setFilterOnSale((prev) => !prev)}
+                                    className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                                        filterOnSale
+                                            ? "bg-[#e85d4c] text-white"
+                                            : "bg-[#fdfaf7] text-[#6b5f59]"
+                                    }`}
+                                >
+                                    {filterOnSale && <Check className="h-3 w-3" />}
+                                    {t('common.sale')}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setFilterCharity((prev) => !prev)}
+                                    className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                                        filterCharity
+                                            ? "bg-[#5a7a5c] text-white"
+                                            : "bg-[#fdfaf7] text-[#6b5f59]"
+                                    }`}
+                                >
+                                    {filterCharity && <Check className="h-3 w-3" />}
+                                    {t('catalog.filter_charity')}
+                                </button>
+                            </div>
+                        </div>
+
 
                         <div className="mt-12 space-y-3">
                             <button 
                                 onClick={() => {
                                     setPriceRange(["", ""]);
                                     setSelectedMetalTypes([]);
+                                    setFilterOnSale(false);
+                                    setFilterCharity(false);
                                 }}
                                 className="w-full rounded-2xl py-4 text-sm font-bold text-[#b3917d] border border-[#b3917d] hover:bg-[#b3917d]/5 transition-colors"
                             >
@@ -331,9 +374,7 @@ function CatalogPage() {
                                 <h4 className="text-base md:text-lg font-bold text-[#1a1a1a] line-clamp-1">
                                     {t(product.name)}
                                 </h4>
-                                <p className="text-base md:text-lg font-bold text-[#b3917d]">
-                                    ₴{product.price}
-                                </p>
+                                <ProductPrice product={product} />
                             </div>
                         </Link>
                     ))}

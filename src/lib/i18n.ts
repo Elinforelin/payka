@@ -14,12 +14,16 @@ i18n
       uk: { translation: ukTranslation },
     },
     fallbackLng: 'en',
+    supportedLngs: ['en', 'uk'],
+    load: 'languageOnly',
+    nonExplicitSupportedLngs: true,
     interpolation: {
       escapeValue: false,
     },
     detection: {
       order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage', 'cookie'],
+      convertDetectedLanguage: (lng) => lng.split(/[-_]/)[0],
     },
   });
 

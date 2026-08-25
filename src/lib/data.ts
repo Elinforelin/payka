@@ -9,7 +9,15 @@ export interface Product {
     id: number;
     name: string;
     description: string;
+    /** Regular catalog price (₴). Sale price is derived from discountPercent. */
     price: number;
+    /** Optional percent off (1–99). e.g. 20 → customer pays 80% of price */
+    discountPercent?: number;
+    /**
+     * When set (1–100), this percent of the sale goes to charity.
+     * Shows a badge on cards and a short note on the product page.
+     */
+    charityPercent?: number;
     category: Category;
     imageUrl: string | null;
     images?: string[];
@@ -21,6 +29,8 @@ export interface Product {
     metalColor?: string | null;
     metalStandard?: string | null;
     metalType?: string | null;
+    /** Whether the piece has rhodium plating */
+    rhodiumPlating: boolean;
     weight?: number | null;
     availableStones?: StoneOption[];
     /** How many stones the customer must choose colors for (default: 1) */
@@ -92,25 +102,14 @@ export const products: Product[] = [
         "updatedAt": "2026-06-04T07:17:07.873Z",
         "gemstone": "common.gemstones.none",
         "metalStandard": "925",
+        "rhodiumPlating": false,
         "weight": 6,
         "reviews": [
             {
-                "author": "Оксана М.",
-                "date": "2026-05-12",
+                "author": "Іра Д.",
+                "date": "2026-08-19",
                 "rating": 5,
-                "text": "Дуже гарна каблучка, виглядає елегантно і якісно. Розмір підійшов ідеально, замовлю ще!"
-            },
-            {
-                "author": "Дарина К.",
-                "date": "2026-05-28",
-                "rating": 5,
-                "text": "Швидка доставка, упаковка чудова. Каблучка відповідає фото, дуже задоволена покупкою."
-            },
-            {
-                "author": "Аліна Т.",
-                "date": "2026-06-01",
-                "rating": 4,
-                "text": "Гарна і легка, ношу щодня. Єдине — трохи менша, ніж очікувала, але загалом дуже подобається."
+                "text": "дякую! дуже сподобалось 💜"
             },
         ],
     },
@@ -119,6 +118,8 @@ export const products: Product[] = [
         "name": "product.names.bubochki_ring",
         "description": "product.descriptions.bubochki_ring",
         "price": 1700,
+        "charityPercent": 100,
+        "discountPercent": 25,
         "category": Category.Rings,
         "imageUrl": "/assets/bubochki/5282821220627849158.jpg",
         "images": [
@@ -130,7 +131,16 @@ export const products: Product[] = [
         "updatedAt": "2026-06-04T07:17:07.884Z",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
+        "rhodiumPlating": false,
         "weight": 3.5,
+        "reviews": [
+            {
+                "author": "Еліна K.",
+                "date": "2026-08-20",
+                "rating": 5,
+                "text": "Доброго дня! Отримала і вдягнула вже кільце, дуже класне, і я вже його обожнюю 💛😅 Дуже дякую, бажаю всього найкращого ✨"
+            },
+        ],
     },
     {
         "id": 8,
@@ -138,6 +148,7 @@ export const products: Product[] = [
         "description": "product.descriptions.lollypop_rings",
         "price": 2000,
         "category": Category.Rings,
+        "discountPercent": 30,
         "imageUrl": "/assets/lollypop/IMG_4831.png",
         "images": [
             "/assets/lollypop/IMG_4831.png",
@@ -150,6 +161,7 @@ export const products: Product[] = [
         "gemstone": "common.gemstones.cubic_zirconia",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
+        "rhodiumPlating": false,
         "weight": 4,
         "reviews": [
             {
@@ -188,14 +200,9 @@ export const products: Product[] = [
         "updatedAt": "2026-06-04T07:17:07.888Z",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
+        "rhodiumPlating": false,
         "weight": 7,
         "reviews": [
-            {
-                "author": "Вікторія Л.",
-                "date": "2026-06-08",
-                "rating": 5,
-                "text": "Підвіска неймовірна! Мінімалістичний дизайн пасує до будь-якого одягу. Вже ношу тиждень і не знімаю."
-            },
         ],
     },
     {
@@ -215,8 +222,8 @@ export const products: Product[] = [
         "gemstone": "common.gemstones.none",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
+        "rhodiumPlating": false,
         "weight": 7,
-
     },
     {
         "id": 12,
@@ -234,8 +241,10 @@ export const products: Product[] = [
         "gemstone": "common.gemstones.none",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
+        "rhodiumPlating": false,
         "weight": 5,
-    }, {
+    },
+    {
         "id": 13,
         "name": "product.names.wave_ring",
         "description": "product.descriptions.wave_ring",
@@ -254,8 +263,10 @@ export const products: Product[] = [
         "gemstone": "common.gemstones.none",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
+        "rhodiumPlating": false,
         "weight": 4,
-    },{
+    },
+    {
         "id": 14,
         "name": "product.names.smeared_ring",
         "description": "product.descriptions.smeared_ring",
@@ -272,8 +283,10 @@ export const products: Product[] = [
         "gemstone": "common.gemstones.none",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
+        "rhodiumPlating": false,
         "weight": 5,
-    },{
+    },
+    {
         "id": 15,
         "name": "product.names.crumpled_ring",
         "description": "product.descriptions.crumpled_ring",
@@ -292,6 +305,7 @@ export const products: Product[] = [
         "gemstone": "common.gemstones.cubic_zirconia",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
+        "rhodiumPlating": true,
         "weight": 5,
         "stoneCount": 3,
         "availableStones": [
@@ -300,7 +314,8 @@ export const products: Product[] = [
                 "colors": CUBIC_ZIRCONIA_COLORS,
             }
         ]
-    },{
+    },
+    {
         "id": 16,
         "name": "product.names.vase_earring",
         "description": "product.descriptions.vase_earring",
@@ -318,6 +333,7 @@ export const products: Product[] = [
         "gemstone": "common.gemstones.none",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
+        "rhodiumPlating": false,
         "weight": 5,
     },
 ];

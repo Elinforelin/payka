@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Product } from './data';
+import { getEffectivePrice } from './product-price';
 
 export interface CartItem extends Product {
   quantity: number;
@@ -69,14 +70,27 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const addToCart = (product: Product, selectedStone?: string, selectedSize?: string) => {
+    const pricedProduct = { ...product, price: getEffectivePrice(product) };
     setItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id);
       if (existingItem) {
         return prevItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1, savedForLater: false, selectedStone, selectedSize } : item
+          item.id === product.id
+            ? {
+                ...item,
+                ...pricedProduct,
+                quantity: item.quantity + 1,
+                savedForLater: false,
+                selectedStone,
+                selectedSize,
+              }
+            : item
         );
       }
-      return [...prevItems, { ...product, quantity: 1, savedForLater: false, selectedStone, selectedSize }];
+      return [
+        ...prevItems,
+        { ...pricedProduct, quantity: 1, savedForLater: false, selectedStone, selectedSize },
+      ];
     });
 
     if (notificationTimeoutRef.current) {

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Category, type Product } from "@/lib/data";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { useFavorites } from "@/lib/favorites-context";
+import { DiscountBadge, CharityBadge, ProductPrice } from "@/components/ProductPrice";
 
 interface ProductCardProps {
   product: Product;
@@ -22,6 +23,10 @@ export function ProductCard({ product, showFavPrompt, onFavPromptChange }: Produ
       className="rounded-[32px] bg-white p-3 md:p-4 shadow-sm"
     >
       <div className="relative aspect-square w-full overflow-hidden rounded-[24px] bg-[#f7f3ef]">
+        <div className="absolute left-3 bottom-3 right-3 md:left-4 md:bottom-4 md:right-4 z-10 flex flex-col items-start gap-1.5 pointer-events-none">
+          <DiscountBadge product={product} />
+          <CharityBadge product={product} />
+        </div>
         <button
           onClick={(e) => {
             e.preventDefault();
@@ -94,9 +99,7 @@ export function ProductCard({ product, showFavPrompt, onFavPromptChange }: Produ
         <h4 className="text-base md:text-lg font-bold text-[#1a1a1a]">
           {t(product.name)}
         </h4>
-        <p className="text-base md:text-lg font-bold text-[#b3917d]">
-          ₴{product.price}
-        </p>
+        <ProductPrice product={product} />
       </div>
     </Link>
   );

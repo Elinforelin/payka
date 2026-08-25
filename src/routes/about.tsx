@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Award, History, Target, Eye, Users, ChevronLeft, Instagram, Mail, Phone } from "lucide-react";
+import { Award, History, Target, Eye, Users, ChevronLeft, Instagram, Mail } from "lucide-react";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useTranslation } from "react-i18next";
 import { CONTACT_INFO } from "@/lib/contact";
@@ -144,7 +144,7 @@ function AboutPage() {
           <p className="text-[#6b5f59] mb-8 max-w-xl">
             {t('about.contact_desc')}
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <a
               href={CONTACT_INFO.instagram.url}
               target="_blank"
@@ -169,18 +169,6 @@ function AboutPage() {
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-[#a19690] font-bold">{t('about.email')}</p>
                 <p className="mt-1 text-sm font-semibold text-[#1a1a1a] break-all">{CONTACT_INFO.email}</p>
-              </div>
-            </a>
-            <a
-              href={CONTACT_INFO.phoneHref}
-              className="flex flex-col items-center gap-3 rounded-[24px] bg-[#f7f3ef] p-6 text-center transition-transform hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-[#b3917d] shadow-sm">
-                <Phone className="h-6 w-6" />
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-[#a19690] font-bold">{t('about.phone')}</p>
-                <p className="mt-1 text-sm font-semibold text-[#1a1a1a]">{CONTACT_INFO.phone}</p>
               </div>
             </a>
           </div>

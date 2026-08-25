@@ -1,4 +1,9 @@
-import { formatOrderEmail, getEmailSetupInstructions, isEmailConfigured, sendOrderNotification } from "../src/lib/order-email.ts";
+import {
+  appendOrderToSheet,
+  formatOrderSheetRecord,
+  getGoogleSheetsSetupInstructions,
+  isGoogleSheetsConfigured,
+} from "../src/lib/order-sheet.ts";
 import type { OrderSubmissionPayload } from "../src/lib/order-types.ts";
 
 const sampleOrder: OrderSubmissionPayload = {
@@ -6,6 +11,7 @@ const sampleOrder: OrderSubmissionPayload = {
   consentTimestamp: new Date().toISOString(),
   subtotal: 2700,
   total: 2705,
+  comment: "Google Sheet test order",
   items: [
     {
       id: 6,
@@ -13,38 +19,37 @@ const sampleOrder: OrderSubmissionPayload = {
       quantity: 1,
       price: 2700,
       category: "Rings",
+      size: "17",
     },
   ],
   shipping: {
     fullName: "Payka Test Customer",
     phone: "+380991234567",
-    email: "alina@example.com",
     city: "Kyiv",
     department: "Test Branch",
     address: "",
     shippingMethod: "Nova Poshta (to Department)",
     shippingCost: 5,
   },
-  locale: "en",
 };
 
 async function main() {
-  if (!isEmailConfigured()) {
-    console.error(getEmailSetupInstructions());
+  if (!isGoogleSheetsConfigured()) {
+    console.error(getGoogleSheetsSetupInstructions());
     process.exit(1);
   }
 
   const orderId = `test-${Date.now()}`;
-  const content = formatOrderEmail(sampleOrder, orderId);
+  const record = formatOrderSheetRecord(sampleOrder, orderId);
 
-  console.log("Sending test order email...");
-  console.log(`Recipient: ${process.env.ORDER_NOTIFICATION_EMAIL || "mamenkooo@gmail.com"}`);
-  console.log(`Subject: ${content.subject}`);
+  console.log("Appending test order to Google Sheet...");
+  console.log(`Order number: ${record.orderNumber}`);
+  console.log(`Customer: ${record.fullName} / ${record.phone}`);
 
-  const info = await sendOrderNotification(sampleOrder, orderId);
+  const result = await appendOrderToSheet(sampleOrder, orderId);
 
-  console.log("Test email sent successfully.");
-  console.log(`Message ID: ${info.messageId}`);
+  console.log("Test order appended successfully.");
+  console.log(result);
 }
 
 main().catch((error) => {

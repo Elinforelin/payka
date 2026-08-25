@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useFavorites } from "@/lib/favorites-context";
 import { useCart } from "@/lib/cart-context";
 import { resolveProductImageUrl } from "@/lib/product-images";
+import { ProductPrice, DiscountBadge } from "@/components/ProductPrice";
 
 export const Route = createFileRoute("/favorites")({
   component: FavoritesPage,
@@ -159,6 +160,7 @@ function FavoritesPage() {
                     alt={t(product.name)}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
+                  <DiscountBadge product={product} className="absolute right-4 top-4 z-10" />
                   <div className="absolute left-4 top-4 rounded-full bg-white/80 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#b3917d] backdrop-blur-md">
                     {product.categoryName || t('favorites.general')}
                   </div>
@@ -170,7 +172,7 @@ function FavoritesPage() {
                       <h3 className="text-lg font-bold text-[#1a1a1a] group-hover:text-[#b3917d] transition-colors">
                         {t(product.name)}
                       </h3>
-                      <p className="mt-1 text-xl font-black text-[#b3917d]">${product.price}</p>
+                      <ProductPrice product={product} className="mt-1" />
                     </div>
                     <button
                       onClick={() => removeFromFavorites(product.id)}

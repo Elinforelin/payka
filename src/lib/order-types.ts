@@ -11,6 +11,7 @@ export interface OrderItemPayload {
 export interface ShippingInfoPayload {
   fullName: string;
   phone: string;
+  email: string;
   city: string;
   department: string;
   address: string;
@@ -26,6 +27,7 @@ export interface OrderSubmissionPayload {
   privacyConsent: boolean;
   consentTimestamp: string;
   comment?: string;
+  locale?: string;
 }
 
 export interface OrderEmailContent {
