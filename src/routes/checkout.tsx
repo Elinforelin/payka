@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { useCart } from "@/lib/cart-context";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
-import { submitOrder } from "@/lib/submit-order";
+import { ORDER_DELIVERY_FAILED, submitOrder } from "@/lib/submit-order";
 import { CONTACT_INFO } from "@/lib/contact";
 import { formatDisplayOrderNumber } from "@/lib/order-utils";
 
@@ -140,6 +140,21 @@ function CheckoutPage() {
 
   const currentMethod = shippingMethods.find(m => m.id === selectedMethod)!;
 
+  const getSubmitErrorMessage = (error: unknown) => {
+    if (!(error instanceof Error)) {
+      return t('checkout.errors.submit_failed');
+    }
+
+    if (
+      error.message === ORDER_DELIVERY_FAILED ||
+      error.message.includes("Email is not configured")
+    ) {
+      return t('checkout.errors.submit_failed');
+    }
+
+    return error.message;
+  };
+
   const validateShipping = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.fullName.trim()) newErrors.fullName = t('checkout.errors.name_required');
@@ -222,9 +237,7 @@ function CheckoutPage() {
       clearCart();
       window.scrollTo(0, 0);
     } catch (error) {
-      setSubmitError(
-        error instanceof Error ? error.message : t('checkout.errors.submit_failed'),
-      );
+      setSubmitError(getSubmitErrorMessage(error));
     } finally {
       setIsSubmitting(false);
     }
