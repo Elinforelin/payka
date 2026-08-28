@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { C as CONTACT_INFO } from "./contact-DWQvISeu.mjs";
 import { i as img } from "./me-3RncXd2G.mjs";
 import { C as ChevronLeft } from "./chevron-left.mjs";
-import { c as createLucideIcon } from "./router-D4PKThx1.mjs";
+import { c as createLucideIcon } from "./router-CYm7miYu.mjs";
 import { I as Instagram } from "./instagram.mjs";
 import "react";
 import "i18next";

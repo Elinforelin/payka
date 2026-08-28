@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { C as CONTACT_INFO } from "./contact-DWQvISeu.mjs";
 import { T as Truck, M as MessageCircle } from "./truck.mjs";
-import { c as createLucideIcon } from "./router-D4PKThx1.mjs";
+import { c as createLucideIcon } from "./router-CYm7miYu.mjs";
 import { X } from "./x.mjs";
 const __iconNode$2 = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
 const ChevronDown = createLucideIcon("chevron-down", __iconNode$2);

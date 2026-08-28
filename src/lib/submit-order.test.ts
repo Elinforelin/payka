@@ -8,14 +8,15 @@ const { sendOrderNotification, appendOrderToSheet } = vi.hoisted(() => ({
 
 vi.mock("./order-email", () => ({
   sendOrderNotification,
-  normalizeOrderSubmission: (data: OrderSubmissionPayload) => data,
+  isEmailConfigured: vi.fn(() => false),
 }));
 
 vi.mock("./order-sheet", () => ({
   appendOrderToSheet,
+  isGoogleSheetsConfigured: vi.fn(() => false),
 }));
 
-import { ORDER_DELIVERY_FAILED, deliverOrder } from "./submit-order";
+import { ORDER_DELIVERY_FAILED, deliverOrder } from "./order-delivery";
 
 const sampleOrder: OrderSubmissionPayload = {
   privacyConsent: true,

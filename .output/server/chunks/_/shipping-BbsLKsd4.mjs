@@ -7,7 +7,7 @@ import { C as ChevronLeft } from "./chevron-left.mjs";
 import { T as Truck } from "./truck.mjs";
 import "react";
 import "./contact-DWQvISeu.mjs";
-import "./router-D4PKThx1.mjs";
+import "./router-CYm7miYu.mjs";
 import "i18next";
 import "i18next-browser-languagedetector";
 import "./uk-CdVMwhvi.mjs";
