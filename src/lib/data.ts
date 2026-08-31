@@ -148,7 +148,6 @@ export const products: Product[] = [
         "description": "product.descriptions.lollypop_rings",
         "price": 2000,
         "category": Category.Rings,
-        "discountPercent": 30,
         "imageUrl": "/assets/lollypop/IMG_4831.png",
         "images": [
             "/assets/lollypop/IMG_4831.png",
@@ -190,6 +189,7 @@ export const products: Product[] = [
         "description": "product.descriptions.silver_pendant_cup",
         "price": 4100,
         "category": Category.Pendants,
+        "discountPercent": 30,
         "imageUrl": "/assets/cup/5282821220627849167.jpg",
         "images": [
             "/assets/5282821220627849167.jpg",
