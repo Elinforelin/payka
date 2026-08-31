@@ -269,7 +269,7 @@
     "success_order_number": "Order number",
     "success_email_sent": "A confirmation with your order details was sent to {{email}}.",
     "success_next_title": "What happens next",
-    "success_next_desc": "We'll also message you shortly via Instagram or phone to confirm the order and discuss any details — size, shipping, or gift packaging.",
+    "success_next_desc": "We'll also message you shortly via Telegram or Viber to confirm the order and discuss any details — size, shipping, or gift packaging.",
     "privacy_title": "Data Protection",
     "privacy_note": "We collect only the information needed to fulfill your order. Personal data is transmitted securely to our team and processed solely for order fulfillment in accordance with GDPR.",
     "privacy_consent": "I agree to the processing of my personal data for order fulfillment.",
