@@ -60,6 +60,9 @@ export async function deliverOrder(
       );
       sheetSaved = !sheetResult.skipped;
       emailSent = Boolean(sheetResult.emailsSent);
+      if (sheetSaved && !emailSent) {
+        console.warn("[payka] Order saved to Google Sheet but email was not sent.");
+      }
     } catch (error) {
       sheetError = error;
       emailError = error;

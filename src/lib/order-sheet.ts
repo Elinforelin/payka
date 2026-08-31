@@ -135,12 +135,18 @@ export async function appendOrderToSheet(
     );
   }
 
-  let parsed: { ok?: boolean; error?: string; emailsSent?: boolean } = {};
+  let parsed: {
+    ok?: boolean;
+    error?: string;
+    emailsSent?: boolean;
+    emailError?: string | null;
+  } = {};
   try {
     parsed = JSON.parse(bodyText) as {
       ok?: boolean;
       error?: string;
       emailsSent?: boolean;
+      emailError?: string | null;
     };
   } catch {
     throw new Error(`Google Sheet webhook returned a non-JSON response: ${bodyText}`);
@@ -148,6 +154,10 @@ export async function appendOrderToSheet(
 
   if (!parsed.ok) {
     throw new Error(parsed.error || "Google Sheet webhook rejected the order.");
+  }
+
+  if (parsed.emailError) {
+    console.warn("[payka] Google Apps Script saved the order but email failed:", parsed.emailError);
   }
 
   return { skipped: false, ok: true, emailsSent: parsed.emailsSent };

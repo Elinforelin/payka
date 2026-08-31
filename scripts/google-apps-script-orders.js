@@ -79,6 +79,15 @@ function doGet() {
   return json({ ok: true, service: "payka-orders" });
 }
 
+/** Run once from the Apps Script editor to grant Gmail send permission. */
+function authorizeGmailSend() {
+  GmailApp.sendEmail(
+    Session.getActiveUser().getEmail(),
+    "Payka Gmail authorization test",
+    "Gmail send works. You can delete this message.",
+  );
+}
+
 function doPost(event) {
   try {
     if (!event || !event.postData || !event.postData.contents) {
@@ -100,11 +109,16 @@ function doPost(event) {
     sheet.appendRow(COLUMNS.map(([, read]) => read(order)));
 
     let emailsSent = false;
+    let emailError = null;
     if (payload.emails) {
-      emailsSent = sendOrderEmails(payload.emails);
+      try {
+        emailsSent = sendOrderEmails(payload.emails);
+      } catch (error) {
+        emailError = String(error);
+      }
     }
 
-    return json({ ok: true, emailsSent });
+    return json({ ok: true, emailsSent, emailError });
   } catch (error) {
     return json({ ok: false, error: String(error) });
   }
@@ -114,11 +128,24 @@ function sendOrderEmails(emails) {
   let sentAny = false;
 
   if (emails.shop) {
-    sentAny = sendWebhookEmail(emails.shop) || sentAny;
+    try {
+      sentAny = sendWebhookEmail(emails.shop) || sentAny;
+    } catch (error) {
+      throw new Error("Shop email failed: " + error);
+    }
   }
 
   if (emails.customer && emails.customer.to) {
-    sentAny = sendWebhookEmail(emails.customer) || sentAny;
+    try {
+      sentAny = sendWebhookEmail(emails.customer) || sentAny;
+    } catch (error) {
+      if (sentAny) {
+        // Shop email went out; don't fail the whole order for customer email only.
+        console.error("Customer email failed: " + error);
+        return sentAny;
+      }
+      throw new Error("Customer email failed: " + error);
+    }
   }
 
   return sentAny;
