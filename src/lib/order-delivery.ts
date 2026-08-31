@@ -1,6 +1,7 @@
 import { loadRuntimeEnv } from "./load-runtime-env";
 import type { OrderSubmissionPayload } from "./order-types";
 import {
+  getEmailConfigStatus,
   isEmailConfigured,
   sendOrderNotification,
 } from "./order-email";
@@ -25,6 +26,7 @@ export async function deliverOrder(
   } catch (error) {
     emailError = error;
     console.error("[payka] Failed to send order email:", error);
+    console.error("[payka] Email config status:", getEmailConfigStatus());
   }
 
   try {

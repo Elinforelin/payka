@@ -191,4 +191,8 @@ describe("sanitizeSmtpPassword", () => {
   it("strips spaces from Gmail App Passwords", () => {
     expect(sanitizeSmtpPassword("abcd efgh ijkl mnop")).toBe("abcdefghijklmnop");
   });
+
+  it("strips surrounding quotes copied from hosting panels", () => {
+    expect(sanitizeSmtpPassword('"abcd efgh ijkl mnop"')).toBe("abcdefghijklmnop");
+  });
 });

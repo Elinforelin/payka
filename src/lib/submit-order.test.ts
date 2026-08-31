@@ -9,6 +9,11 @@ const { sendOrderNotification, appendOrderToSheet } = vi.hoisted(() => ({
 vi.mock("./order-email", () => ({
   sendOrderNotification,
   isEmailConfigured: vi.fn(() => false),
+  getEmailConfigStatus: vi.fn(() => ({
+    smtpConfigured: false,
+    resendConfigured: false,
+    recipient: "mamenkooo@gmail.com",
+  })),
 }));
 
 vi.mock("./order-sheet", () => ({

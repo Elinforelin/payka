@@ -39,7 +39,26 @@ export function isValidEmail(value: string): boolean {
 
 export function sanitizeSmtpPassword(value: string): string {
   // Gmail App Passwords are 16 characters; Google displays them with spaces.
-  return value.replace(/\s+/g, "");
+  let normalized = value.trim();
+  if (
+    (normalized.startsWith('"') && normalized.endsWith('"')) ||
+    (normalized.startsWith("'") && normalized.endsWith("'"))
+  ) {
+    normalized = normalized.slice(1, -1);
+  }
+  return normalized.replace(/\s+/g, "");
+}
+
+export function getEmailConfigStatus(): {
+  smtpConfigured: boolean;
+  resendConfigured: boolean;
+  recipient: string;
+} {
+  return {
+    smtpConfigured: isSmtpConfigured(),
+    resendConfigured: isResendConfigured(),
+    recipient: getOrderNotificationRecipient(),
+  };
 }
 
 function escapeHtml(value: string): string {
@@ -322,18 +341,26 @@ export function createMailTransport(): Transporter {
     throw new Error(getEmailSetupInstructions());
   }
 
+  const transportOptions = {
+    auth: { user, pass },
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
+  };
+
   if (host) {
     return nodemailer.createTransport({
+      ...transportOptions,
       host,
       port,
       secure: port === 465,
-      auth: { user, pass },
+      requireTLS: port === 587,
     });
   }
 
   return nodemailer.createTransport({
+    ...transportOptions,
     service: "gmail",
-    auth: { user, pass },
   });
 }
 
