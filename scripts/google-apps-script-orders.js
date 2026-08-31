@@ -10,6 +10,9 @@
  *      Who has access: Anyone
  * 5. Copy the web app URL into GOOGLE_SHEETS_WEBHOOK_URL in .env.
  * 6. Keep the spreadsheet private — share it only with your own Google account.
+ * 7. On Vercel (SMTP blocked): set SEND_EMAIL_VIA_GOOGLE_SCRIPT=true in .env / hosting panel.
+ *    The script sends shop + customer emails via GmailApp (HTTPS, no custom domain needed).
+ *    Deploy the script as payka.jwlr@gmail.com so emails come from that inbox.
  *
  * After any later edit, Deploy → Manage deployments → the pencil → New version.
  */
@@ -96,8 +99,40 @@ function doPost(event) {
     ensureHeaderRow(sheet);
     sheet.appendRow(COLUMNS.map(([, read]) => read(order)));
 
-    return json({ ok: true });
+    let emailsSent = false;
+    if (payload.emails) {
+      emailsSent = sendOrderEmails(payload.emails);
+    }
+
+    return json({ ok: true, emailsSent });
   } catch (error) {
     return json({ ok: false, error: String(error) });
   }
+}
+
+function sendOrderEmails(emails) {
+  let sentAny = false;
+
+  if (emails.shop) {
+    sentAny = sendWebhookEmail(emails.shop) || sentAny;
+  }
+
+  if (emails.customer && emails.customer.to) {
+    sentAny = sendWebhookEmail(emails.customer) || sentAny;
+  }
+
+  return sentAny;
+}
+
+function sendWebhookEmail(message) {
+  if (!message || !message.to || !message.subject) {
+    return false;
+  }
+
+  GmailApp.sendEmail(String(message.to), String(message.subject), String(message.text || ""), {
+    htmlBody: String(message.html || ""),
+    name: "Payka Orders",
+  });
+
+  return true;
 }

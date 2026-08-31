@@ -129,6 +129,36 @@ describe("appendOrderToSheet", () => {
     expect(body.order.products).toContain("PLAVA Ring");
   });
 
+  it("includes email payloads when provided", async () => {
+    vi.stubEnv("GOOGLE_SHEETS_WEBHOOK_URL", "https://script.google.com/macros/s/test/exec");
+    vi.stubEnv("GOOGLE_SHEETS_WEBHOOK_SECRET", "sheet-secret");
+
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      text: async () => JSON.stringify({ ok: true, emailsSent: true }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await appendOrderToSheet(sampleOrder, "order-abc", {
+      shop: {
+        to: "shop@example.com",
+        subject: "New order",
+        html: "<p>shop</p>",
+        text: "shop",
+      },
+      customer: {
+        to: "alina@example.com",
+        subject: "Thanks",
+        html: "<p>thanks</p>",
+        text: "thanks",
+      },
+    });
+
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(body.emails.shop.to).toBe("shop@example.com");
+    expect(body.emails.customer.to).toBe("alina@example.com");
+  });
+
   it("throws when the webhook rejects the order", async () => {
     vi.stubEnv("GOOGLE_SHEETS_WEBHOOK_URL", "https://script.google.com/macros/s/test/exec");
     vi.stubEnv("GOOGLE_SHEETS_WEBHOOK_SECRET", "sheet-secret");

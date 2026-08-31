@@ -29,6 +29,25 @@ export function isGoogleSheetsConfigured(): boolean {
   );
 }
 
+export function isGoogleScriptEmailEnabled(): boolean {
+  return (
+    process.env.SEND_EMAIL_VIA_GOOGLE_SCRIPT?.trim().toLowerCase() === "true" &&
+    isGoogleSheetsConfigured()
+  );
+}
+
+export interface WebhookEmailMessage {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+}
+
+export interface WebhookEmailPayload {
+  shop?: WebhookEmailMessage;
+  customer?: WebhookEmailMessage;
+}
+
 export function formatOrderProducts(items: OrderItemPayload[]): string {
   return items
     .map((item) => {
@@ -86,7 +105,8 @@ export function getGoogleSheetsSetupInstructions(): string {
 export async function appendOrderToSheet(
   order: OrderSubmissionPayload,
   orderId: string,
-): Promise<{ skipped: boolean; ok?: boolean }> {
+  emails?: WebhookEmailPayload,
+): Promise<{ skipped: boolean; ok?: boolean; emailsSent?: boolean }> {
   const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL?.trim();
   const secret = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET?.trim();
 
@@ -103,9 +123,9 @@ export async function appendOrderToSheet(
   const response = await fetch(webhookUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ secret, order: record }),
+    body: JSON.stringify({ secret, order: record, emails }),
     redirect: "follow",
-    signal: AbortSignal.timeout(15_000),
+    signal: AbortSignal.timeout(30_000),
   });
 
   const bodyText = await response.text();
@@ -115,9 +135,13 @@ export async function appendOrderToSheet(
     );
   }
 
-  let parsed: { ok?: boolean; error?: string } = {};
+  let parsed: { ok?: boolean; error?: string; emailsSent?: boolean } = {};
   try {
-    parsed = JSON.parse(bodyText) as { ok?: boolean; error?: string };
+    parsed = JSON.parse(bodyText) as {
+      ok?: boolean;
+      error?: string;
+      emailsSent?: boolean;
+    };
   } catch {
     throw new Error(`Google Sheet webhook returned a non-JSON response: ${bodyText}`);
   }
@@ -126,5 +150,5 @@ export async function appendOrderToSheet(
     throw new Error(parsed.error || "Google Sheet webhook rejected the order.");
   }
 
-  return { skipped: false, ok: true };
+  return { skipped: false, ok: true, emailsSent: parsed.emailsSent };
 }
