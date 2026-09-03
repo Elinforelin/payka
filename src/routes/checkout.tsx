@@ -399,7 +399,8 @@ function CheckoutPage() {
             quantity: item.quantity,
             price: item.price,
             category: item.category,
-            stone: [item.selectedStone, item.selectedStoneColor].filter(Boolean).join(', '),
+            stone: item.selectedStone,
+            stoneColor: item.selectedStoneColor,
             size: item.selectedSize,
           })),
           shipping: {

@@ -49,6 +49,24 @@ describe("formatOrderProducts", () => {
     );
   });
 
+  it("includes separate stone type and color when provided", () => {
+    expect(
+      formatOrderProducts([
+        {
+          id: 6,
+          name: "PLAVA Ring",
+          quantity: 1,
+          price: 2700,
+          size: "17.5",
+          stone: "Cubic Zirconia",
+          stoneColor: "Champagne",
+        },
+      ]),
+    ).toBe(
+      "PLAVA Ring x1 — ₴2700 [Size: 17.5, Stone: Cubic Zirconia, Champagne]",
+    );
+  });
+
   it("resolves i18n product name keys to English labels", () => {
     expect(
       formatOrderProducts([
@@ -83,6 +101,8 @@ describe("formatOrderSheetRecord", () => {
       address: "",
       shippingMethod: "Nova Poshta (to Department)",
       products: "PLAVA Ring x2 — ₴5400 [Size: 17, Stone: Cubic Zirconia, Pink]",
+      sizes: "PLAVA Ring: 17",
+      stones: "PLAVA Ring: Cubic Zirconia, Pink",
       subtotal: 5700,
       shippingCost: 5,
       total: 5705,

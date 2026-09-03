@@ -4,7 +4,9 @@ export interface OrderItemPayload {
   quantity: number;
   price: number;
   category?: string;
+  /** Stone type, or legacy "type, color" combined string */
   stone?: string;
+  stoneColor?: string;
   size?: string;
 }
 

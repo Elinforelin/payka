@@ -73,8 +73,9 @@ function escapeHtml(value: string): string {
 function formatItemLine(item: OrderItemPayload, locale: OrderLocale): string {
   const lineTotal = item.price * item.quantity;
   const name = resolveProductName(item.name, locale);
+  const stone = [item.stone, item.stoneColor].filter(Boolean).join(", ");
   const extras = [
-    item.stone ? `${translateOrderText(locale, "order_email.customer.stone")}: ${item.stone}` : null,
+    stone ? `${translateOrderText(locale, "order_email.customer.stone")}: ${stone}` : null,
     item.size ? `${translateOrderText(locale, "order_email.customer.size")}: ${item.size}` : null,
   ].filter(Boolean).join(", ");
   return `- ${name} (ID: ${item.id}) x${item.quantity} — ₴${lineTotal}${extras ? ` [${extras}]` : ""}`;
@@ -83,9 +84,10 @@ function formatItemLine(item: OrderItemPayload, locale: OrderLocale): string {
 function formatItemHtml(item: OrderItemPayload, locale: OrderLocale): string {
   const lineTotal = item.price * item.quantity;
   const name = resolveProductName(item.name, locale);
+  const stone = [item.stone, item.stoneColor].filter(Boolean).join(", ");
   const extras = [
-    item.stone
-      ? `<strong>${escapeHtml(translateOrderText(locale, "order_email.customer.stone"))}:</strong> ${escapeHtml(item.stone)}`
+    stone
+      ? `<strong>${escapeHtml(translateOrderText(locale, "order_email.customer.stone"))}:</strong> ${escapeHtml(stone)}`
       : null,
     item.size
       ? `<strong>${escapeHtml(translateOrderText(locale, "order_email.customer.size"))}:</strong> ${escapeHtml(item.size)}`
@@ -545,6 +547,7 @@ export function normalizeOrderSubmission(
     price: Math.max(0, Number(item.price)),
     category: item.category ? sanitizeText(item.category, 80) : undefined,
     stone: item.stone ? sanitizeText(item.stone, 200) : undefined,
+    stoneColor: item.stoneColor ? sanitizeText(item.stoneColor, 120) : undefined,
     size: item.size ? sanitizeText(item.size, 20) : undefined,
   }));
 

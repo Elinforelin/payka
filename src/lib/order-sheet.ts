@@ -14,12 +14,83 @@ export interface OrderSheetRecord {
   address: string;
   shippingMethod: string;
   products: string;
+  sizes: string;
+  stones: string;
   subtotal: number;
   shippingCost: number;
   total: number;
   comment: string;
   privacyConsent: string;
   consentTimestamp: string;
+}
+
+function formatItemStoneLabel(item: OrderItemPayload): string {
+  const parts = [item.stone, item.stoneColor].filter(Boolean);
+  return parts.join(", ");
+}
+
+export function formatOrderProducts(items: OrderItemPayload[]): string {
+  return items
+    .map((item) => {
+      const stone = formatItemStoneLabel(item);
+      const extras = [
+        item.size ? `Size: ${item.size}` : null,
+        stone ? `Stone: ${stone}` : null,
+      ]
+        .filter(Boolean)
+        .join(", ");
+      const lineTotal = item.price * item.quantity;
+      return `${resolveProductName(item.name, "en")} x${item.quantity} — ₴${lineTotal}${extras ? ` [${extras}]` : ""}`;
+    })
+    .join("\n");
+}
+
+export function formatOrderSizes(items: OrderItemPayload[]): string {
+  return items
+    .map((item) => {
+      const name = resolveProductName(item.name, "en");
+      return item.size ? `${name}: ${item.size}` : `${name}: —`;
+    })
+    .join("\n");
+}
+
+export function formatOrderStones(items: OrderItemPayload[]): string {
+  return items
+    .map((item) => {
+      const name = resolveProductName(item.name, "en");
+      const stone = formatItemStoneLabel(item);
+      return stone ? `${name}: ${stone}` : `${name}: —`;
+    })
+    .join("\n");
+}
+
+export function formatOrderSheetRecord(
+  order: OrderSubmissionPayload,
+  orderId: string,
+  receivedAt = new Date().toISOString(),
+): OrderSheetRecord {
+  const shippingCost = Number(order.shipping.shippingCost);
+  return {
+    receivedAt,
+    orderNumber: formatDisplayOrderNumber(orderId),
+    orderId,
+    fullName: order.shipping.fullName,
+    phone: order.shipping.phone,
+    email: order.shipping.email,
+    city: order.shipping.city || "",
+    department: order.shipping.department || "",
+    address: order.shipping.address || "",
+    shippingMethod: order.shipping.shippingMethod,
+    products: formatOrderProducts(order.items),
+    sizes: formatOrderSizes(order.items),
+    stones: formatOrderStones(order.items),
+    subtotal: order.subtotal,
+    shippingCost: Number.isFinite(shippingCost) ? shippingCost : 0,
+    total: order.total,
+    comment: order.comment || "",
+    privacyConsent: order.privacyConsent ? "yes" : "no",
+    consentTimestamp: order.consentTimestamp,
+  };
 }
 
 export function isGoogleSheetsConfigured(): boolean {
@@ -46,48 +117,6 @@ export interface WebhookEmailMessage {
 export interface WebhookEmailPayload {
   shop?: WebhookEmailMessage;
   customer?: WebhookEmailMessage;
-}
-
-export function formatOrderProducts(items: OrderItemPayload[]): string {
-  return items
-    .map((item) => {
-      const extras = [
-        item.size ? `Size: ${item.size}` : null,
-        item.stone ? `Stone: ${item.stone}` : null,
-      ]
-        .filter(Boolean)
-        .join(", ");
-      const lineTotal = item.price * item.quantity;
-      return `${resolveProductName(item.name, "en")} x${item.quantity} — ₴${lineTotal}${extras ? ` [${extras}]` : ""}`;
-    })
-    .join("\n");
-}
-
-export function formatOrderSheetRecord(
-  order: OrderSubmissionPayload,
-  orderId: string,
-  receivedAt = new Date().toISOString(),
-): OrderSheetRecord {
-  const shippingCost = Number(order.shipping.shippingCost);
-  return {
-    receivedAt,
-    orderNumber: formatDisplayOrderNumber(orderId),
-    orderId,
-    fullName: order.shipping.fullName,
-    phone: order.shipping.phone,
-    email: order.shipping.email,
-    city: order.shipping.city || "",
-    department: order.shipping.department || "",
-    address: order.shipping.address || "",
-    shippingMethod: order.shipping.shippingMethod,
-    products: formatOrderProducts(order.items),
-    subtotal: order.subtotal,
-    shippingCost: Number.isFinite(shippingCost) ? shippingCost : 0,
-    total: order.total,
-    comment: order.comment || "",
-    privacyConsent: order.privacyConsent ? "yes" : "no",
-    consentTimestamp: order.consentTimestamp,
-  };
 }
 
 export function getGoogleSheetsSetupInstructions(): string {
