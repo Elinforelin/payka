@@ -96,6 +96,7 @@ function formatItemHtml(item: OrderItemPayload, locale: OrderLocale): string {
       ${escapeHtml(name)}
       ${extras ? `<br/><span style="font-size:12px;color:#6b5f59;">${extras}</span>` : ""}
     </td>
+    <td style="padding:8px;border-bottom:1px solid #eee;">${item.quantity}</td>
     <td style="padding:8px;border-bottom:1px solid #eee;">₴${item.price}</td>
     <td style="padding:8px;border-bottom:1px solid #eee;">₴${lineTotal}</td>
   </tr>`;
@@ -166,6 +167,7 @@ export function formatOrderEmail(
       <thead>
         <tr>
           <th align="left" style="padding:8px;border-bottom:2px solid #b3917d;">Product</th>
+          <th align="left" style="padding:8px;border-bottom:2px solid #b3917d;">Qty</th>
           <th align="left" style="padding:8px;border-bottom:2px solid #b3917d;">Unit price</th>
           <th align="left" style="padding:8px;border-bottom:2px solid #b3917d;">Line total</th>
         </tr>
@@ -253,6 +255,7 @@ export function formatCustomerConfirmationEmail(
         <thead>
           <tr>
             <th align="left" style="padding:8px;border-bottom:2px solid #b3917d;">${escapeHtml(t("product"))}</th>
+            <th align="left" style="padding:8px;border-bottom:2px solid #b3917d;">${escapeHtml(t("quantity"))}</th>
             <th align="left" style="padding:8px;border-bottom:2px solid #b3917d;">${escapeHtml(t("unit_price"))}</th>
             <th align="left" style="padding:8px;border-bottom:2px solid #b3917d;">${escapeHtml(t("line_total"))}</th>
           </tr>

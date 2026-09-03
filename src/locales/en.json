@@ -296,6 +296,7 @@
       "order_number": "Order number",
       "order_details": "Order details",
       "product": "Product",
+      "quantity": "Qty",
       "unit_price": "Unit price",
       "line_total": "Line total",
       "subtotal": "Subtotal",

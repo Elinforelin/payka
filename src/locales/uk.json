@@ -298,6 +298,7 @@
       "order_number": "Номер замовлення",
       "order_details": "Деталі замовлення",
       "product": "Виріб",
+      "quantity": "Кількість",
       "unit_price": "Ціна",
       "line_total": "Сума",
       "subtotal": "Вартість товарів",
