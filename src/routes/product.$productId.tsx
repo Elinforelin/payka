@@ -13,6 +13,7 @@ import { PackagingGuide } from "@/components/PackagingGuide";
 import { ShippingReturnsGuide } from "@/components/ShippingReturnsInfo";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { DiscountBadge, CharityBadge, CharityNote, ProductPrice } from "@/components/ProductPrice";
+import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 
 const getProduct = createServerFn({ method: "GET" })
   .inputValidator((data: { productId: number }) => data)
@@ -69,6 +70,8 @@ function ProductPage() {
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const [showPackagingGuide, setShowPackagingGuide] = useState(false);
   const [showShippingGuide, setShowShippingGuide] = useState(false);
+
+  useBodyScrollLock(isLightboxOpen);
 
   useEffect(() => {
     if (product.availableStones && selectedStoneType) {
@@ -601,14 +604,17 @@ function ProductPage() {
                     <button
                       disabled={!canAddToCart}
                       onClick={() => {
-                        const stoneLabel = selectedStoneType && allStoneColorsSelected
-                          ? stoneCount > 1
-                            ? `${t(`stones.types.${selectedStoneType}`)}: ${selectedStoneColors
-                                .map((color, i) => `${i + 1}. ${t(`stones.colors.${color!.name}`)}`)
-                                .join(', ')}`
-                            : `${t(`stones.types.${selectedStoneType}`)}: ${t(`stones.colors.${selectedStoneColor!.name}`)}`
+                        const stoneTypeLabel = selectedStoneType
+                          ? t(`stones.types.${selectedStoneType}`)
                           : undefined;
-                        addToCart(product, stoneLabel, selectedSize ?? undefined);
+                        const stoneColorLabel = selectedStoneType && allStoneColorsSelected
+                          ? stoneCount > 1
+                            ? selectedStoneColors
+                                .map((color, i) => `${i + 1}. ${t(`stones.colors.${color!.name}`)}`)
+                                .join(', ')
+                            : t(`stones.colors.${selectedStoneColor!.name}`)
+                          : undefined;
+                        addToCart(product, stoneTypeLabel, selectedSize ?? undefined, stoneColorLabel);
                       }}
                       className={`flex items-center justify-center gap-3 rounded-[24px] py-4 md:py-5 text-base md:text-lg font-bold text-white shadow-xl transition-all ${
                         canAddToCart

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { ShoppingBag, X, Plus, Minus, Trash2, Bookmark, BookmarkCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useCart } from '@/lib/cart-context';
+import { getCartItemKey, getCartItemVariants, useCart } from '@/lib/cart-context';
 import { resolveProductImageUrl } from '@/lib/product-images';
 import { Link } from '@tanstack/react-router';
+import { useBodyScrollLock } from '@/lib/use-body-scroll-lock';
 
 export const MiniCart: React.FC = () => {
   const { t } = useTranslation();
@@ -12,6 +13,8 @@ export const MiniCart: React.FC = () => {
 
   const activeItems = items.filter(item => !item.savedForLater);
   const savedItems = items.filter(item => item.savedForLater);
+
+  useBodyScrollLock(isOpen);
 
   return (
     <div className="relative">
@@ -57,8 +60,12 @@ export const MiniCart: React.FC = () => {
                 <div className="space-y-6">
                   {activeItems.length > 0 && (
                     <div className="space-y-4">
-                      {activeItems.map((item) => (
-                        <div key={item.id} className="flex gap-4">
+                      {activeItems.map((item) => {
+                        const cartItemKey = getCartItemKey(item);
+                        const { size, stoneType, stoneColor } = getCartItemVariants(item);
+
+                        return (
+                        <div key={cartItemKey} className="flex gap-4">
                           <Link 
                             to="/product/$productId" 
                             params={{ productId: String(item.id) }}
@@ -73,7 +80,7 @@ export const MiniCart: React.FC = () => {
                           </Link>
                           <div className="flex flex-1 flex-col justify-between py-1">
                             <div>
-                              <div className="flex items-start justify-between">
+                              <div className="flex items-start justify-between gap-2">
                                 <Link 
                                   to="/product/$productId" 
                                   params={{ productId: String(item.id) }}
@@ -83,18 +90,32 @@ export const MiniCart: React.FC = () => {
                                   {t(item.name)}
                                 </Link>
                                 <button 
-                                  onClick={() => removeFromCart(item.id)}
-                                  className="text-[#a19690] hover:text-red-500 transition-colors"
+                                  onClick={() => removeFromCart(cartItemKey)}
+                                  className="shrink-0 text-[#a19690] hover:text-red-500 transition-colors"
                                 >
                                   <Trash2 className="h-4 w-4" />
                                 </button>
                               </div>
-                              <p className="text-sm font-bold text-[#b3917d]">₴{item.price}</p>
+                              {(size || stoneType || stoneColor) && (
+                                <p className="mt-0.5 text-xs text-[#a19690] leading-snug">
+                                  {[
+                                    size && `${t('cart.size')}: ${size}`,
+                                    stoneType && `${t('cart.stone')}: ${stoneType}`,
+                                    stoneColor && `${t('cart.stone_color')}: ${stoneColor}`,
+                                  ].filter(Boolean).join(' · ')}
+                                </p>
+                              )}
+                              <p className="text-xs text-[#a19690]">
+                                {t('cart.unit_price')}: ₴{item.price}
+                              </p>
+                              <p className="text-sm font-bold text-[#b3917d]">
+                                {t('cart.line_sum')}: ₴{item.price * item.quantity}
+                              </p>
                             </div>
                             <div className="flex items-center justify-between mt-2">
                               <div className="flex items-center gap-3 rounded-xl bg-[#fdfaf7] p-1 shadow-inner">
                                 <button
-                                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                  onClick={() => updateQuantity(cartItemKey, item.quantity - 1)}
                                   className="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-[#1a1a1a] shadow-sm hover:bg-[#f0ebe7] transition-colors"
                                 >
                                   <Minus className="h-3 w-3" />
@@ -103,14 +124,14 @@ export const MiniCart: React.FC = () => {
                                   {item.quantity}
                                 </span>
                                 <button
-                                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                  onClick={() => updateQuantity(cartItemKey, item.quantity + 1)}
                                   className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#1a1a1a] text-white shadow-sm hover:bg-black transition-colors"
                                 >
                                   <Plus className="h-3 w-3" />
                                 </button>
                               </div>
                               <button
-                                onClick={() => toggleSaveForLater(item.id)}
+                                onClick={() => toggleSaveForLater(cartItemKey)}
                                 className="flex items-center gap-1.5 text-xs font-medium text-[#a19690] hover:text-[#b3917d] transition-colors"
                               >
                                 <Bookmark className="h-3.5 w-3.5" />
@@ -119,7 +140,8 @@ export const MiniCart: React.FC = () => {
                             </div>
                           </div>
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
 
@@ -130,8 +152,12 @@ export const MiniCart: React.FC = () => {
                         {t('cart.saved_for_later')} ({savedItems.length})
                       </h4>
                       <div className="space-y-4 opacity-70">
-                        {savedItems.map((item) => (
-                          <div key={item.id} className="flex gap-4">
+                        {savedItems.map((item) => {
+                          const cartItemKey = getCartItemKey(item);
+                          const { size, stoneType, stoneColor } = getCartItemVariants(item);
+
+                          return (
+                          <div key={cartItemKey} className="flex gap-4">
                             <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-[#f7f3ef] grayscale">
                               <img
                                 src={resolveProductImageUrl(item.imageUrl)}
@@ -140,27 +166,44 @@ export const MiniCart: React.FC = () => {
                               />
                             </div>
                             <div className="flex flex-1 flex-col justify-center">
-                              <div className="flex items-start justify-between">
+                              <div className="flex items-start justify-between gap-2">
                                 <span className="text-sm font-bold text-[#1a1a1a]">{t(item.name)}</span>
                                 <button 
-                                  onClick={() => removeFromCart(item.id)}
-                                  className="text-[#a19690] hover:text-red-500"
+                                  onClick={() => removeFromCart(cartItemKey)}
+                                  className="shrink-0 text-[#a19690] hover:text-red-500"
                                 >
                                   <Trash2 className="h-4 w-4" />
                                 </button>
                               </div>
-                              <div className="mt-1 flex items-center justify-between">
-                                <p className="text-xs font-bold text-[#b3917d]">₴{item.price}</p>
+                              {(size || stoneType || stoneColor) && (
+                                <p className="mt-0.5 text-[11px] text-[#a19690] leading-snug">
+                                  {[
+                                    size && `${t('cart.size')}: ${size}`,
+                                    stoneType && `${t('cart.stone')}: ${stoneType}`,
+                                    stoneColor && `${t('cart.stone_color')}: ${stoneColor}`,
+                                  ].filter(Boolean).join(' · ')}
+                                </p>
+                              )}
+                              <div className="mt-1 flex items-center justify-between gap-2">
+                                <div>
+                                  <p className="text-[11px] text-[#a19690]">
+                                    {t('cart.unit_price')}: ₴{item.price}
+                                  </p>
+                                  <p className="text-xs font-bold text-[#b3917d]">
+                                    {t('cart.line_sum')}: ₴{item.price * item.quantity}
+                                  </p>
+                                </div>
                                 <button
-                                  onClick={() => toggleSaveForLater(item.id)}
-                                  className="text-xs font-bold text-[#b3917d] hover:underline"
+                                  onClick={() => toggleSaveForLater(cartItemKey)}
+                                  className="shrink-0 text-xs font-bold text-[#b3917d] hover:underline"
                                 >
                                   {t('common.move_to_cart')}
                                 </button>
                               </div>
                             </div>
                           </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}

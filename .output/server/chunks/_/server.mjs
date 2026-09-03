@@ -683,7 +683,7 @@ function getResponse() {
   return event.res;
 }
 async function getStartManifest() {
-  const { tsrStartManifest } = await import("./_tanstack-start-manifest_v-DvyKVhxz.mjs");
+  const { tsrStartManifest } = await import("./_tanstack-start-manifest_v-Bt1aUFs2.mjs");
   const startManifest = tsrStartManifest();
   const rootRoute = startManifest.routes[rootRouteId] = startManifest.routes[rootRouteId] || {};
   rootRoute.assets = rootRoute.assets || [];
@@ -720,13 +720,13 @@ async function getStartManifest() {
 }
 const manifest = { "5d14184e791326a0e274d1e4e3681e27fd834658d2ef5f776f7a7ca880bdf3a5": {
   functionName: "getProducts_createServerFn_handler",
-  importer: () => import("./index-DJu9CK7o.mjs")
+  importer: () => import("./index-bKdqJK12.mjs")
 }, "02237705211f6fce5dafbd6be40b265cc093810759aabc102a7a61ff80e58dd5": {
   functionName: "getProduct_createServerFn_handler",
-  importer: () => import("./product._productId-BN2LZYOm.mjs")
+  importer: () => import("./product._productId-B14ejhqN.mjs")
 }, "5c64c4ecab63675a61db85176d6dbad94bc1f95268ec2c0acc215ee2739aee1c": {
   functionName: "submitOrder_createServerFn_handler",
-  importer: () => import("./submit-order-BveGTyY9.mjs").then((n) => n.a)
+  importer: () => import("./submit-order-4po4xuuB.mjs").then((n) => n.c)
 } };
 async function getServerFnById(id) {
   const serverFnInfo = manifest[id];
@@ -1007,7 +1007,7 @@ let cachedRouterEntry = null;
 let cachedManifest = null;
 async function getEntries() {
   if (cachedRouterEntry === null) {
-    cachedRouterEntry = await import("./router-CYm7miYu.mjs").then(function(n) {
+    cachedRouterEntry = await import("./router-DTeC6Cxg.mjs").then(function(n) {
       return n.r;
     }).then((n) => n.r);
   }

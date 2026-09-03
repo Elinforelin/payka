@@ -11,6 +11,7 @@ import { getCharityPercent } from "@/lib/product-charity";
 import { MiniCart } from "@/components/MiniCart";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductPrice } from "@/components/ProductPrice";
+import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 
 const getProducts = createServerFn({ method: "GET" }).handler(async () => {
     return products;
@@ -33,6 +34,8 @@ function CatalogPage() {
     const [filterOnSale, setFilterOnSale] = useState(false);
     const [filterCharity, setFilterCharity] = useState(false);
     const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
+
+    useBodyScrollLock(showFilters);
 
     const categories = getCategoriesWithProducts();
 

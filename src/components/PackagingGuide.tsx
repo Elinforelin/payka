@@ -1,6 +1,7 @@
 import { X, Gift } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
+import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 
 interface PackagingGuideProps {
   onClose: () => void;
@@ -14,6 +15,7 @@ const PACKAGING_PHOTOS = [
 
 export function PackagingGuide({ onClose }: PackagingGuideProps) {
   const { t } = useTranslation();
+  useBodyScrollLock(true);
 
   return (
     <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center">

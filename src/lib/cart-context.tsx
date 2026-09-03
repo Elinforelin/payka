@@ -7,7 +7,46 @@ export interface CartItem extends Product {
   quantity: number;
   savedForLater?: boolean;
   selectedStone?: string;
+  selectedStoneColor?: string;
   selectedSize?: string;
+}
+
+export type CartItemVariant = Pick<
+  CartItem,
+  'id' | 'selectedStone' | 'selectedStoneColor' | 'selectedSize'
+>;
+
+/** Unique key for a cart line: same product + different size/stone = separate lines. */
+export function getCartItemKey(item: CartItemVariant): string {
+  return [
+    item.id,
+    item.selectedSize ?? '',
+    item.selectedStone ?? '',
+    item.selectedStoneColor ?? '',
+  ].join('::');
+}
+
+export function getCartItemVariants(item: CartItemVariant): {
+  stoneType?: string;
+  stoneColor?: string;
+  size?: string;
+} {
+  const stoneType = item.selectedStoneColor
+    ? item.selectedStone
+    : item.selectedStone?.includes(': ')
+      ? item.selectedStone.split(': ')[0]
+      : item.selectedStone;
+  const stoneColor =
+    item.selectedStoneColor ??
+    (item.selectedStone?.includes(': ')
+      ? item.selectedStone.split(': ').slice(1).join(': ')
+      : undefined);
+
+  return {
+    size: item.selectedSize,
+    stoneType,
+    stoneColor,
+  };
 }
 
 interface NotificationData {
@@ -18,10 +57,15 @@ interface NotificationData {
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Product, selectedStone?: string, selectedSize?: string) => void;
-  removeFromCart: (productId: number) => void;
-  updateQuantity: (productId: number, quantity: number) => void;
-  toggleSaveForLater: (productId: number) => void;
+  addToCart: (
+    product: Product,
+    selectedStone?: string,
+    selectedSize?: string,
+    selectedStoneColor?: string,
+  ) => void;
+  removeFromCart: (cartItemKey: string) => void;
+  updateQuantity: (cartItemKey: string, quantity: number) => void;
+  toggleSaveForLater: (cartItemKey: string) => void;
   clearCart: () => void;
   clearNotification: () => void;
   totalItems: number;
@@ -69,19 +113,32 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
-  const addToCart = (product: Product, selectedStone?: string, selectedSize?: string) => {
+  const addToCart = (
+    product: Product,
+    selectedStone?: string,
+    selectedSize?: string,
+    selectedStoneColor?: string,
+  ) => {
     const pricedProduct = { ...product, price: getEffectivePrice(product) };
+    const lineKey = getCartItemKey({
+      id: product.id,
+      selectedStone,
+      selectedSize,
+      selectedStoneColor,
+    });
+
     setItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
+      const existingItem = prevItems.find((item) => getCartItemKey(item) === lineKey);
       if (existingItem) {
         return prevItems.map((item) =>
-          item.id === product.id
+          getCartItemKey(item) === lineKey
             ? {
                 ...item,
                 ...pricedProduct,
                 quantity: item.quantity + 1,
                 savedForLater: false,
                 selectedStone,
+                selectedStoneColor,
                 selectedSize,
               }
             : item
@@ -89,7 +146,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return [
         ...prevItems,
-        { ...pricedProduct, quantity: 1, savedForLater: false, selectedStone, selectedSize },
+        {
+          ...pricedProduct,
+          quantity: 1,
+          savedForLater: false,
+          selectedStone,
+          selectedStoneColor,
+          selectedSize,
+        },
       ];
     });
 
@@ -104,24 +168,30 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     notificationTimeoutRef.current = setTimeout(() => setNotification(null), 8000);
   };
 
-  const removeFromCart = (productId: number) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== productId));
-  };
-
-  const updateQuantity = (productId: number, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
-      return;
-    }
+  const removeFromCart = (cartItemKey: string) => {
     setItems((prevItems) =>
-      prevItems.map((item) => (item.id === productId ? { ...item, quantity } : item))
+      prevItems.filter((item) => getCartItemKey(item) !== cartItemKey)
     );
   };
 
-  const toggleSaveForLater = (productId: number) => {
+  const updateQuantity = (cartItemKey: string, quantity: number) => {
+    if (quantity <= 0) {
+      removeFromCart(cartItemKey);
+      return;
+    }
     setItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === productId ? { ...item, savedForLater: !item.savedForLater } : item
+        getCartItemKey(item) === cartItemKey ? { ...item, quantity } : item
+      )
+    );
+  };
+
+  const toggleSaveForLater = (cartItemKey: string) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        getCartItemKey(item) === cartItemKey
+          ? { ...item, savedForLater: !item.savedForLater }
+          : item
       )
     );
   };

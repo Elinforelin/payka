@@ -1,5 +1,6 @@
-import { X, Ruler, Link2 } from "lucide-react";
+import { X, Ruler, Gem } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 
 interface SizeGuideProps {
   onClose: () => void;
@@ -32,6 +33,7 @@ export const NECKLACE_LENGTHS = [
 
 export function SizeGuide({ onClose }: SizeGuideProps) {
   const { t } = useTranslation();
+  useBodyScrollLock(true);
 
   return (
     <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center">
@@ -76,7 +78,7 @@ export function SizeGuide({ onClose }: SizeGuideProps) {
         {/* Necklace Length Guide */}
         <section className="mt-8">
           <h3 className="flex items-center gap-2 text-base font-bold text-[#1a1a1a] mb-3">
-            <Link2 className="h-4 w-4 text-[#b3917d]" />
+            <Gem className="h-4 w-4 text-[#b3917d]" />
             {t('product.size_guide_necklace_title')}
           </h3>
           <div className="overflow-hidden rounded-2xl border border-gray-100">

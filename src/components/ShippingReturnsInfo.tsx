@@ -3,6 +3,7 @@ import { ChevronDown, Truck, Ruler, RotateCcw, MessageCircle, X } from "lucide-r
 import { useTranslation } from "react-i18next";
 import { Link } from "@tanstack/react-router";
 import { CONTACT_INFO } from "@/lib/contact";
+import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 
 function PolicyBlock({
   icon,
@@ -145,6 +146,7 @@ interface ShippingReturnsGuideProps {
 
 export function ShippingReturnsGuide({ onClose }: ShippingReturnsGuideProps) {
   const { t } = useTranslation();
+  useBodyScrollLock(true);
 
   return (
     <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center">

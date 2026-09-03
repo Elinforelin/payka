@@ -17,7 +17,7 @@
  * After any later edit, Deploy → Manage deployments → the pencil → New version.
  */
 
-const WEBHOOK_SECRET = "replace-with-the-same-secret-as-in-dotenv";
+const WEBHOOK_SECRET = "PaykaWh2026-K7mNx4qR2p";
 const SHEET_NAME = "Orders";
 
 const COLUMNS = [

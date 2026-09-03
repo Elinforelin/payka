@@ -4,11 +4,42 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useRef } from "react";
 
-import { useCart } from "@/lib/cart-context";
+import { getCartItemKey, getCartItemVariants, useCart } from "@/lib/cart-context";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { submitOrder } from "@/lib/submit-order";
 import { CONTACT_INFO } from "@/lib/contact";
 import { formatDisplayOrderNumber } from "@/lib/order-utils";
+
+const TOP_CITY_NAMES = ["Київ", "Львів", "Одеса", "Харків", "Дніпро"] as const;
+
+interface NovaPoshtaCity {
+  Ref: string;
+  Description: string;
+  AreaDescription: string;
+}
+
+interface NovaPoshtaWarehouse {
+  Ref: string;
+  Description: string;
+}
+
+async function callNovaPoshta<T>(
+  calledMethod: string,
+  methodProperties: Record<string, string>,
+): Promise<T[]> {
+  const response = await fetch("https://api.novaposhta.ua/v2.0/json/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      modelName: "Address",
+      calledMethod,
+      methodProperties,
+      apiKey: "",
+    }),
+  });
+  const data = await response.json();
+  return data.success ? data.data : [];
+}
 
 export const Route = createFileRoute("/checkout")({ component: CheckoutPage });
 
@@ -46,14 +77,70 @@ function CheckoutPage() {
   const [orderId, setOrderId] = useState<string | null>(null);
 
   const [citySearch, setCitySearch] = useState("");
-  const [cities, setCities] = useState<any[]>([]);
+  const [topCities, setTopCities] = useState<NovaPoshtaCity[]>([]);
+  const [cities, setCities] = useState<NovaPoshtaCity[]>([]);
   const [showCitySuggestions, setShowCitySuggestions] = useState(false);
   const [isCitiesLoading, setIsCitiesLoading] = useState(false);
 
-  const [departments, setDepartments] = useState<any[]>([]);
+  const [departments, setDepartments] = useState<NovaPoshtaWarehouse[]>([]);
+  const [departmentSearch, setDepartmentSearch] = useState("");
+  const [showDepartmentSuggestions, setShowDepartmentSuggestions] = useState(false);
   const [isDepartmentsLoading, setIsDepartmentsLoading] = useState(false);
 
   const citySearchRef = useRef<HTMLDivElement>(null);
+  const departmentSearchRef = useRef<HTMLDivElement>(null);
+  const shippingFormRef = useRef<HTMLFormElement>(null);
+
+  const syncContactFieldsFromDom = (
+    data: typeof formData = formData,
+  ): typeof formData => {
+    const form = shippingFormRef.current;
+    if (!form) return data;
+
+    const getValue = (name: string, fallback: string) => {
+      const field = form.elements.namedItem(name) as HTMLInputElement | null;
+      return field?.value ?? fallback;
+    };
+
+    return {
+      ...data,
+      fullName: getValue("fullName", data.fullName),
+      phone: getValue("phone", data.phone),
+      email: getValue("email", data.email),
+    };
+  };
+
+  const isValidPhone = (phone: string) => {
+    const digits = phone.replace(/\D/g, "");
+    // UA: 0XXXXXXXXX or 380XXXXXXXXX; also allow +XX international (10–13 digits)
+    return (
+      (digits.length === 10 && digits.startsWith("0")) ||
+      (digits.length === 12 && digits.startsWith("380")) ||
+      (digits.length >= 10 && digits.length <= 13)
+    );
+  };
+
+  const clearFieldError = (field: string) => {
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  };
+
+  const updateContactField = (
+    field: "fullName" | "phone" | "email",
+    value: string,
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (field === "fullName" && value.trim()) clearFieldError("fullName");
+    if (field === "phone" && isValidPhone(value)) clearFieldError("phone");
+    if (field === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (emailRegex.test(value.trim())) clearFieldError("email");
+    }
+  };
 
   const shippingMethods: ShippingMethod[] = [
     { id: 'nova_poshta', name: t('checkout.methods.nova_poshta'), time: "1-2 business days" },
@@ -64,13 +151,33 @@ function CheckoutPage() {
       if (citySearchRef.current && !citySearchRef.current.contains(event.target as Node)) {
         setShowCitySuggestions(false);
       }
+      if (departmentSearchRef.current && !departmentSearchRef.current.contains(event.target as Node)) {
+        setShowDepartmentSuggestions(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
-    if (citySearch.length < 2) {
+    const fetchTopCities = async () => {
+      const results = await Promise.all(
+        TOP_CITY_NAMES.map(async (name) => {
+          const data = await callNovaPoshta<NovaPoshtaCity>("getCities", {
+            FindByString: name,
+            Limit: "5",
+          });
+          return data.find((city) => city.Description === name) ?? data[0] ?? null;
+        }),
+      );
+      setTopCities(results.filter((city): city is NovaPoshtaCity => city !== null));
+    };
+
+    fetchTopCities();
+  }, []);
+
+  useEffect(() => {
+    if (citySearch.trim().length < 2) {
       setCities([]);
       return;
     }
@@ -78,22 +185,11 @@ function CheckoutPage() {
     const timer = setTimeout(async () => {
       setIsCitiesLoading(true);
       try {
-        const response = await fetch('https://api.novaposhta.ua/v2.0/json/', {
-          method: 'POST',
-          body: JSON.stringify({
-            modelName: "Address",
-            calledMethod: "getCities",
-            methodProperties: {
-              FindByString: citySearch,
-              Limit: "10"
-            },
-            apiKey: "" // Often works for getCities even without key, or use a public one if available
-          })
+        const data = await callNovaPoshta<NovaPoshtaCity>("getCities", {
+          FindByString: citySearch.trim(),
+          Limit: "10",
         });
-        const data = await response.json();
-        if (data.success) {
-          setCities(data.data);
-        }
+        setCities(data);
       } catch (error) {
         console.error("Error fetching cities:", error);
       } finally {
@@ -107,27 +203,17 @@ function CheckoutPage() {
   useEffect(() => {
     if (!formData.cityRef) {
       setDepartments([]);
+      setDepartmentSearch("");
       return;
     }
 
     const fetchDepartments = async () => {
       setIsDepartmentsLoading(true);
       try {
-        const response = await fetch('https://api.novaposhta.ua/v2.0/json/', {
-          method: 'POST',
-          body: JSON.stringify({
-            modelName: "Address",
-            calledMethod: "getWarehouses",
-            methodProperties: {
-              CityRef: formData.cityRef,
-            },
-            apiKey: ""
-          })
+        const data = await callNovaPoshta<NovaPoshtaWarehouse>("getWarehouses", {
+          CityRef: formData.cityRef,
         });
-        const data = await response.json();
-        if (data.success) {
-          setDepartments(data.data);
-        }
+        setDepartments(data);
       } catch (error) {
         console.error("Error fetching departments:", error);
       } finally {
@@ -137,6 +223,86 @@ function CheckoutPage() {
 
     fetchDepartments();
   }, [formData.cityRef]);
+
+  const normalizedCitySearch = citySearch.trim().toLowerCase();
+  const filteredTopCities = topCities.filter((city) =>
+    !normalizedCitySearch || city.Description.toLowerCase().includes(normalizedCitySearch),
+  );
+  const citySuggestions =
+    normalizedCitySearch.length >= 2
+      ? (cities.length > 0 ? cities : filteredTopCities)
+      : filteredTopCities;
+
+  const normalizedDepartmentSearch = departmentSearch.trim().toLowerCase();
+  const filteredDepartments = departments.filter((department) =>
+    !normalizedDepartmentSearch ||
+    department.Description.toLowerCase().includes(normalizedDepartmentSearch),
+  );
+
+  const selectCity = (city: NovaPoshtaCity) => {
+    setFormData((prev) => ({
+      ...prev,
+      city: city.Description,
+      cityRef: city.Ref,
+      department: "",
+      departmentRef: "",
+    }));
+    setCitySearch(city.Description);
+    setDepartmentSearch("");
+    setCities([]);
+    setShowCitySuggestions(false);
+    clearFieldError("city");
+    clearFieldError("department");
+  };
+
+  const selectDepartment = (department: NovaPoshtaWarehouse) => {
+    setFormData((prev) => ({
+      ...prev,
+      department: department.Description,
+      departmentRef: department.Ref,
+    }));
+    setDepartmentSearch(department.Description);
+    setShowDepartmentSuggestions(false);
+    clearFieldError("department");
+  };
+
+  const resolveCityFromSearch = (data: typeof formData): typeof formData => {
+    if (data.cityRef) return data;
+    const query = citySearch.trim().toLowerCase();
+    if (!query) return data;
+
+    const match =
+      citySuggestions.find((city) => city.Description.toLowerCase() === query) ??
+      cities.find((city) => city.Description.toLowerCase() === query) ??
+      topCities.find((city) => city.Description.toLowerCase() === query);
+
+    if (!match) return data;
+    return {
+      ...data,
+      city: match.Description,
+      cityRef: match.Ref,
+      department: "",
+      departmentRef: "",
+    };
+  };
+
+  const resolveDepartmentFromSearch = (
+    data: typeof formData,
+  ): typeof formData => {
+    if (data.departmentRef || !data.cityRef) return data;
+    const query = departmentSearch.trim().toLowerCase();
+    if (!query) return data;
+
+    const match = departments.find(
+      (department) => department.Description.toLowerCase() === query,
+    );
+    if (!match) return data;
+    return {
+      ...data,
+      department: match.Description,
+      departmentRef: match.Ref,
+    };
+  };
 
   const currentMethod = shippingMethods.find(m => m.id === selectedMethod)!;
 
@@ -163,23 +329,22 @@ function CheckoutPage() {
     return t("checkout.errors.submit_failed");
   };
 
-  const validateShipping = () => {
+  const validateShipping = (data = formData) => {
     const newErrors: Record<string, string> = {};
-    if (!formData.fullName.trim()) newErrors.fullName = t('checkout.errors.name_required');
-    
-    const phoneRegex = /^\+?[\d\s-]{10,}$/;
-    if (!phoneRegex.test(formData.phone)) newErrors.phone = t('checkout.errors.phone_invalid');
+    if (!data.fullName.trim()) newErrors.fullName = t('checkout.errors.name_required');
+
+    if (!isValidPhone(data.phone)) newErrors.phone = t('checkout.errors.phone_invalid');
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email.trim())) {
+    if (!emailRegex.test(data.email.trim())) {
       newErrors.email = t('checkout.errors.email_invalid');
     }
     
     if (selectedMethod === 'nova_poshta') {
-      if (!formData.cityRef) newErrors.city = t('checkout.errors.city_required');
-      if (!formData.departmentRef) newErrors.department = t('checkout.errors.department_required');
+      if (!data.cityRef) newErrors.city = t('checkout.errors.city_required');
+      if (!data.departmentRef) newErrors.department = t('checkout.errors.department_required');
     } else if (selectedMethod !== 'pickup') {
-      if (!formData.address.trim()) newErrors.address = t('checkout.errors.address_required');
+      if (!data.address.trim()) newErrors.address = t('checkout.errors.address_required');
     }
 
     setErrors(newErrors);
@@ -195,8 +360,20 @@ function CheckoutPage() {
   };
 
   const handleNext = () => {
-    if (validateShipping()) {
-      setStep('summary');
+    let syncedData = syncContactFieldsFromDom();
+    syncedData = resolveCityFromSearch(syncedData);
+    syncedData = resolveDepartmentFromSearch(syncedData);
+
+    if (syncedData.cityRef && syncedData.city !== citySearch) {
+      setCitySearch(syncedData.city);
+    }
+    if (syncedData.departmentRef && syncedData.department !== departmentSearch) {
+      setDepartmentSearch(syncedData.department);
+    }
+
+    setFormData(syncedData);
+    if (validateShipping(syncedData)) {
+      setStep("summary");
       window.scrollTo(0, 0);
     }
   };
@@ -222,7 +399,7 @@ function CheckoutPage() {
             quantity: item.quantity,
             price: item.price,
             category: item.category,
-            stone: item.selectedStone,
+            stone: [item.selectedStone, item.selectedStoneColor].filter(Boolean).join(', '),
             size: item.selectedSize,
           })),
           shipping: {
@@ -344,16 +521,25 @@ function CheckoutPage() {
         {/* Left Column: Forms or Summary */}
         <div className="space-y-6">
           {step === 'shipping' ? (
-            <div className="bg-white rounded-[32px] p-6 md:p-8 shadow-sm space-y-6">
+            <form
+              ref={shippingFormRef}
+              autoComplete="on"
+              className="bg-white rounded-[32px] p-6 md:p-8 shadow-sm space-y-6"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#6b5f59] mb-2 px-1">
+                  <label htmlFor="checkout-full-name" className="block text-sm font-medium text-[#6b5f59] mb-2 px-1">
                     {t('checkout.full_name')}
                   </label>
                   <input
+                    id="checkout-full-name"
+                    name="fullName"
                     type="text"
+                    autoComplete="name"
                     value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    onChange={(e) => updateContactField("fullName", e.target.value)}
+                    onInput={(e) => updateContactField("fullName", e.currentTarget.value)}
                     className={`w-full h-14 rounded-2xl bg-[#fdfaf7] px-4 outline-none border-2 transition-all ${
                       errors.fullName ? 'border-red-200 focus:border-red-400' : 'border-transparent focus:border-[#b3917d]'
                     }`}
@@ -363,16 +549,18 @@ function CheckoutPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#6b5f59] mb-2 px-1">
+                  <label htmlFor="checkout-phone" className="block text-sm font-medium text-[#6b5f59] mb-2 px-1">
                     {t('checkout.phone')}
                   </label>
                   <input
+                    id="checkout-phone"
+                    name="phone"
                     type="tel"
                     autoComplete="tel"
                     inputMode="tel"
-                    name="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) => updateContactField("phone", e.target.value)}
+                    onInput={(e) => updateContactField("phone", e.currentTarget.value)}
                     className={`w-full h-14 rounded-2xl bg-[#fdfaf7] px-4 outline-none border-2 transition-all ${
                       errors.phone ? 'border-red-200 focus:border-red-400' : 'border-transparent focus:border-[#b3917d]'
                     }`}
@@ -382,14 +570,17 @@ function CheckoutPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#6b5f59] mb-2 px-1">
+                  <label htmlFor="checkout-email" className="block text-sm font-medium text-[#6b5f59] mb-2 px-1">
                     {t('checkout.email')}
                   </label>
                   <input
+                    id="checkout-email"
+                    name="email"
                     type="email"
                     autoComplete="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => updateContactField("email", e.target.value)}
+                    onInput={(e) => updateContactField("email", e.currentTarget.value)}
                     className={`w-full h-14 rounded-2xl bg-[#fdfaf7] px-4 outline-none border-2 transition-all ${
                       errors.email ? 'border-red-200 focus:border-red-400' : 'border-transparent focus:border-[#b3917d]'
                     }`}
@@ -415,13 +606,30 @@ function CheckoutPage() {
                             setCitySearch(value);
                             setShowCitySuggestions(true);
                             if (value !== formData.city) {
-                              setFormData({ ...formData, city: "", cityRef: "", department: "", departmentRef: "" });
+                              setFormData((prev) => ({
+                                ...prev,
+                                city: "",
+                                cityRef: "",
+                                department: "",
+                                departmentRef: "",
+                              }));
+                              setDepartmentSearch("");
                             }
                           }}
-                          onFocus={() => {
-                            if (citySearch.length >= 2 && cities.length > 0) {
-                              setShowCitySuggestions(true);
-                            }
+                          onFocus={() => setShowCitySuggestions(true)}
+                          onBlur={() => {
+                            // Delay so suggestion click can run first
+                            window.setTimeout(() => {
+                              setFormData((prev) => {
+                                const resolved = resolveCityFromSearch(prev);
+                                if (resolved.cityRef && !prev.cityRef) {
+                                  setCitySearch(resolved.city);
+                                  setDepartmentSearch("");
+                                  clearFieldError("city");
+                                }
+                                return resolved;
+                              });
+                            }, 150);
                           }}
                           placeholder={t('checkout.search_city')}
                           className={`w-full h-14 rounded-2xl bg-[#fdfaf7] pl-12 pr-4 outline-none border-2 transition-all ${
@@ -434,56 +642,102 @@ function CheckoutPage() {
                         )}
                       </div>
                       
-                      {showCitySuggestions && cities.length > 0 && (
+                      {showCitySuggestions && (isCitiesLoading || citySuggestions.length > 0 || normalizedCitySearch.length >= 2) && (
                         <div className="absolute top-full left-0 right-0 z-50 mt-2 max-h-60 overflow-y-auto rounded-2xl bg-white p-2 shadow-xl border border-gray-100">
-                          {cities.map((city: any) => (
-                            <button
-                              key={city.Ref}
-                              type="button"
-                              onClick={() => {
-                                setFormData({ ...formData, city: city.Description, cityRef: city.Ref, department: "", departmentRef: "" });
-                                setCitySearch(city.Description);
-                                setCities([]);
-                                setShowCitySuggestions(false);
-                              }}
-                              className="w-full text-left p-3 hover:bg-[#fdfaf7] rounded-xl transition-colors text-sm"
-                            >
-                              {city.Description}, {city.AreaDescription}
-                            </button>
-                          ))}
+                          {normalizedCitySearch.length < 2 && filteredTopCities.length > 0 && (
+                            <p className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-[#a19690]">
+                              {t('checkout.popular_cities')}
+                            </p>
+                          )}
+                          {isCitiesLoading ? (
+                            <p className="px-3 py-2 text-sm text-[#6b5f59]">{t('checkout.searching')}</p>
+                          ) : citySuggestions.length > 0 ? (
+                            citySuggestions.map((city) => (
+                              <button
+                                key={city.Ref}
+                                type="button"
+                                onClick={() => selectCity(city)}
+                                className="w-full text-left p-3 hover:bg-[#fdfaf7] rounded-xl transition-colors text-sm"
+                              >
+                                {city.Description}{city.AreaDescription ? `, ${city.AreaDescription}` : ""}
+                              </button>
+                            ))
+                          ) : (
+                            <p className="px-3 py-2 text-sm text-[#6b5f59]">{t('checkout.no_cities_found')}</p>
+                          )}
                         </div>
                       )}
                       {errors.city && <p className="mt-1 text-xs text-red-500 px-1">{errors.city}</p>}
                     </div>
 
-                    <div>
+                    <div className="relative" ref={departmentSearchRef}>
                       <label className="block text-sm font-medium text-[#6b5f59] mb-2 px-1">
                         {t('checkout.department')}
                       </label>
                       <div className="relative">
-                        <select
+                        <input
+                          type="text"
+                          value={departmentSearch}
+                          autoComplete="off"
                           disabled={!formData.cityRef || isDepartmentsLoading}
-                          value={formData.departmentRef}
                           onChange={(e) => {
-                            const dep = departments.find(d => d.Ref === e.target.value);
-                            setFormData({ ...formData, department: dep?.Description || "", departmentRef: e.target.value });
+                            const value = e.target.value;
+                            setDepartmentSearch(value);
+                            setShowDepartmentSuggestions(true);
+                            if (value !== formData.department) {
+                              setFormData((prev) => ({
+                                ...prev,
+                                department: "",
+                                departmentRef: "",
+                              }));
+                            }
                           }}
-                          className={`w-full h-14 rounded-2xl bg-[#fdfaf7] pl-12 pr-4 outline-none border-2 transition-all appearance-none disabled:opacity-50 ${
+                          onFocus={() => {
+                            if (formData.cityRef) {
+                              setShowDepartmentSuggestions(true);
+                            }
+                          }}
+                          onBlur={() => {
+                            window.setTimeout(() => {
+                              setFormData((prev) => {
+                                const resolved = resolveDepartmentFromSearch(prev);
+                                if (resolved.departmentRef && !prev.departmentRef) {
+                                  setDepartmentSearch(resolved.department);
+                                  clearFieldError("department");
+                                }
+                                return resolved;
+                              });
+                            }, 150);
+                          }}
+                          placeholder={t('checkout.search_department')}
+                          className={`w-full h-14 rounded-2xl bg-[#fdfaf7] pl-12 pr-4 outline-none border-2 transition-all disabled:opacity-50 ${
                             errors.department ? 'border-red-200 focus:border-red-400' : 'border-transparent focus:border-[#b3917d]'
                           }`}
-                        >
-                          <option value="">{t('checkout.select_department')}</option>
-                          {departments.map((dep: any) => (
-                            <option key={dep.Ref} value={dep.Ref}>
-                              {dep.Description}
-                            </option>
-                          ))}
-                        </select>
+                        />
                         <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#a19690]" />
                         {isDepartmentsLoading && (
                           <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#b3917d] animate-spin" />
                         )}
                       </div>
+
+                      {showDepartmentSuggestions && formData.cityRef && !isDepartmentsLoading && (
+                        <div className="absolute top-full left-0 right-0 z-50 mt-2 max-h-60 overflow-y-auto rounded-2xl bg-white p-2 shadow-xl border border-gray-100">
+                          {filteredDepartments.length > 0 ? (
+                            filteredDepartments.map((department) => (
+                              <button
+                                key={department.Ref}
+                                type="button"
+                                onClick={() => selectDepartment(department)}
+                                className="w-full text-left p-3 hover:bg-[#fdfaf7] rounded-xl transition-colors text-sm"
+                              >
+                                {department.Description}
+                              </button>
+                            ))
+                          ) : (
+                            <p className="px-3 py-2 text-sm text-[#6b5f59]">{t('checkout.no_departments_found')}</p>
+                          )}
+                        </div>
+                      )}
                       {errors.department && <p className="mt-1 text-xs text-red-500 px-1">{errors.department}</p>}
                     </div>
                   </div>
@@ -518,7 +772,7 @@ function CheckoutPage() {
               </div>
 
 
-            </div>
+            </form>
           ) : (
             <div className="space-y-6">
               <div className="bg-white rounded-[32px] p-6 md:p-8 shadow-sm">
@@ -590,8 +844,10 @@ function CheckoutPage() {
             <h3 className="text-lg font-bold text-[#1a1a1a] mb-6">{t('checkout.order_summary')}</h3>
             
             <div className="max-h-64 overflow-y-auto pr-2 space-y-4 mb-8 custom-scrollbar">
-              {activeItems.map((item) => (
-                <div key={item.id} className="flex gap-4">
+              {activeItems.map((item) => {
+                const { size, stoneType, stoneColor } = getCartItemVariants(item);
+                return (
+                <div key={getCartItemKey(item)} className="flex gap-4">
                   <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-[#f7f3ef]">
                     <img
                       src={resolveProductImageUrl(item.imageUrl)}
@@ -601,11 +857,21 @@ function CheckoutPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-[#1a1a1a] truncate">{t(item.name)}</p>
+                    {(size || stoneType || stoneColor) && (
+                      <p className="text-xs text-[#a19690] leading-snug">
+                        {[
+                          size && `${t('cart.size')}: ${size}`,
+                          stoneType && `${t('cart.stone')}: ${stoneType}`,
+                          stoneColor && `${t('cart.stone_color')}: ${stoneColor}`,
+                        ].filter(Boolean).join(' · ')}
+                      </p>
+                    )}
                     <p className="text-xs text-[#6b5f59]">{t('checkout.qty')}: {item.quantity}</p>
                     <p className="text-sm font-bold text-[#b3917d]">₴{item.price * item.quantity}</p>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="space-y-3 pt-6 border-t border-gray-100">

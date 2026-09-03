@@ -201,13 +201,12 @@ export function formatCustomerConfirmationEmail(
   const t = (key: string, vars?: Record<string, string | number>) =>
     translateOrderText(locale, `order_email.customer.${key}`, vars);
   const orderNumber = formatDisplayOrderNumber(orderId);
-  const firstName = shipping.fullName.trim().split(/\s+/)[0] || shipping.fullName;
 
   const productLines = items.map((item) => formatItemLine(item, locale)).join("\n");
   const productRows = items.map((item) => formatItemHtml(item, locale)).join("");
 
   const text = [
-    t("greeting", { firstName }),
+    t("greeting"),
     "",
     t("thanks"),
     "",
@@ -242,7 +241,7 @@ export function formatCustomerConfirmationEmail(
     <div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:24px;padding:28px 24px;">
       <p style="margin:0 0 4px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#a19690;font-weight:bold;">Payka</p>
       <h2 style="margin:0 0 16px;font-size:22px;">${escapeHtml(t("html_title"))}</h2>
-      <p style="margin:0 0 20px;color:#6b5f59;">${escapeHtml(t("html_intro", { firstName }))}</p>
+      <p style="margin:0 0 20px;color:#6b5f59;">${escapeHtml(t("html_intro"))}</p>
 
       <p style="margin:0 0 24px;padding:14px 16px;background:#f7f3ef;border-radius:12px;">
         <span style="display:block;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#a19690;font-weight:bold;">${escapeHtml(t("order_number"))}</span>

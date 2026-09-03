@@ -5,12 +5,13 @@ import { useTranslation } from "react-i18next";
 import { C as CONTACT_INFO } from "./contact-DWQvISeu.mjs";
 import { i as img } from "./me-3RncXd2G.mjs";
 import { C as ChevronLeft } from "./chevron-left.mjs";
-import { c as createLucideIcon } from "./router-CYm7miYu.mjs";
+import { c as createLucideIcon } from "./router-DTeC6Cxg.mjs";
 import { I as Instagram } from "./instagram.mjs";
+import "@vercel/analytics/react";
 import "react";
 import "i18next";
 import "i18next-browser-languagedetector";
-import "./uk-CdVMwhvi.mjs";
+import "./uk-BZ-42kaA.mjs";
 import "./server.mjs";
 import "@tanstack/history";
 import "@tanstack/router-core/ssr/client";
@@ -28,7 +29,7 @@ import "node:path";
 import "tiny-invariant";
 import "seroval";
 import "@tanstack/react-router/ssr/server";
-import "./data-C0dK635X.mjs";
+import "./data-CZl5DixN.mjs";
 const __iconNode$5 = [
   [
     "path",

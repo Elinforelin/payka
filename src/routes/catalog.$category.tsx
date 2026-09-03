@@ -10,6 +10,7 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { MiniCart } from "@/components/MiniCart";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductPrice } from "@/components/ProductPrice";
+import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 
 export const Route = createFileRoute("/catalog/$category")({
   loader: async ({ params }) => {
@@ -42,6 +43,8 @@ function CategoryPage() {
   const [filterOnSale, setFilterOnSale] = useState(false);
   const [filterCharity, setFilterCharity] = useState(false);
   const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
+
+  useBodyScrollLock(showFilters);
 
   const filteredProducts = categoryProducts.filter((product) => {
     const matchesSearch =

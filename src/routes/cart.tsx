@@ -4,7 +4,7 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { useTranslation } from "react-i18next";
 
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
-import { useCart } from "@/lib/cart-context";
+import { getCartItemKey, getCartItemVariants, useCart } from "@/lib/cart-context";
 
 export const Route = createFileRoute("/cart")({ component: CartPage });
 
@@ -43,9 +43,13 @@ function CartPage() {
               </Link>
             </div>
           ) : (
-            activeItems.map((item) => (
+            activeItems.map((item) => {
+              const cartItemKey = getCartItemKey(item);
+              const { size, stoneType, stoneColor } = getCartItemVariants(item);
+
+              return (
               <div
-                key={item.id}
+                key={cartItemKey}
                 className="flex flex-col sm:flex-row items-center sm:items-start gap-4 rounded-[32px] bg-white p-4 shadow-sm"
               >
                 <Link 
@@ -68,25 +72,35 @@ function CartPage() {
                   >
                     {t(item.name)}
                   </Link>
-                  {item.selectedSize && (
+                  {size && (
                     <p className="text-xs text-[#a19690]">
-                      {t('cart.size')}: <span className="font-medium text-[#6b5f59]">{item.selectedSize}</span>
+                      {t('cart.size')}: <span className="font-medium text-[#6b5f59]">{size}</span>
                     </p>
                   )}
-                  {item.selectedStone && (
+                  {stoneType && (
                     <p className="text-xs text-[#a19690]">
-                      {t('cart.stone')}: <span className="font-medium text-[#6b5f59]">{item.selectedStone}</span>
+                      {t('cart.stone')}: <span className="font-medium text-[#6b5f59]">{stoneType}</span>
                     </p>
                   )}
-                  <p className="text-base md:text-lg font-bold text-[#b3917d]">
-                    ₴{item.price}
-                  </p>
+                  {stoneColor && (
+                    <p className="text-xs text-[#a19690]">
+                      {t('cart.stone_color')}: <span className="font-medium text-[#6b5f59]">{stoneColor}</span>
+                    </p>
+                  )}
+                  <div className="mt-1 space-y-0.5">
+                    <p className="text-sm text-[#a19690]">
+                      {t('cart.unit_price')}: <span className="font-medium text-[#6b5f59]">₴{item.price}</span>
+                    </p>
+                    <p className="text-base md:text-lg font-bold text-[#b3917d]">
+                      {t('cart.line_sum')}: ₴{item.price * item.quantity}
+                    </p>
+                  </div>
                 </div>
 
                 <div className="flex flex-row sm:flex-col items-center sm:items-end gap-4 sm:gap-3">
                   <div className="flex items-center gap-3 rounded-xl bg-[#fdfaf7] p-1 shadow-inner order-2 sm:order-1">
                     <button
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      onClick={() => updateQuantity(cartItemKey, item.quantity - 1)}
                       className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-[#1a1a1a] shadow-sm hover:bg-[#f0ebe7] transition-colors"
                     >
                       <Minus className="h-4 w-4" />
@@ -95,7 +109,7 @@ function CartPage() {
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={() => updateQuantity(cartItemKey, item.quantity + 1)}
                       className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1a1a1a] text-white shadow-sm hover:bg-black transition-colors"
                     >
                       <Plus className="h-4 w-4" />
@@ -103,14 +117,15 @@ function CartPage() {
                   </div>
 
                   <button
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => removeFromCart(cartItemKey)}
                     className="text-[#a19690] hover:text-red-500 transition-colors order-1 sm:order-2"
                   >
                     <Trash2 className="h-5 w-5" />
                   </button>
                 </div>
               </div>
-            ))
+            );
+            })
           )}
         </div>
 

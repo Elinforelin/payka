@@ -7,6 +7,7 @@ import { useFavorites } from "@/lib/favorites-context";
 import { useCart } from "@/lib/cart-context";
 import { resolveProductImageUrl } from "@/lib/product-images";
 import { ProductPrice, DiscountBadge } from "@/components/ProductPrice";
+import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 
 export const Route = createFileRoute("/favorites")({
   component: FavoritesPage,
@@ -20,6 +21,8 @@ function FavoritesPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
+
+  useBodyScrollLock(isAddingCategory);
 
   const filteredFavorites = activeCategory === "All" 
     ? favorites 
