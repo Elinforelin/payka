@@ -18,6 +18,8 @@ export interface Product {
      * Shows a badge on cards and a short note on the product page.
      */
     charityPercent?: number;
+    /** Whether product is in stock (true) or made to order (false) */
+    inStock?: boolean;
     category: Category;
     imageUrl: string | null;
     images?: string[];
@@ -89,6 +91,7 @@ export const products: Product[] = [
         "name": "product.names.ring_plava",
         "description": "product.descriptions.ring_plava",
         "price": 2700,
+        "inStock": true,
         "category": Category.Rings,
         "imageUrl": "/assets/plava/5267491911117774016.jpg",
         "images": [
@@ -120,6 +123,7 @@ export const products: Product[] = [
         "price": 1700,
         "charityPercent": 100,
         "discountPercent": 25,
+        "inStock": true,
         "category": Category.Rings,
         "imageUrl": "/assets/bubochki/5282821220627849158.jpg",
         "images": [
@@ -147,6 +151,7 @@ export const products: Product[] = [
         "name": "product.names.lollypop",
         "description": "product.descriptions.lollypop_rings",
         "price": 2000,
+        "inStock": false,
         "category": Category.Rings,
         "imageUrl": "/assets/lollypop/IMG_4831.png",
         "images": [
@@ -188,6 +193,7 @@ export const products: Product[] = [
         "name": "product.names.silver_pendant_cup",
         "description": "product.descriptions.silver_pendant_cup",
         "price": 4100,
+        "inStock": true,
         "category": Category.Pendants,
         "discountPercent": 30,
         "imageUrl": "/assets/cup/5282821220627849167.jpg",
@@ -210,6 +216,7 @@ export const products: Product[] = [
         "name": "product.names.flower_pendant",
         "description": "product.descriptions.flower_pendant",
         "price": 4100,
+        "inStock": true,
         "category": Category.Pendants,
         "imageUrl": "/assets/flower/IMG_4939.png",
         "images": [
@@ -230,6 +237,7 @@ export const products: Product[] = [
         "name": "product.names.round_wrinkled_earrings",
         "description": "product.descriptions.round_wrinkled_earrings",
         "price": 1800,
+        "inStock": true,
         "category": Category.Earrings,
         "imageUrl": "/assets/roundWrinkledEarrings/IMG_1482.png",
         "images": [
@@ -249,6 +257,7 @@ export const products: Product[] = [
         "name": "product.names.wave_ring",
         "description": "product.descriptions.wave_ring",
         "price": 1900,
+        "inStock": false,
         "category": Category.Rings,
         "imageUrl": "/assets/waveRing/IMG_8753.png",
         "images": [
@@ -271,6 +280,7 @@ export const products: Product[] = [
         "name": "product.names.smeared_ring",
         "description": "product.descriptions.smeared_ring",
         "price": 2700,
+        "inStock": false,
         "category": Category.Rings,
         "imageUrl": "/assets/smearedRing/IMG_1702.png",
         "images": [
@@ -291,6 +301,7 @@ export const products: Product[] = [
         "name": "product.names.crumpled_ring",
         "description": "product.descriptions.crumpled_ring",
         "price": 2900,
+        "inStock": false,
         "category": Category.Rings,
         "imageUrl": "/assets/crumpledRing/IMG_9086.png",
         "images": [
@@ -320,6 +331,7 @@ export const products: Product[] = [
         "name": "product.names.vase_earring",
         "description": "product.descriptions.vase_earring",
         "price": 1700,
+        "inStock": true,
         "category": Category.Earrings,
         "imageUrl": "/assets/crumpledRing/IMG_1444.png",
         "images": [
@@ -341,10 +353,15 @@ export const products: Product[] = [
         "name": "product.names.ring_with_tourmaline",
         "description": "product.descriptions.ring_with_tourmaline",
         "price": 2700,
+        "inStock": true,
         "category": Category.Rings,
         "imageUrl": "/assets/ringWithTourmaline/IMG_7965.jpg",
         "images": [
             "/assets/ringWithTourmaline/IMG_7965.jpg",
+            "/assets/ringWithTourmaline/IMG_7983.jpg",
+            "/assets/ringWithTourmaline/IMG_7994.jpg",
+            "/assets/ringWithTourmaline/IMG_8015.jpg",
+            "/assets/ringWithTourmaline/IMG_8020.jpg",
         ],
         "createdAt": "2026-06-04T07:17:07.889Z",
         "updatedAt": "2026-06-04T07:17:07.889Z",

@@ -136,6 +136,10 @@ function ProductPage() {
 
   const productDetails = [
     { label: t('common.categories'), value: t(`common.category_names.${product.category}`) },
+    {
+      label: t('product.availability'),
+      value: product.inStock !== undefined ? t(product.inStock ? "common.in_stock" : "common.need_to_order") : undefined,
+    },
     { label: t('product.metal_standard'), value: product.metalStandard },
     { label: t('product.metal_type'), value: product.metalType ? t(product.metalType) : undefined },
     { label: t('product.metal_color'), value: product.metalColor ? t(product.metalColor) : undefined },
@@ -300,7 +304,6 @@ function ProductPage() {
         <div className="flex flex-1 flex-col">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a]">{t(product.name)}</h2>
-
           </div>
 
           <p className="mt-2 text-[#6b5f59]">{t(product.description)}</p>

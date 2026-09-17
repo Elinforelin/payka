@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import type { Product } from "@/lib/data";
 import { getCharityPercent } from "@/lib/product-charity";
 import { getProductPricing } from "@/lib/product-price";
+import { isProductInStock } from "@/lib/product-stock";
 
 type PriceSize = "sm" | "md" | "lg";
 
@@ -90,6 +91,28 @@ export function CharityBadge({ product, className = "" }: CharityBadgeProps) {
   return (
     <span className={`${productBadgeClass} bg-[#5a7a5c] ${className}`.trim()}>
       {t("catalog.filter_charity")} {percent}%
+    </span>
+  );
+}
+
+interface StockBadgeProps {
+  product: Pick<Product, "inStock">;
+  className?: string;
+}
+
+export function StockBadge({ product, className = "" }: StockBadgeProps) {
+  const { t } = useTranslation();
+  if (product.inStock === undefined) return null;
+
+  const isInStock = Boolean(product.inStock);
+
+  return (
+    <span
+      className={`${productBadgeClass} ${
+        isInStock ? "bg-[#3d6e54]" : "bg-[#8c6b53]"
+      } ${className}`.trim()}
+    >
+      {t(isInStock ? "common.in_stock" : "common.need_to_order")}
     </span>
   );
 }
