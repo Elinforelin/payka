@@ -34,7 +34,8 @@
     "gemstones": {
       "none": "No gemstone",
       "cubic_zirconia": "Cubic Zirconia",
-      "pearl": "Pearl Simulants"
+      "pearl": "Pearl Simulants",
+      "tourmaline": "Tourmaline"
     },
     "metal_colors": {
       "white": "White",
@@ -79,7 +80,8 @@
       "wave_ring": "Wave ring with a smooth and flowing design, inspired by the beauty of nature",
       "smeared_ring": "A silver ring with soft contours that gently blur the line between shape and light",
       "crumpled_ring": "A silver ring with a hammered texture, where every mark shapes its unique character",
-      "vase_earring": "A silver earring with a vase-like shape, perfect for those who appreciate unique and artistic jewelry"
+      "vase_earring": "A silver earring with a vase-like shape, perfect for those who appreciate unique and artistic jewelry",
+      "ring_with_tourmaline": "A silver ring set with natural tourmaline, highlighting its vibrant and unique color"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
@@ -92,7 +94,8 @@
       "wave_ring": "Wave Ring",
       "smeared_ring": "Soft Contour Ring",
       "crumpled_ring": "Crumpled Texture Ring",
-      "vase_earring": "Vase-Shaped Earring"
+      "vase_earring": "Vase-Shaped Earring",
+      "ring_with_tourmaline": "Ring with Tourmaline"
     },
     "details": "Details",
     "about_product": "About Product",

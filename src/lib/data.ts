@@ -336,4 +336,22 @@ export const products: Product[] = [
         "rhodiumPlating": false,
         "weight": 5,
     },
+    {
+        "id": 17,
+        "name": "product.names.ring_with_tourmaline",
+        "description": "product.descriptions.ring_with_tourmaline",
+        "price": 2700,
+        "category": Category.Rings,
+        "imageUrl": "/assets/ringWithTourmaline/IMG_7965.jpg",
+        "images": [
+            "/assets/ringWithTourmaline/IMG_7965.jpg",
+        ],
+        "createdAt": "2026-06-04T07:17:07.889Z",
+        "updatedAt": "2026-06-04T07:17:07.889Z",
+        "gemstone": "common.gemstones.tourmaline",
+        "metalStandard": "925",
+        "metalType": "common.metal_types.silver",
+        "rhodiumPlating": false,
+        "weight": 5,
+    },
 ];
