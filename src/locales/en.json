@@ -88,7 +88,8 @@
       "smeared_ring": "A silver ring with soft contours that gently blur the line between shape and light",
       "crumpled_ring": "A silver ring with a hammered texture, where every mark shapes its unique character",
       "vase_earring": "A silver earring with a vase-like shape, perfect for those who appreciate unique and artistic jewelry",
-      "ring_with_tourmaline": "A silver ring set with natural tourmaline, highlighting its vibrant and unique color"
+      "ring_with_tourmaline": "A silver ring set with natural tourmaline, highlighting its vibrant and unique color",
+      "braided_ring": "A silver ring with a braided texture, weaving together a delicate and timeless design"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
@@ -102,7 +103,8 @@
       "smeared_ring": "Soft Contour Ring",
       "crumpled_ring": "Crumpled Texture Ring",
       "vase_earring": "Vase-Shaped Earring",
-      "ring_with_tourmaline": "Ring with Tourmaline"
+      "ring_with_tourmaline": "Ring with Tourmaline",
+      "braided_ring": "Braided Ring"
     },
     "details": "Details",
     "about_product": "About Product",
