@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import type { Product } from "@/lib/data";
 import { getCharityPercent } from "@/lib/product-charity";
@@ -128,10 +129,16 @@ export function CharityNote({ product, className = "" }: CharityNoteProps) {
   if (percent === null) return null;
 
   return (
-    <p
-      className={`rounded-2xl bg-[#5a7a5c]/10 px-4 py-3 text-sm text-[#3d5a40] ${className}`.trim()}
+    <div
+      className={`rounded-2xl bg-[#5a7a5c]/10 px-4 py-3 text-sm text-[#3d5a40] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 ${className}`.trim()}
     >
-      {t("product.charity_note", { percent })}
-    </p>
+      <span>{t("product.charity_note", { percent })}</span>
+      <Link
+        to="/charity"
+        className="text-xs font-bold underline underline-offset-2 hover:text-[#253927] transition-colors self-start sm:self-auto shrink-0"
+      >
+        {t("product.learn_more_charity")} →
+      </Link>
+    </div>
   );
 }

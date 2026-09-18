@@ -1,13 +1,14 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ChevronLeft, Heart, Info, Search, SlidersHorizontal, X, Check } from "lucide-react";
+import { ChevronLeft, Heart, Info, HandHeart, Search, SlidersHorizontal, X, Check } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Category, products } from "@/lib/data";
-import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { getEffectivePrice, getProductPricing } from "@/lib/product-price";
 import { getCharityPercent } from "@/lib/product-charity";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { MiniCart } from "@/components/MiniCart";
+import { MobileNav } from "@/components/MobileNav";
+import { Tooltip } from "@/components/Tooltip";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductPrice } from "@/components/ProductPrice";
 import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
@@ -81,7 +82,8 @@ function CategoryPage() {
       <header className="flex items-center justify-between">
         <Link
           to="/"
-          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
+          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
+          aria-label={t("common.back")}
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
         </Link>
@@ -89,20 +91,44 @@ function CategoryPage() {
           {t(`common.category_names.${category}`)}
         </h1>
         <div className="flex items-center gap-2 md:gap-3">
-          <LanguageToggle />
-          <Link
-            to="/favorites"
-            className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
-          >
-            <Heart className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
-          </Link>
-          <Link
-            to="/about"
-            className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
-          >
-            <Info className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
-          </Link>
+          {/* Desktop header icons */}
+          <div className="hidden md:flex items-center gap-3">
+            <LanguageToggle />
+            <Tooltip content={t('common.favorites')}>
+              <Link
+                to="/favorites"
+                className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
+                aria-label={t('common.favorites')}
+                title={t('common.favorites')}
+              >
+                <Heart className="h-6 w-6 text-[#1a1a1a]" />
+              </Link>
+            </Tooltip>
+            <Tooltip content={t('common.charity_page')}>
+              <Link
+                to="/charity"
+                className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
+                aria-label={t('common.charity_page')}
+                title={t('common.charity_page')}
+              >
+                <HandHeart className="h-6 w-6 text-[#1a1a1a]" />
+              </Link>
+            </Tooltip>
+            <Tooltip content={t('common.about_us')}>
+              <Link
+                to="/about"
+                className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
+                aria-label={t('common.about_us')}
+                title={t('common.about_us')}
+              >
+                <Info className="h-6 w-6 text-[#1a1a1a]" />
+              </Link>
+            </Tooltip>
+          </div>
+
           <MiniCart />
+          {/* Mobile drawer toggle */}
+          <MobileNav className="md:hidden" />
         </div>
       </header>
 

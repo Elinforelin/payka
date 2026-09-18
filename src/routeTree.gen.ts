@@ -15,6 +15,7 @@ import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ProductRouteImport } from './routes/product'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as CharityRouteImport } from './routes/charity'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as SplatRouteImport } from './routes/$'
@@ -50,6 +51,11 @@ const FavoritesRoute = FavoritesRouteImport.update({
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharityRoute = CharityRouteImport.update({
+  id: '/charity',
+  path: '/charity',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/cart': typeof CartRoute
+  '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
   '/product': typeof ProductRouteWithChildren
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/cart': typeof CartRoute
+  '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
   '/product': typeof ProductRouteWithChildren
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/cart': typeof CartRoute
+  '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
   '/product': typeof ProductRouteWithChildren
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/cart'
+    | '/charity'
     | '/checkout'
     | '/favorites'
     | '/product'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/cart'
+    | '/charity'
     | '/checkout'
     | '/favorites'
     | '/product'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/about'
     | '/cart'
+    | '/charity'
     | '/checkout'
     | '/favorites'
     | '/product'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   SplatRoute: typeof SplatRoute
   AboutRoute: typeof AboutRoute
   CartRoute: typeof CartRoute
+  CharityRoute: typeof CharityRoute
   CheckoutRoute: typeof CheckoutRoute
   FavoritesRoute: typeof FavoritesRoute
   ProductRoute: typeof ProductRouteWithChildren
@@ -227,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/charity': {
+      id: '/charity'
+      path: '/charity'
+      fullPath: '/charity'
+      preLoaderRoute: typeof CharityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -290,6 +310,7 @@ const rootRouteChildren: RootRouteChildren = {
   SplatRoute: SplatRoute,
   AboutRoute: AboutRoute,
   CartRoute: CartRoute,
+  CharityRoute: CharityRoute,
   CheckoutRoute: CheckoutRoute,
   FavoritesRoute: FavoritesRoute,
   ProductRoute: ProductRouteWithChildren,

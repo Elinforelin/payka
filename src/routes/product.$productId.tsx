@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useCart } from "@/lib/cart-context";
 import { useFavorites } from "@/lib/favorites-context";
 import { MiniCart } from "@/components/MiniCart";
+import { Tooltip } from "@/components/Tooltip";
 import { SizeGuide, NECKLACE_LENGTHS } from "@/components/SizeGuide";
 import { PackagingGuide } from "@/components/PackagingGuide";
 import { ShippingReturnsGuide } from "@/components/ShippingReturnsInfo";
@@ -169,7 +170,7 @@ function ProductPage() {
               });
             }
           }}
-          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
+          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
           aria-label={t("common.back")}
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
@@ -177,22 +178,26 @@ function ProductPage() {
         <div className="flex items-center gap-2 md:gap-3">
           <LanguageToggle />
           <div className="relative">
-            <button 
-              onClick={() => {
-                if (isFavorited(product.id)) {
-                  removeFromFavorites(product.id);
-                } else {
-                  setShowFavPrompt(!showFavPrompt);
-                }
-              }}
-              className={`flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl shadow-sm transition-colors ${
-                isFavorited(product.id) 
-                  ? "bg-[#b3917d] text-white" 
-                  : "bg-white text-[#1a1a1a]"
-              }`}
-            >
-              <Heart className={`h-5 w-5 md:h-6 md:w-6 ${isFavorited(product.id) ? "fill-current" : ""}`} />
-            </button>
+            <Tooltip content={t("common.favorites")}>
+              <button 
+                onClick={() => {
+                  if (isFavorited(product.id)) {
+                    removeFromFavorites(product.id);
+                  } else {
+                    setShowFavPrompt(!showFavPrompt);
+                  }
+                }}
+                className={`flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl shadow-sm transition-colors ${
+                  isFavorited(product.id) 
+                    ? "bg-[#b3917d] text-white" 
+                    : "bg-white text-[#1a1a1a] hover:bg-gray-50"
+                }`}
+                aria-label={t("common.favorites")}
+                title={t("common.favorites")}
+              >
+                <Heart className={`h-5 w-5 md:h-6 md:w-6 ${isFavorited(product.id) ? "fill-current" : ""}`} />
+              </button>
+            </Tooltip>
             
             {showFavPrompt && !isFavorited(product.id) && (
               <div className="absolute right-0 top-14 z-20 w-48 rounded-2xl bg-white p-2 sm:p-3 shadow-xl ring-1 ring-black/5 animate-in fade-in zoom-in-95 duration-200">

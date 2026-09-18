@@ -18,7 +18,8 @@ function CartPage() {
       <header className="flex items-center justify-between mb-8">
         <Link
           to="/"
-          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
+          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
+          aria-label={t("common.back")}
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
         </Link>

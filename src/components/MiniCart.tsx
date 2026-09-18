@@ -5,6 +5,7 @@ import { getCartItemKey, getCartItemVariants, useCart } from '@/lib/cart-context
 import { resolveProductImageUrl } from '@/lib/product-images';
 import { Link } from '@tanstack/react-router';
 import { useBodyScrollLock } from '@/lib/use-body-scroll-lock';
+import { Tooltip } from '@/components/Tooltip';
 
 export const MiniCart: React.FC = () => {
   const { t } = useTranslation();
@@ -18,17 +19,20 @@ export const MiniCart: React.FC = () => {
 
   return (
     <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="relative flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm transition-transform hover:scale-105"
-      >
-        <ShoppingBag className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
-        {totalItems > 0 && (
-          <span className="absolute -right-1 -top-1 flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full bg-[#b3917d] text-[10px] md:text-xs font-bold text-white shadow-md">
-            {totalItems}
-          </span>
-        )}
-      </button>
+      <Tooltip content={t('common.cart')}>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={t('common.cart')}
+          className="relative flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm transition-transform hover:scale-105"
+        >
+          <ShoppingBag className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
+          {totalItems > 0 && (
+            <span className="absolute -right-1 -top-1 flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full bg-[#b3917d] text-[10px] md:text-xs font-bold text-white shadow-md">
+              {totalItems}
+            </span>
+          )}
+        </button>
+      </Tooltip>
 
       {isOpen && (
         <>

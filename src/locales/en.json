@@ -14,6 +14,9 @@
     "favorites": "Favorites",
     "cart": "Cart",
     "about_us": "About Us",
+    "charity_page": "Charity",
+    "menu": "Menu",
+    "close": "Close",
     "no_items": "No items found",
     "price": "Price",
     "original_price": "Original price",
@@ -72,6 +75,7 @@
     "added_to_cart": "Added to cart",
     "description": "Description",
     "charity_note": "{{percent}}% of this sale goes to charity.",
+    "learn_more_charity": "Learn more",
     "descriptions": {
       "ring_plava": "Freedom that needs no explanation",
       "bubochki_ring": "Bubochki for every day to feel special",
@@ -377,5 +381,29 @@
     "gift_ideas": "Gift Ideas",
     "confirm_favorite": "Add to Favorites",
     "select_category": "Select a category for this item"
+  },
+  "charity": {
+    "badge": "Charity Initiative",
+    "title": "Jewelry with a Purpose",
+    "subtitle": "We believe handcrafted beauty should create meaningful real-world impact. Learn how our charity pieces contribute to vital causes.",
+    "mission_title": "Our Commitment",
+    "mission_desc": "For designated pieces in our collection, a dedicated percentage (up to 100%) of every sale goes directly towards charitable and humanitarian initiatives in Ukraine.",
+    "how_it_works_title": "How It Works",
+    "step_1_title": "Artisan Craftsmanship",
+    "step_1_desc": "Each piece is designed and handmade in our workshop with genuine silver and natural stones.",
+    "step_2_title": "Direct Contribution",
+    "step_2_desc": "When you purchase an item marked with the charity badge, the specified percentage of the price is dedicated to verified charitable initiatives.",
+    "step_3_title": "Real Support",
+    "step_3_desc": "Funds support urgent military fundraisers and animal shelters.",
+    "initiatives_title": "Supported Causes",
+    "cause_military_title": "Urgent Military Fundraisers",
+    "cause_military_desc": "Supporting verified fundraisers for essential equipment, protective gear, and resources for Ukrainian defenders.",
+    "cause_animals_title": "Support for Animal Shelters",
+    "cause_animals_desc": "Providing food, medicine, veterinary care, and shelter for evacuated and abandoned animals in need.",
+    "transparency_title": "Transparency & Trust",
+    "transparency_desc": "We regularly publish donation receipts and progress updates on our social channels so you can see the direct result of your support.",
+    "browse_charity_items": "Browse Charity Jewelry",
+    "questions_title": "Have questions or partnership ideas?",
+    "questions_desc": "Feel free to reach out to us directly through Instagram or email."
   }
 }

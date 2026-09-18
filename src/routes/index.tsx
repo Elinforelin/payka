@@ -1,7 +1,9 @@
 import {createFileRoute, Link} from "@tanstack/react-router";
-import {Search, SlidersHorizontal, Heart, Info, X, Check} from "lucide-react";
+import {Search, SlidersHorizontal, Heart, Info, HandHeart, X, Check} from "lucide-react";
 import {LanguageToggle} from "@/components/LanguageToggle";
-import {useState} from "react";
+import {MobileNav} from "@/components/MobileNav";
+import {Tooltip} from "@/components/Tooltip";
+import {useState, useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {createServerFn} from "@tanstack/react-start";
 import {getCategoriesWithProducts, getCategoryCoverImage, products} from "@/lib/data";
@@ -17,7 +19,16 @@ const getProducts = createServerFn({ method: "GET" }).handler(async () => {
     return products;
 });
 
+type CatalogSearchParams = {
+    charity?: boolean;
+};
+
 export const Route = createFileRoute("/")({
+    validateSearch: (search: Record<string, unknown>): CatalogSearchParams => {
+        return {
+            charity: search.charity === true || search.charity === "true" ? true : undefined,
+        };
+    },
     loader: async () => await getProducts(),
     component: CatalogPage,
 });
@@ -25,6 +36,7 @@ export const Route = createFileRoute("/")({
 function CatalogPage() {
     const { t } = useTranslation();
     const productsData = Route.useLoaderData();
+    const searchParams = Route.useSearch();
     const [searchQuery, setSearchQuery] = useState("");
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
@@ -32,8 +44,14 @@ function CatalogPage() {
     const [priceRange, setPriceRange] = useState<[string, string]>(["", ""]);
     const [selectedMetalTypes, setSelectedMetalTypes] = useState<string[]>([]);
     const [filterOnSale, setFilterOnSale] = useState(false);
-    const [filterCharity, setFilterCharity] = useState(false);
+    const [filterCharity, setFilterCharity] = useState(Boolean(searchParams.charity));
     const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
+
+    useEffect(() => {
+        if (searchParams.charity !== undefined) {
+            setFilterCharity(Boolean(searchParams.charity));
+        }
+    }, [searchParams.charity]);
 
     useBodyScrollLock(showFilters);
 
@@ -84,21 +102,45 @@ function CatalogPage() {
                         <p className="text-[8px] md:text-[10px] uppercase tracking-[0.2em] text-[#6b5f59] font-medium -mt-1">{t('catalog.title')}</p>
                     </div>
                 </div>
-                <div className="flex flex-wrap items-center justify-end gap-2 md:gap-3">
-                    <LanguageToggle />
-                    <Link
-                        to="/favorites"
-                        className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
-                    >
-                        <Heart className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]"/>
-                    </Link>
-                    <Link
-                        to="/about"
-                        className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
-                    >
-                        <Info className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]"/>
-                    </Link>
+                <div className="flex items-center justify-end gap-2 md:gap-3">
+                    {/* Desktop header icons */}
+                    <div className="hidden md:flex items-center gap-3">
+                        <LanguageToggle />
+                        <Tooltip content={t('common.favorites')}>
+                            <Link
+                                to="/favorites"
+                                className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
+                                aria-label={t('common.favorites')}
+                                title={t('common.favorites')}
+                            >
+                                <Heart className="h-6 w-6 text-[#1a1a1a]"/>
+                            </Link>
+                        </Tooltip>
+                        <Tooltip content={t('common.charity_page')}>
+                            <Link
+                                to="/charity"
+                                className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
+                                aria-label={t('common.charity_page')}
+                                title={t('common.charity_page')}
+                            >
+                                <HandHeart className="h-6 w-6 text-[#1a1a1a]"/>
+                            </Link>
+                        </Tooltip>
+                        <Tooltip content={t('common.about_us')}>
+                            <Link
+                                to="/about"
+                                className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
+                                aria-label={t('common.about_us')}
+                                title={t('common.about_us')}
+                            >
+                                <Info className="h-6 w-6 text-[#1a1a1a]"/>
+                            </Link>
+                        </Tooltip>
+                    </div>
+
                     <MiniCart />
+                    {/* Mobile drawer toggle */}
+                    <MobileNav className="md:hidden" />
                 </div>
             </header>
         </div>

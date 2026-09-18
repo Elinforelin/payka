@@ -42,7 +42,8 @@ function FavoritesPage() {
       <header className="flex items-center justify-between mb-8">
         <Link
           to="/"
-          className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
+          className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
+          aria-label={t("common.back")}
         >
           <ChevronLeft className="h-6 w-6 text-[#1a1a1a]" />
         </Link>
