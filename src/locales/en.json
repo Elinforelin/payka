@@ -162,6 +162,8 @@
     "recommended_for_you": "Recommended for you",
     "sku": "SKU",
     "availability": "Availability",
+    "ready_time": "Estimated ready time",
+    "ready_time_weeks": "{{min}}–{{max}} weeks",
     "metal_standard": "Metal Standard",
     "metal_type": "Metal Type",
     "metal_color": "Metal Color",

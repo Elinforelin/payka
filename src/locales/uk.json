@@ -162,6 +162,8 @@
     "recommended_for_you": "Рекомендовано для вас",
     "sku": "Артикул",
     "availability": "Наявність",
+    "ready_time": "Орієнтовний термін виготовлення",
+    "ready_time_weeks": "{{min}}–{{max}} тижні",
     "metal_standard": "Проба",
     "metal_type": "Метал",
     "metal_color": "Колір металу",

@@ -14,6 +14,7 @@ import { PackagingGuide } from "@/components/PackagingGuide";
 import { ShippingReturnsGuide } from "@/components/ShippingReturnsInfo";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { DiscountBadge, CharityBadge, CharityNote, ProductPrice } from "@/components/ProductPrice";
+import { getReadyTimeWeeks } from "@/lib/product-stock";
 import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 
 const getProduct = createServerFn({ method: "GET" })
@@ -135,6 +136,8 @@ function ProductPage() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isLightboxOpen]);
 
+  const readyTimeWeeks = getReadyTimeWeeks(product);
+
   const productDetails = [
     { label: t('common.categories'), value: t(`common.category_names.${product.category}`) },
     {
@@ -142,6 +145,14 @@ function ProductPage() {
       value: product.inStock !== undefined ? t(product.inStock ? "common.in_stock" : "common.need_to_order") : undefined,
       highlight: product.inStock !== undefined ? (product.inStock ? "in-stock" : "made-to-order") : undefined,
     },
+    ...(readyTimeWeeks
+      ? [
+          {
+            label: t('product.ready_time'),
+            value: t('product.ready_time_weeks', { min: readyTimeWeeks[0], max: readyTimeWeeks[1] }),
+          },
+        ]
+      : []),
     { label: t('product.metal_standard'), value: product.metalStandard },
     { label: t('product.metal_type'), value: product.metalType ? t(product.metalType) : undefined },
     { label: t('product.metal_color'), value: product.metalColor ? t(product.metalColor) : undefined },

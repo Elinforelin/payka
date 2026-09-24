@@ -20,6 +20,9 @@ export interface Product {
     charityPercent?: number;
     /** Whether product is in stock (true) or made to order (false) */
     inStock?: boolean;
+    /** Overrides DEFAULT_READY_TIME_WEEKS for this piece's made-to-order lead time */
+    readyTimeMinWeeks?: number;
+    readyTimeMaxWeeks?: number;
     category: Category;
     imageUrl: string | null;
     images?: string[];
@@ -74,6 +77,9 @@ export const CUBIC_ZIRCONIA_COLORS: StoneColor[] = [
     {"name": "Pink", "value": "#FFC0CB", "imageUrl": "/assets/cubicZirconiaColors/pink.png"},
     {"name": "Red", "value": "#FF0000", "imageUrl": "/assets/cubicZirconiaColors/red.png"},
 ];
+
+/** Default made-to-order lead time (in weeks) when a product doesn't set its own. */
+export const DEFAULT_READY_TIME_WEEKS: readonly [number, number] = [2, 4];
 
 export function getCategoryCoverImage(category: Category): string | null {
     return products.find((product) => product.category === category)?.imageUrl ?? null;
