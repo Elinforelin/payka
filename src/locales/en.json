@@ -43,6 +43,7 @@
       "cubic_zirconia": "Cubic Zirconia",
       "pearl": "Pearl Simulants",
       "tourmaline": "Tourmaline",
+      "moonstone": "Moonstone",
       "moonstone_topaz": "Moonstone and Light Blue Topaz"
     },
     "metal_colors": {
@@ -93,7 +94,8 @@
       "vase_earring": "A silver earring with a vase-like shape, perfect for those who appreciate unique and artistic jewelry",
       "ring_with_tourmaline": "A silver ring set with natural tourmaline, highlighting its vibrant and unique color",
       "braided_ring": "A silver ring with a braided texture, weaving together a delicate and timeless design",
-      "pendant_three_stones": "Silver and Moonlight Blue"
+      "pendant_three_stones": "Silver and Moonlight Blue",
+      "moonstone_ring": "A silver ring set with natural moonstone, catching the light with its soft, luminous glow"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
@@ -109,7 +111,8 @@
       "vase_earring": "Vase-Shaped Earring",
       "ring_with_tourmaline": "Ring with Tourmaline",
       "braided_ring": "Braided Ring",
-      "pendant_three_stones": "Three Stones Pendant"
+      "pendant_three_stones": "Three Stones Pendant",
+      "moonstone_ring": "Moonstone Ring"
     },
     "details": "Details",
     "about_product": "About Product",
