@@ -79,6 +79,7 @@ export const MiniCart: React.FC = () => {
                             <img
                               src={resolveProductImageUrl(item.imageUrl)}
                               alt={t(item.name)}
+                              loading="lazy"
                               className="h-full w-full object-cover"
                             />
                           </Link>
@@ -166,6 +167,7 @@ export const MiniCart: React.FC = () => {
                               <img
                                 src={resolveProductImageUrl(item.imageUrl)}
                                 alt={t(item.name)}
+                                loading="lazy"
                                 className="h-full w-full object-cover"
                               />
                             </div>

@@ -92,6 +92,7 @@ export function ProductCard({ product, showFavPrompt, onFavPromptChange }: Produ
         <img
           src={resolveProductImageUrl(product.imageUrl)}
           alt={t(product.name)}
+          loading="lazy"
           className="h-full w-full object-cover"
         />
       </div>

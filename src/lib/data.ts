@@ -151,7 +151,7 @@ export const products: Product[] = [
         "name": "product.names.lollypop",
         "description": "product.descriptions.lollypop_rings",
         "price": 2000,
-        "inStock": false,
+        "inStock": true,
         "category": Category.Rings,
         "imageUrl": "/assets/lollypop/IMG_4831.png",
         "images": [
@@ -193,7 +193,7 @@ export const products: Product[] = [
         "name": "product.names.silver_pendant_cup",
         "description": "product.descriptions.silver_pendant_cup",
         "price": 4100,
-        "inStock": true,
+        "inStock": false,
         "category": Category.Pendants,
         "discountPercent": 30,
         "imageUrl": "/assets/cup/5282821220627849167.jpg",
@@ -206,7 +206,7 @@ export const products: Product[] = [
         "updatedAt": "2026-06-04T07:17:07.888Z",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
-        "rhodiumPlating": false,
+        "rhodiumPlating": true,
         "weight": 7,
         "reviews": [
         ],
@@ -301,7 +301,7 @@ export const products: Product[] = [
         "name": "product.names.crumpled_ring",
         "description": "product.descriptions.crumpled_ring",
         "price": 2900,
-        "inStock": false,
+        "inStock": true,
         "category": Category.Rings,
         "imageUrl": "/assets/crumpledRing/IMG_9086.png",
         "images": [
@@ -353,7 +353,7 @@ export const products: Product[] = [
         "name": "product.names.ring_with_tourmaline",
         "description": "product.descriptions.ring_with_tourmaline",
         "price": 2700,
-        "inStock": true,
+        "inStock": false,
         "category": Category.Rings,
         "imageUrl": "/assets/ringWithTourmaline/IMG_7965.jpg",
         "images": [
@@ -399,7 +399,7 @@ export const products: Product[] = [
         "name": "product.names.pendant_three_stones",
         "description": "product.descriptions.pendant_three_stones",
         "price": 2500,
-        "inStock": true,
+        "inStock": false,
         "category": Category.Pendants,
         "imageUrl": "/assets/pendantThreeStones/174BC287.png",
         "images": [
@@ -413,7 +413,7 @@ export const products: Product[] = [
         "gemstone": "common.gemstones.moonstone_topaz",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
-        "rhodiumPlating": false,
+        "rhodiumPlating": true,
         "weight": 5,
     },
     {

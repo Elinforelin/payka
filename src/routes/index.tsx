@@ -10,6 +10,7 @@ import {getCategoriesWithProducts, getCategoryCoverImage, products} from "@/lib/
 import {resolveProductImageUrl} from "@/lib/product-images.ts";
 import { getEffectivePrice, getProductPricing } from "@/lib/product-price";
 import { getCharityPercent } from "@/lib/product-charity";
+import { isProductInStock } from "@/lib/product-stock";
 import { MiniCart } from "@/components/MiniCart";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductPrice } from "@/components/ProductPrice";
@@ -45,6 +46,7 @@ function CatalogPage() {
     const [selectedMetalTypes, setSelectedMetalTypes] = useState<string[]>([]);
     const [filterOnSale, setFilterOnSale] = useState(false);
     const [filterCharity, setFilterCharity] = useState(Boolean(searchParams.charity));
+    const [filterInStock, setFilterInStock] = useState(false);
     const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
 
     useEffect(() => {
@@ -73,7 +75,8 @@ function CatalogPage() {
           (!filterOnSale && !filterCharity) ||
           (filterOnSale && getProductPricing(product).isOnSale) ||
           (filterCharity && getCharityPercent(product) !== null);
-        return matchesSearch && matchesPrice && matchesMetalType && matchesOffers;
+        const matchesStock = !filterInStock || isProductInStock(product);
+        return matchesSearch && matchesPrice && matchesMetalType && matchesOffers && matchesStock;
     });
 
     const metalTypes = Array.from(new Set((productsData || []).map(p => p.metalType).filter(Boolean))) as string[];
@@ -175,6 +178,7 @@ function CatalogPage() {
                                         <img
                                             src={resolveProductImageUrl(suggestion.imageUrl)}
                                             alt={t(suggestion.name)}
+                                            loading="lazy"
                                             className="h-full w-full object-cover"
                                         />
                                     </div>
@@ -308,6 +312,18 @@ function CatalogPage() {
                                     {filterCharity && <Check className="h-3 w-3" />}
                                     {t('catalog.filter_charity')}
                                 </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setFilterInStock((prev) => !prev)}
+                                    className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                                        filterInStock
+                                            ? "bg-[#3d6e54] text-white"
+                                            : "bg-[#fdfaf7] text-[#6b5f59]"
+                                    }`}
+                                >
+                                    {filterInStock && <Check className="h-3 w-3" />}
+                                    {t('catalog.filter_in_stock')}
+                                </button>
                             </div>
                         </div>
 
@@ -319,6 +335,7 @@ function CatalogPage() {
                                     setSelectedMetalTypes([]);
                                     setFilterOnSale(false);
                                     setFilterCharity(false);
+                                    setFilterInStock(false);
                                 }}
                                 className="w-full rounded-2xl py-4 text-sm font-bold text-[#b3917d] border border-[#b3917d] hover:bg-[#b3917d]/5 transition-colors"
                             >
@@ -356,6 +373,7 @@ function CatalogPage() {
                                     <img
                                         src={resolveProductImageUrl(coverImage)}
                                         alt={t(`common.category_names.${category}`)}
+                                        loading="lazy"
                                         className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
                                     />
                                 ) : (
@@ -412,6 +430,7 @@ function CatalogPage() {
                                 <img
                                     src={resolveProductImageUrl(product.imageUrl)}
                                     alt={t(product.name)}
+                                    loading="lazy"
                                     className="h-full w-full object-cover"
                                 />
                             </div>

@@ -63,6 +63,7 @@
     "advanced_filters": "Advanced Filters",
     "offers": "Offers",
     "filter_charity": "Charity",
+    "filter_in_stock": "In Stock",
     "price_range": "Price Range",
     "price_range_hint": "Prices in the catalog: from ₴{{min}} to ₴{{max}}",
     "min": "Min",

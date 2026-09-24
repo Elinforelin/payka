@@ -140,6 +140,7 @@ function ProductPage() {
     {
       label: t('product.availability'),
       value: product.inStock !== undefined ? t(product.inStock ? "common.in_stock" : "common.need_to_order") : undefined,
+      highlight: product.inStock !== undefined ? (product.inStock ? "in-stock" : "made-to-order") : undefined,
     },
     { label: t('product.metal_standard'), value: product.metalStandard },
     { label: t('product.metal_type'), value: product.metalType ? t(product.metalType) : undefined },
@@ -275,6 +276,7 @@ function ProductPage() {
                         <img
                           src={resolveProductImageUrl(color.imageUrl)}
                           alt={t(`stones.colors.${color.name}`)}
+                          loading="lazy"
                           className="h-full w-full object-cover"
                         />
                       ) : null}
@@ -298,6 +300,7 @@ function ProductPage() {
                   <img
                     src={resolveProductImageUrl(img)}
                     alt={`${t(product.name)} thumbnail ${index + 1}`}
+                    loading="lazy"
                     className="h-full w-full object-cover"
                   />
                 </button>
@@ -335,9 +338,19 @@ function ProductPage() {
                   >
                     <span className="text-[#6b5f59] whitespace-nowrap">{detail.label}</span>
                     <div className="mb-1.5 flex-1 border-b border-dotted border-[#d1ccc8]" />
-                    <span className="font-bold text-[#1a1a1a] text-right">
-                      {detail.value}
-                    </span>
+                    {detail.highlight ? (
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs md:text-sm font-bold uppercase tracking-wide text-white ${
+                          detail.highlight === "in-stock" ? "bg-[#3d6e54]" : "bg-[#8c6b53]"
+                        }`}
+                      >
+                        {detail.value}
+                      </span>
+                    ) : (
+                      <span className="font-bold text-[#1a1a1a] text-right">
+                        {detail.value}
+                      </span>
+                    )}
                   </div>
                 ))}
               </div>

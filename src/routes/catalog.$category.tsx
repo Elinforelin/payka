@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import { Category, products } from "@/lib/data";
 import { getEffectivePrice, getProductPricing } from "@/lib/product-price";
 import { getCharityPercent } from "@/lib/product-charity";
+import { isProductInStock } from "@/lib/product-stock";
+import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { MiniCart } from "@/components/MiniCart";
 import { MobileNav } from "@/components/MobileNav";
@@ -43,6 +45,7 @@ function CategoryPage() {
   const [selectedMetalTypes, setSelectedMetalTypes] = useState<string[]>([]);
   const [filterOnSale, setFilterOnSale] = useState(false);
   const [filterCharity, setFilterCharity] = useState(false);
+  const [filterInStock, setFilterInStock] = useState(false);
   const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
 
   useBodyScrollLock(showFilters);
@@ -62,8 +65,9 @@ function CategoryPage() {
       (!filterOnSale && !filterCharity) ||
       (filterOnSale && getProductPricing(product).isOnSale) ||
       (filterCharity && getCharityPercent(product) !== null);
+    const matchesStock = !filterInStock || isProductInStock(product);
 
-    return matchesSearch && matchesPrice && matchesMetalType && matchesOffers;
+    return matchesSearch && matchesPrice && matchesMetalType && matchesOffers && matchesStock;
   });
 
   const metalTypes = Array.from(
@@ -72,7 +76,7 @@ function CategoryPage() {
 
   const suggestions =
     searchQuery.length > 0
-      ? categoryProducts
+      ? products
           .filter((product) => t(product.name).toLowerCase().includes(searchQuery.toLowerCase()))
           .slice(0, 5)
       : [];
@@ -161,12 +165,19 @@ function CategoryPage() {
                     <img
                       src={resolveProductImageUrl(suggestion.imageUrl)}
                       alt={t(suggestion.name)}
+                      loading="lazy"
                       className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="flex-1">
                     <div className="text-sm font-bold text-[#1a1a1a]">{t(suggestion.name)}</div>
-                    <ProductPrice product={suggestion} size="sm" />
+                    {suggestion.category !== category ? (
+                      <div className="text-xs text-[#a19690]">
+                        {t(`common.category_names.${suggestion.category}`)}
+                      </div>
+                    ) : (
+                      <ProductPrice product={suggestion} size="sm" />
+                    )}
                   </div>
                 </Link>
               ))}
@@ -272,6 +283,18 @@ function CategoryPage() {
                   {filterCharity && <Check className="h-3 w-3" />}
                   {t('catalog.filter_charity')}
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setFilterInStock((prev) => !prev)}
+                  className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                    filterInStock
+                      ? "bg-[#3d6e54] text-white"
+                      : "bg-[#fdfaf7] text-[#6b5f59]"
+                  }`}
+                >
+                  {filterInStock && <Check className="h-3 w-3" />}
+                  {t('catalog.filter_in_stock')}
+                </button>
               </div>
             </div>
 
@@ -282,6 +305,7 @@ function CategoryPage() {
                   setSelectedMetalTypes([]);
                   setFilterOnSale(false);
                   setFilterCharity(false);
+                  setFilterInStock(false);
                 }}
                 className="w-full rounded-2xl py-4 text-sm font-bold text-[#b3917d] border border-[#b3917d] hover:bg-[#b3917d]/5 transition-colors"
               >

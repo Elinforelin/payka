@@ -63,6 +63,7 @@
     "advanced_filters": "Розширені фільтри",
     "offers": "Пропозиції",
     "filter_charity": "Благодійність",
+    "filter_in_stock": "В наявності",
     "price_range": "Діапазон цін",
     "price_range_hint": "Ціни в каталозі: від ₴{{min}} до ₴{{max}}",
     "min": "Від",
