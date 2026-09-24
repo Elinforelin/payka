@@ -15,6 +15,7 @@
     "cart": "Cart",
     "about_us": "About Us",
     "charity_page": "Charity",
+    "privacy_policy": "Privacy Policy",
     "menu": "Menu",
     "close": "Close",
     "no_items": "No items found",
@@ -226,6 +227,25 @@
     "returns_process": "Process: message us with your order number and reason → we confirm eligibility → return shipping via Nova Poshta is arranged → refund or store credit is agreed once we receive and check the piece.",
     "contact_title": "Need help?",
     "contact_desc": "Write to us on Instagram with your order number — we’ll guide you through shipping, an exchange, or a return."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "intro": "This page explains what personal data we collect, why we process it, and the rights you have over it.",
+    "controller_title": "Data controller",
+    "controller_text": "Payka is the data controller for the personal data described on this page. You can reach us at {{email}} with any privacy question or request.",
+    "collect_title": "What we collect",
+    "collect_text": "When you place an order, we collect the information needed to fulfill it: your name, contact details, delivery address or pickup branch, and order details. We don't collect this information anywhere else on the site.",
+    "basis_title": "Why we process it",
+    "basis_order": "Order data is processed to fulfill our contract with you — preparing, shipping, and supporting your order — in accordance with GDPR.",
+    "basis_analytics": "Website usage data is processed on the basis of our legitimate interest in understanding overall site traffic and keeping the site fast and useful.",
+    "analytics_title": "Website analytics",
+    "analytics_text": "We use Vercel Web Analytics to measure overall site traffic. It is cookieless: it sets no cookies, uses no local storage, and creates no persistent identifier that follows you across visits or sites. It reports only aggregated page-view statistics, and no individual visitor profile is created or stored.",
+    "retention_title": "How long we keep data",
+    "retention_text": "Order data is kept only as long as needed to fulfill your order and meet legal obligations (e.g. accounting), then deleted. Aggregated analytics data contains no personal identifiers, so it isn't tied back to you.",
+    "rights_title": "Your rights",
+    "rights_text": "Under GDPR you have the right to access, correct, delete, or export your personal data, and to object to or restrict its processing. To exercise any of these rights, contact us at {{email}}. You may also lodge a complaint with your local data protection authority.",
+    "contact_title": "Questions?",
+    "contact_desc": "Write to us any time — we're happy to explain exactly how your data is handled."
   },
   "cart": {
     "title": "My Cart",

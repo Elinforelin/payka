@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ProductRouteImport } from './routes/product'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CharityRouteImport } from './routes/charity'
@@ -41,6 +42,11 @@ const ShippingRoute = ShippingRouteImport.update({
 const ProductRoute = ProductRouteImport.update({
   id: '/product',
   path: '/product',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FavoritesRoute = FavoritesRouteImport.update({
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
+  '/privacy': typeof PrivacyRoute
   '/product': typeof ProductRouteWithChildren
   '/shipping': typeof ShippingRoute
   '/signin': typeof SigninRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
+  '/privacy': typeof PrivacyRoute
   '/product': typeof ProductRouteWithChildren
   '/shipping': typeof ShippingRoute
   '/signin': typeof SigninRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
+  '/privacy': typeof PrivacyRoute
   '/product': typeof ProductRouteWithChildren
   '/shipping': typeof ShippingRoute
   '/signin': typeof SigninRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/charity'
     | '/checkout'
     | '/favorites'
+    | '/privacy'
     | '/product'
     | '/shipping'
     | '/signin'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/charity'
     | '/checkout'
     | '/favorites'
+    | '/privacy'
     | '/product'
     | '/shipping'
     | '/signin'
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
     | '/charity'
     | '/checkout'
     | '/favorites'
+    | '/privacy'
     | '/product'
     | '/shipping'
     | '/signin'
@@ -191,6 +203,7 @@ export interface RootRouteChildren {
   CharityRoute: typeof CharityRoute
   CheckoutRoute: typeof CheckoutRoute
   FavoritesRoute: typeof FavoritesRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProductRoute: typeof ProductRouteWithChildren
   ShippingRoute: typeof ShippingRoute
   SigninRoute: typeof SigninRoute
@@ -226,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: '/product'
       fullPath: '/product'
       preLoaderRoute: typeof ProductRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/favorites': {
@@ -313,6 +333,7 @@ const rootRouteChildren: RootRouteChildren = {
   CharityRoute: CharityRoute,
   CheckoutRoute: CheckoutRoute,
   FavoritesRoute: FavoritesRoute,
+  PrivacyRoute: PrivacyRoute,
   ProductRoute: ProductRouteWithChildren,
   ShippingRoute: ShippingRoute,
   SigninRoute: SigninRoute,

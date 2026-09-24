@@ -809,10 +809,16 @@ function CheckoutPage() {
                   <ShieldCheck className="h-5 w-5 text-green-600" />
                   {t('checkout.privacy_title')}
                 </h3>
-                <p className="text-sm text-[#6b5f59] leading-relaxed mb-4">
+                <p className="text-sm text-[#6b5f59] leading-relaxed mb-2">
                   {t('checkout.privacy_note')}
                 </p>
-                <label className="flex items-start gap-3 cursor-pointer">
+                <Link
+                  to="/privacy"
+                  className="text-sm font-bold text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+                >
+                  {t('common.privacy_policy')}
+                </Link>
+                <label className="mt-4 flex items-start gap-3 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={privacyConsent}

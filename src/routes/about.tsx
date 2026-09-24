@@ -173,12 +173,19 @@ function AboutPage() {
               </div>
             </a>
           </div>
-          <div className="mt-8 text-center">
+          <div className="mt-8 flex items-center justify-center gap-4 text-center flex-wrap">
             <Link
               to="/shipping"
               className="text-sm font-bold text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
             >
               {t('about.shipping_returns_link')}
+            </Link>
+            <span className="text-[#d9cfc7]">·</span>
+            <Link
+              to="/privacy"
+              className="text-sm font-bold text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+            >
+              {t('common.privacy_policy')}
             </Link>
           </div>
         </section>
