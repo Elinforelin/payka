@@ -61,7 +61,6 @@ function CartPage() {
                   <img
                     src={resolveProductImageUrl(item.imageUrl)}
                     alt={t(item.name)}
-                    loading="lazy"
                     className="h-full w-full object-cover"
                   />
                 </Link>

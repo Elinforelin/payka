@@ -287,7 +287,6 @@ function ProductPage() {
                         <img
                           src={resolveProductImageUrl(color.imageUrl)}
                           alt={t(`stones.colors.${color.name}`)}
-                          loading="lazy"
                           className="h-full w-full object-cover"
                         />
                       ) : null}
@@ -311,7 +310,6 @@ function ProductPage() {
                   <img
                     src={resolveProductImageUrl(img)}
                     alt={`${t(product.name)} thumbnail ${index + 1}`}
-                    loading="lazy"
                     className="h-full w-full object-cover"
                   />
                 </button>

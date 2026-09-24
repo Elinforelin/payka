@@ -165,7 +165,6 @@ function CategoryPage() {
                     <img
                       src={resolveProductImageUrl(suggestion.imageUrl)}
                       alt={t(suggestion.name)}
-                      loading="lazy"
                       className="h-full w-full object-cover"
                     />
                   </div>

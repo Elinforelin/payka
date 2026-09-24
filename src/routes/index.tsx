@@ -178,7 +178,6 @@ function CatalogPage() {
                                         <img
                                             src={resolveProductImageUrl(suggestion.imageUrl)}
                                             alt={t(suggestion.name)}
-                                            loading="lazy"
                                             className="h-full w-full object-cover"
                                         />
                                     </div>
@@ -373,7 +372,6 @@ function CatalogPage() {
                                     <img
                                         src={resolveProductImageUrl(coverImage)}
                                         alt={t(`common.category_names.${category}`)}
-                                        loading="lazy"
                                         className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
                                     />
                                 ) : (
@@ -430,7 +428,6 @@ function CatalogPage() {
                                 <img
                                     src={resolveProductImageUrl(product.imageUrl)}
                                     alt={t(product.name)}
-                                    loading="lazy"
                                     className="h-full w-full object-cover"
                                 />
                             </div>

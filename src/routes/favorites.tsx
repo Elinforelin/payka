@@ -162,7 +162,6 @@ function FavoritesPage() {
                   <img
                     src={resolveProductImageUrl(product.imageUrl)}
                     alt={t(product.name)}
-                    loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <DiscountBadge product={product} className="absolute right-4 top-4 z-10" />
