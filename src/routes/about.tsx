@@ -182,6 +182,13 @@ function AboutPage() {
             </Link>
             <span className="text-[#d9cfc7]">·</span>
             <Link
+              to="/care"
+              className="text-sm font-bold text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+            >
+              {t('common.jewelry_care')}
+            </Link>
+            <span className="text-[#d9cfc7]">·</span>
+            <Link
               to="/privacy"
               className="text-sm font-bold text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
             >

@@ -12,6 +12,7 @@ import { Tooltip } from "@/components/Tooltip";
 import { SizeGuide, NECKLACE_LENGTHS } from "@/components/SizeGuide";
 import { PackagingGuide } from "@/components/PackagingGuide";
 import { ShippingReturnsGuide } from "@/components/ShippingReturnsInfo";
+import { JewelryCareGuide } from "@/components/JewelryCareInfo";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { DiscountBadge, CharityBadge, CharityNote, ProductPrice } from "@/components/ProductPrice";
 import { getReadyTimeWeeks } from "@/lib/product-stock";
@@ -72,6 +73,7 @@ function ProductPage() {
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const [showPackagingGuide, setShowPackagingGuide] = useState(false);
   const [showShippingGuide, setShowShippingGuide] = useState(false);
+  const [showCareGuide, setShowCareGuide] = useState(false);
 
   useBodyScrollLock(isLightboxOpen);
 
@@ -448,6 +450,12 @@ function ProductPage() {
               >
                 {t('product.shipping_returns')}
               </button>
+              <button
+                onClick={() => setShowCareGuide(true)}
+                className="mt-2 block text-sm font-medium text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+              >
+                {t('common.jewelry_care')}
+              </button>
             </div>
           )}
 
@@ -464,6 +472,12 @@ function ProductPage() {
                 className="text-sm font-medium text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
               >
                 {t('product.shipping_returns')}
+              </button>
+              <button
+                onClick={() => setShowCareGuide(true)}
+                className="text-sm font-medium text-[#b3917d] underline underline-offset-4 hover:text-[#9a7a68] transition-colors"
+              >
+                {t('common.jewelry_care')}
               </button>
             </div>
           )}
@@ -684,6 +698,7 @@ function ProductPage() {
     {showSizeGuide && <SizeGuide onClose={() => setShowSizeGuide(false)} />}
     {showPackagingGuide && <PackagingGuide onClose={() => setShowPackagingGuide(false)} />}
     {showShippingGuide && <ShippingReturnsGuide onClose={() => setShowShippingGuide(false)} />}
+    {showCareGuide && <JewelryCareGuide onClose={() => setShowCareGuide(false)} />}
 
     {isLightboxOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">

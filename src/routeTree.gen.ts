@@ -18,6 +18,7 @@ import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CharityRouteImport } from './routes/charity'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as CareRouteImport } from './routes/care'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
@@ -69,6 +70,11 @@ const CartRoute = CartRouteImport.update({
   path: '/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareRoute = CareRouteImport.update({
+  id: '/care',
+  path: '/care',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
+  '/care': typeof CareRoute
   '/cart': typeof CartRoute
   '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
+  '/care': typeof CareRoute
   '/cart': typeof CartRoute
   '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
+  '/care': typeof CareRoute
   '/cart': typeof CartRoute
   '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$'
     | '/about'
+    | '/care'
     | '/cart'
     | '/charity'
     | '/checkout'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$'
     | '/about'
+    | '/care'
     | '/cart'
     | '/charity'
     | '/checkout'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$'
     | '/about'
+    | '/care'
     | '/cart'
     | '/charity'
     | '/checkout'
@@ -199,6 +211,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
   AboutRoute: typeof AboutRoute
+  CareRoute: typeof CareRoute
   CartRoute: typeof CartRoute
   CharityRoute: typeof CharityRoute
   CheckoutRoute: typeof CheckoutRoute
@@ -276,6 +289,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/care': {
+      id: '/care'
+      path: '/care'
+      fullPath: '/care'
+      preLoaderRoute: typeof CareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -329,6 +349,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
   AboutRoute: AboutRoute,
+  CareRoute: CareRoute,
   CartRoute: CartRoute,
   CharityRoute: CharityRoute,
   CheckoutRoute: CheckoutRoute,

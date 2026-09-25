@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X, Heart, HandHeart, Info, Truck, ShieldCheck, Instagram, Mail, ChevronRight } from "lucide-react";
+import { Menu, X, Heart, HandHeart, Info, Truck, ShieldCheck, Sparkles, Instagram, Mail, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useFavorites } from "@/lib/favorites-context";
@@ -34,6 +34,11 @@ export const MobileNav: React.FC<MobileNavProps> = ({ className = "" }) => {
       to: "/about",
       label: t("common.about_us"),
       icon: Info,
+    },
+    {
+      to: "/care",
+      label: t("common.jewelry_care"),
+      icon: Sparkles,
     },
     {
       to: "/privacy",
