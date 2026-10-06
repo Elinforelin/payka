@@ -14,6 +14,7 @@ import { Route as SigninRouteImport } from './routes/signin'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ProductRouteImport } from './routes/product'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as GuaranteeRouteImport } from './routes/guarantee'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CharityRouteImport } from './routes/charity'
@@ -48,6 +49,11 @@ const ProductRoute = ProductRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuaranteeRoute = GuaranteeRouteImport.update({
+  id: '/guarantee',
+  path: '/guarantee',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FavoritesRoute = FavoritesRouteImport.update({
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
+  '/guarantee': typeof GuaranteeRoute
   '/privacy': typeof PrivacyRoute
   '/product': typeof ProductRouteWithChildren
   '/shipping': typeof ShippingRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
+  '/guarantee': typeof GuaranteeRoute
   '/privacy': typeof PrivacyRoute
   '/product': typeof ProductRouteWithChildren
   '/shipping': typeof ShippingRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/charity': typeof CharityRoute
   '/checkout': typeof CheckoutRoute
   '/favorites': typeof FavoritesRoute
+  '/guarantee': typeof GuaranteeRoute
   '/privacy': typeof PrivacyRoute
   '/product': typeof ProductRouteWithChildren
   '/shipping': typeof ShippingRoute
@@ -164,6 +173,7 @@ export interface FileRouteTypes {
     | '/charity'
     | '/checkout'
     | '/favorites'
+    | '/guarantee'
     | '/privacy'
     | '/product'
     | '/shipping'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/charity'
     | '/checkout'
     | '/favorites'
+    | '/guarantee'
     | '/privacy'
     | '/product'
     | '/shipping'
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/charity'
     | '/checkout'
     | '/favorites'
+    | '/guarantee'
     | '/privacy'
     | '/product'
     | '/shipping'
@@ -216,6 +228,7 @@ export interface RootRouteChildren {
   CharityRoute: typeof CharityRoute
   CheckoutRoute: typeof CheckoutRoute
   FavoritesRoute: typeof FavoritesRoute
+  GuaranteeRoute: typeof GuaranteeRoute
   PrivacyRoute: typeof PrivacyRoute
   ProductRoute: typeof ProductRouteWithChildren
   ShippingRoute: typeof ShippingRoute
@@ -259,6 +272,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guarantee': {
+      id: '/guarantee'
+      path: '/guarantee'
+      fullPath: '/guarantee'
+      preLoaderRoute: typeof GuaranteeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/favorites': {
@@ -354,6 +374,7 @@ const rootRouteChildren: RootRouteChildren = {
   CharityRoute: CharityRoute,
   CheckoutRoute: CheckoutRoute,
   FavoritesRoute: FavoritesRoute,
+  GuaranteeRoute: GuaranteeRoute,
   PrivacyRoute: PrivacyRoute,
   ProductRoute: ProductRouteWithChildren,
   ShippingRoute: ShippingRoute,

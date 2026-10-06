@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { ChevronLeft, Sparkles } from "lucide-react";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useTranslation } from "react-i18next";
@@ -10,17 +10,27 @@ export const Route = createFileRoute("/care")({
 
 function CarePage() {
   const { t } = useTranslation();
+  const router = useRouter();
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.history.back();
+    } else {
+      router.navigate({ to: "/" });
+    }
+  };
 
   return (
     <main className="min-h-screen bg-[#fdfaf7] px-6 py-8 md:px-12">
       <header className="flex items-center justify-between">
-        <Link
-          to="/"
+        <button
+          type="button"
+          onClick={handleBack}
           className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-2xl bg-white shadow-sm hover:bg-gray-50 transition-colors"
           aria-label={t("common.back")}
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
-        </Link>
+        </button>
         <LanguageToggle />
       </header>
 

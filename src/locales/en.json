@@ -253,6 +253,23 @@
     "contact_title": "Still have questions?",
     "contact_desc": "Write to us any time — we're happy to help you keep your piece looking beautiful."
   },
+  "guarantee": {
+    "title": "Payka Care Guarantee",
+    "intro": "Your jewelry stays beautiful after you buy it. We'll clean it for you and, if it's rhodium-plated, restore the rhodium again.",
+    "clean_title": "Professional cleaning",
+    "clean_text": "Send your Payka piece back to us and we'll clean it, so it shines like the day you received it.",
+    "rhodium_title": "Rhodium restored",
+    "rhodium_text": "If your piece is rhodium-plated, we'll apply the rhodium coating again once it has worn thin, bringing back its bright, tarnish-resistant finish.",
+    "terms_title": "Terms",
+    "terms_period": "The guarantee is lifelong — it never expires.",
+    "terms_cost": "Cleaning and rhodium replating are free of charge.",
+    "terms_shipping": "The customer pays for shipping the piece to us; we cover the return shipping. Service usually takes up to 14 days.",
+    "terms_scope": "Rhodium replating applies only to pieces that were rhodium-plated when sold.",
+    "terms_exclusions": "Damage such as deformation, a lost stone or deep scratches is reviewed individually. If it is caused by a manufacturing defect, we repair it free of charge; otherwise we agree on the options and cost with you.",
+    "terms_paid": "Rhodium plating is also available for a separate fee for pieces that weren't rhodium-plated when sold. Write to us to ask about the price.",
+    "how_title": "How to use the guarantee",
+    "how_text": "Write to us on Instagram or by email with your order number and a photo of the piece, and we'll arrange everything."
+  },
   "privacy": {
     "title": "Privacy Policy",
     "intro": "This page explains what personal data we collect, why we process it, and the rights you have over it.",
