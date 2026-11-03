@@ -7,6 +7,7 @@ import { FavoritesProvider } from "@/lib/favorites-context";
 import { Notification } from "@/components/Notification";
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/lib/i18n';
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 
 import appCss from "../styles.css?url";
 
@@ -43,8 +44,9 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <body className="bg-[#f7f3ef] text-[#2f2a27] antialiased">

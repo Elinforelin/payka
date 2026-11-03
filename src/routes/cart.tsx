@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, Minus, Plus, Trash2 } from "lucide-react";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useTranslation } from "react-i18next";
 
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
@@ -24,7 +25,10 @@ function CartPage() {
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
         </Link>
         <h1 className="text-lg md:text-xl font-bold text-[#1a1a1a]">{t('cart.title')}</h1>
-        <LanguageToggle />
+        <div className="flex items-center gap-2 md:gap-3">
+          <LanguageToggle />
+          <ThemeToggle />
+        </div>
       </header>
 
       <div className="mx-auto max-w-2xl">

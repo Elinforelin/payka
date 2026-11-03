@@ -1,6 +1,8 @@
 {
   "common": {
     "app_name": "PAYKA",
+    "theme_dark": "Увімкнути темну тему",
+    "theme_light": "Увімкнути світлу тему",
     "search_placeholder": "Пошук прикрас",
     "categories": "Категорії",
     "we_recommend": "Ми рекомендуємо",

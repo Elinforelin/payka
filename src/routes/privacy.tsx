@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, ShieldCheck, Database, Scale, BarChart3, Clock, UserCheck, Mail } from "lucide-react";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useTranslation } from "react-i18next";
 import { CONTACT_INFO } from "@/lib/contact";
 
@@ -45,7 +46,10 @@ function PrivacyPage() {
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
         </Link>
-        <LanguageToggle />
+        <div className="flex items-center gap-2 md:gap-3">
+          <LanguageToggle />
+          <ThemeToggle />
+        </div>
       </header>
 
       <div className="mx-auto mt-8 max-w-2xl space-y-8 pb-12">

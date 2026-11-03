@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ChevronLeft, ShieldCheck, Truck, Package, CreditCard, CheckCircle2, Search as SearchIcon, MapPin, Loader2, MessageCircle, Instagram } from "lucide-react";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useRef } from "react";
 
@@ -516,7 +517,10 @@ function CheckoutPage() {
         <h1 className="text-lg md:text-xl font-bold text-[#1a1a1a]">
           {step === 'shipping' ? t('checkout.shipping_info') : t('checkout.confirm_order')}
         </h1>
-        <LanguageToggle />
+        <div className="flex items-center gap-2 md:gap-3">
+          <LanguageToggle />
+          <ThemeToggle />
+        </div>
       </header>
 
       <div className="mx-auto max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-8">

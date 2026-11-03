@@ -1,6 +1,8 @@
 {
   "common": {
     "app_name": "PAYKA",
+    "theme_dark": "Switch to dark mode",
+    "theme_light": "Switch to light mode",
     "search_placeholder": "Search Jewelry",
     "categories": "Categories",
     "we_recommend": "We Recommend",

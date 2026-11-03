@@ -8,6 +8,7 @@ import { getCharityPercent } from "@/lib/product-charity";
 import { isProductInStock } from "@/lib/product-stock";
 import { resolveProductImageUrl } from "@/lib/product-images.ts";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { MiniCart } from "@/components/MiniCart";
 import { MobileNav } from "@/components/MobileNav";
 import { Tooltip } from "@/components/Tooltip";
@@ -70,6 +71,11 @@ function CategoryPage() {
     return matchesSearch && matchesPrice && matchesMetalType && matchesOffers && matchesStock;
   });
 
+  const activeFilterCount =
+    (priceRange[0] !== 0 || priceRange[1] !== 10000 ? 1 : 0) +
+    selectedMetalTypes.length +
+    [filterOnSale, filterCharity, filterInStock].filter(Boolean).length;
+
   const metalTypes = Array.from(
     new Set(categoryProducts.map((product) => product.metalType).filter(Boolean))
   ) as string[];
@@ -98,6 +104,7 @@ function CategoryPage() {
           {/* Desktop header icons */}
           <div className="hidden md:flex items-center gap-3">
             <LanguageToggle />
+            <ThemeToggle />
             <Tooltip content={t('common.favorites')}>
               <Link
                 to="/favorites"
@@ -185,9 +192,14 @@ function CategoryPage() {
         </div>
         <button
           onClick={() => setShowFilters(true)}
-          className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-[#b3917d] text-white shadow-lg shrink-0"
+          className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-[#b3917d] text-white shadow-lg shrink-0"
         >
           <SlidersHorizontal className="h-5 w-5 md:h-6 md:w-6" />
+          {activeFilterCount > 0 && (
+            <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#e85d4c] px-1 text-[11px] font-bold text-white ring-2 ring-[#fdfaf7]">
+              {activeFilterCount}
+            </span>
+          )}
         </button>
       </div>
 
@@ -214,7 +226,7 @@ function CategoryPage() {
                     type="number"
                     value={priceRange[0]}
                     onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
-                    className="w-full rounded-xl bg-[#fdfaf7] px-4 py-3 text-sm outline-none border border-transparent focus:border-[#b3917d]"
+                    className="w-full rounded-xl bg-[#fdfaf7] px-4 py-3 text-sm outline-none border border-[#e6dbd3] focus:border-[#b3917d]"
                   />
                 </div>
                 <div className="flex-1">
@@ -223,7 +235,7 @@ function CategoryPage() {
                     type="number"
                     value={priceRange[1]}
                     onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-                    className="w-full rounded-xl bg-[#fdfaf7] px-4 py-3 text-sm outline-none border border-transparent focus:border-[#b3917d]"
+                    className="w-full rounded-xl bg-[#fdfaf7] px-4 py-3 text-sm outline-none border border-[#e6dbd3] focus:border-[#b3917d]"
                   />
                 </div>
               </div>
@@ -241,10 +253,10 @@ function CategoryPage() {
                           prev.includes(type) ? prev.filter((item) => item !== type) : [...prev, type]
                         );
                       }}
-                      className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                      className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all border ${
                         selectedMetalTypes.includes(type)
-                          ? "bg-[#b3917d] text-white"
-                          : "bg-[#fdfaf7] text-[#6b5f59]"
+                          ? "border-transparent bg-[#b3917d] text-white"
+                          : "border-[#e6dbd3] bg-[#fdfaf7] text-[#6b5f59]"
                       }`}
                     >
                       {selectedMetalTypes.includes(type) && <Check className="h-3 w-3" />}
@@ -261,10 +273,10 @@ function CategoryPage() {
                 <button
                   type="button"
                   onClick={() => setFilterOnSale((prev) => !prev)}
-                  className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                  className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all border ${
                     filterOnSale
-                      ? "bg-[#e85d4c] text-white"
-                      : "bg-[#fdfaf7] text-[#6b5f59]"
+                      ? "border-transparent bg-[#e85d4c] text-white"
+                      : "border-[#e6dbd3] bg-[#fdfaf7] text-[#6b5f59]"
                   }`}
                 >
                   {filterOnSale && <Check className="h-3 w-3" />}
@@ -273,10 +285,10 @@ function CategoryPage() {
                 <button
                   type="button"
                   onClick={() => setFilterCharity((prev) => !prev)}
-                  className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                  className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all border ${
                     filterCharity
-                      ? "bg-[#5a7a5c] text-white"
-                      : "bg-[#fdfaf7] text-[#6b5f59]"
+                      ? "border-transparent bg-[#5a7a5c] text-white"
+                      : "border-[#e6dbd3] bg-[#fdfaf7] text-[#6b5f59]"
                   }`}
                 >
                   {filterCharity && <Check className="h-3 w-3" />}
@@ -285,10 +297,10 @@ function CategoryPage() {
                 <button
                   type="button"
                   onClick={() => setFilterInStock((prev) => !prev)}
-                  className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                  className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all border ${
                     filterInStock
-                      ? "bg-[#3d6e54] text-white"
-                      : "bg-[#fdfaf7] text-[#6b5f59]"
+                      ? "border-transparent bg-[#3d6e54] text-white"
+                      : "border-[#e6dbd3] bg-[#fdfaf7] text-[#6b5f59]"
                   }`}
                 >
                   {filterInStock && <Check className="h-3 w-3" />}
@@ -306,7 +318,8 @@ function CategoryPage() {
                   setFilterCharity(false);
                   setFilterInStock(false);
                 }}
-                className="w-full rounded-2xl py-4 text-sm font-bold text-[#b3917d] border border-[#b3917d] hover:bg-[#b3917d]/5 transition-colors"
+                disabled={activeFilterCount === 0}
+                                className="w-full rounded-2xl py-4 text-sm font-bold text-[#b3917d] border border-[#b3917d] hover:bg-[#b3917d]/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
               >
                 {t('catalog.reset_all')}
               </button>

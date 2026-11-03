@@ -1,6 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { ChevronLeft, Sparkles } from "lucide-react";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useTranslation } from "react-i18next";
 import { JewelryCareContent } from "@/components/JewelryCareInfo";
 
@@ -31,7 +32,10 @@ function CarePage() {
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-[#1a1a1a]" />
         </button>
-        <LanguageToggle />
+        <div className="flex items-center gap-2 md:gap-3">
+          <LanguageToggle />
+          <ThemeToggle />
+        </div>
       </header>
 
       <div className="mx-auto mt-8 max-w-2xl space-y-8 pb-12">

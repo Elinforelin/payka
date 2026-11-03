@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Menu, X, Heart, HandHeart, Info, Truck, ShieldCheck, Sparkles, Instagram, Mail, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useFavorites } from "@/lib/favorites-context";
 import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 import { CONTACT_INFO } from "@/lib/contact";
@@ -87,6 +88,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ className = "" }) => {
 
                 <div className="flex items-center gap-2">
                   <LanguageToggle />
+                  <ThemeToggle />
                   <button
                     type="button"
                     onClick={() => setIsOpen(false)}

@@ -14,6 +14,7 @@ import { PackagingGuide } from "@/components/PackagingGuide";
 import { ShippingReturnsGuide } from "@/components/ShippingReturnsInfo";
 import { JewelryCareGuide } from "@/components/JewelryCareInfo";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { DiscountBadge, CharityBadge, CharityNote, ProductPrice } from "@/components/ProductPrice";
 import { getReadyTimeWeeks } from "@/lib/product-stock";
 import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
@@ -191,6 +192,7 @@ function ProductPage() {
         </button>
         <div className="flex items-center gap-2 md:gap-3">
           <LanguageToggle />
+          <ThemeToggle />
           <div className="relative">
             <Tooltip content={t("common.favorites")}>
               <button 

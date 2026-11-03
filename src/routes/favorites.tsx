@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, Heart, ShoppingBag, Trash2, Tag, Plus, X } from "lucide-react";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFavorites } from "@/lib/favorites-context";
@@ -48,7 +49,10 @@ function FavoritesPage() {
           <ChevronLeft className="h-6 w-6 text-[#1a1a1a]" />
         </Link>
         <h1 className="text-xl font-bold text-[#1a1a1a]">{t('favorites.title')}</h1>
-        <LanguageToggle />
+        <div className="flex items-center gap-2 md:gap-3">
+          <LanguageToggle />
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* Category Tabs */}
