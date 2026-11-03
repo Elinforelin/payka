@@ -3,7 +3,7 @@ import {Search, SlidersHorizontal, Heart, Info, HandHeart, X, Check} from "lucid
 import {LanguageToggle} from "@/components/LanguageToggle";
 import {MobileNav} from "@/components/MobileNav";
 import {Tooltip} from "@/components/Tooltip";
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {createServerFn} from "@tanstack/react-start";
 import {getCategoriesWithProducts, getCategoryCoverImage, products} from "@/lib/data";
@@ -21,13 +21,33 @@ const getProducts = createServerFn({ method: "GET" }).handler(async () => {
 });
 
 type CatalogSearchParams = {
+    q?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    metal?: string[];
+    sale?: boolean;
     charity?: boolean;
+    inStock?: boolean;
+};
+
+const parseBool = (v: unknown) => (v === true || v === "true" ? true : undefined);
+const parsePrice = (v: unknown) => {
+    const n = typeof v === "number" ? v : typeof v === "string" && v.trim() !== "" ? Number(v) : NaN;
+    return Number.isFinite(n) && n >= 0 ? Math.floor(n) : undefined;
 };
 
 export const Route = createFileRoute("/")({
     validateSearch: (search: Record<string, unknown>): CatalogSearchParams => {
+        const metal = (Array.isArray(search.metal) ? search.metal : search.metal ? [search.metal] : [])
+            .filter((m): m is string => typeof m === "string" && m !== "");
         return {
-            charity: search.charity === true || search.charity === "true" ? true : undefined,
+            q: typeof search.q === "string" && search.q !== "" ? search.q.slice(0, 100) : undefined,
+            minPrice: parsePrice(search.minPrice),
+            maxPrice: parsePrice(search.maxPrice),
+            metal: metal.length > 0 ? metal : undefined,
+            sale: parseBool(search.sale),
+            charity: parseBool(search.charity),
+            inStock: parseBool(search.inStock),
         };
     },
     loader: async () => await getProducts(),
@@ -38,22 +58,27 @@ function CatalogPage() {
     const { t } = useTranslation();
     const productsData = Route.useLoaderData();
     const searchParams = Route.useSearch();
-    const [searchQuery, setSearchQuery] = useState("");
+    const navigate = Route.useNavigate();
+    const searchQuery = searchParams.q ?? "";
+    const updateSearch = (patch: Partial<CatalogSearchParams>) =>
+        navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
+    const setSearchQuery = (q: string) => updateSearch({ q: q || undefined });
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
     
-    const [priceRange, setPriceRange] = useState<[string, string]>(["", ""]);
-    const [selectedMetalTypes, setSelectedMetalTypes] = useState<string[]>([]);
-    const [filterOnSale, setFilterOnSale] = useState(false);
-    const [filterCharity, setFilterCharity] = useState(Boolean(searchParams.charity));
-    const [filterInStock, setFilterInStock] = useState(false);
+    const priceRange: [string, string] = [
+        searchParams.minPrice !== undefined ? String(searchParams.minPrice) : "",
+        searchParams.maxPrice !== undefined ? String(searchParams.maxPrice) : "",
+    ];
+    const setPriceRange = ([min, max]: [string, string]) =>
+        updateSearch({ minPrice: parsePrice(min), maxPrice: parsePrice(max) });
+    const selectedMetalTypes = searchParams.metal ?? [];
+    const setSelectedMetalTypes = (types: string[]) =>
+        updateSearch({ metal: types.length > 0 ? types : undefined });
+    const filterOnSale = Boolean(searchParams.sale);
+    const filterCharity = Boolean(searchParams.charity);
+    const filterInStock = Boolean(searchParams.inStock);
     const [showFavPrompt, setShowFavPrompt] = useState<number | null>(null);
-
-    useEffect(() => {
-        if (searchParams.charity !== undefined) {
-            setFilterCharity(Boolean(searchParams.charity));
-        }
-    }, [searchParams.charity]);
 
     useBodyScrollLock(showFilters);
 
@@ -266,8 +291,10 @@ function CatalogPage() {
                                     <button
                                         key={type}
                                         onClick={() => {
-                                            setSelectedMetalTypes(prev => 
-                                                prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+                                            setSelectedMetalTypes(
+                                                selectedMetalTypes.includes(type)
+                                                    ? selectedMetalTypes.filter(m => m !== type)
+                                                    : [...selectedMetalTypes, type]
                                             );
                                         }}
                                         className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
@@ -289,7 +316,7 @@ function CatalogPage() {
                             <div className="mt-4 flex flex-wrap gap-2">
                                 <button
                                     type="button"
-                                    onClick={() => setFilterOnSale((prev) => !prev)}
+                                    onClick={() => updateSearch({ sale: filterOnSale ? undefined : true })}
                                     className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                                         filterOnSale
                                             ? "bg-[#e85d4c] text-white"
@@ -301,7 +328,7 @@ function CatalogPage() {
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setFilterCharity((prev) => !prev)}
+                                    onClick={() => updateSearch({ charity: filterCharity ? undefined : true })}
                                     className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                                         filterCharity
                                             ? "bg-[#5a7a5c] text-white"
@@ -313,7 +340,7 @@ function CatalogPage() {
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setFilterInStock((prev) => !prev)}
+                                    onClick={() => updateSearch({ inStock: filterInStock ? undefined : true })}
                                     className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                                         filterInStock
                                             ? "bg-[#3d6e54] text-white"
@@ -330,11 +357,14 @@ function CatalogPage() {
                         <div className="mt-12 space-y-3">
                             <button 
                                 onClick={() => {
-                                    setPriceRange(["", ""]);
-                                    setSelectedMetalTypes([]);
-                                    setFilterOnSale(false);
-                                    setFilterCharity(false);
-                                    setFilterInStock(false);
+                                    updateSearch({
+                                        minPrice: undefined,
+                                        maxPrice: undefined,
+                                        metal: undefined,
+                                        sale: undefined,
+                                        charity: undefined,
+                                        inStock: undefined,
+                                    });
                                 }}
                                 className="w-full rounded-2xl py-4 text-sm font-bold text-[#b3917d] border border-[#b3917d] hover:bg-[#b3917d]/5 transition-colors"
                             >
