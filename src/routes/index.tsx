@@ -7,7 +7,7 @@ import {Tooltip} from "@/components/Tooltip";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {createServerFn} from "@tanstack/react-start";
-import {getCategoriesWithProducts, getCategoryCoverImage, products} from "@/lib/data";
+import {Collection, getCategoriesWithProducts, getCategoryCoverImage, getCollectionCoverImage, getCollectionProducts, products} from "@/lib/data";
 import {resolveProductImageUrl} from "@/lib/product-images.ts";
 import { getEffectivePrice, getProductPricing } from "@/lib/product-price";
 import { getCharityPercent } from "@/lib/product-charity";
@@ -88,6 +88,8 @@ function CatalogPage() {
     useBodyScrollLock(showFilters);
 
     const categories = getCategoriesWithProducts();
+    const herNameProducts = getCollectionProducts(Collection.HerName);
+    const herNameCover = getCollectionCoverImage(Collection.HerName);
 
     const filteredProducts = (productsData || []).filter((product) => {
         const matchesSearch = t(product.name).toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -391,6 +393,35 @@ function CatalogPage() {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Featured collection */}
+            {herNameProducts.length > 0 && (
+            <Link
+                to="/collections/$collection"
+                params={{ collection: Collection.HerName }}
+                className="group relative mt-8 md:mt-10 flex min-h-[160px] md:min-h-[220px] items-end overflow-hidden rounded-[32px] bg-[#1a1a1a] shadow-sm transition-all duration-300 ease-out hover:shadow-md"
+            >
+                {herNameCover && (
+                    <img
+                        src={resolveProductImageUrl(herNameCover)}
+                        alt=""
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                    />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+                <div className="relative p-6 md:p-10 text-white">
+                    <p className="text-[10px] md:text-xs uppercase tracking-[0.3em] font-medium text-white/80">
+                        {t('collections.eyebrow_new')}
+                    </p>
+                    <h3 className="mt-1 text-3xl md:text-5xl font-ermilov font-bold tracking-tight">
+                        {t(`collections.names.${Collection.HerName}`)}
+                    </h3>
+                    <span className="mt-3 inline-block text-sm font-bold underline underline-offset-4">
+                        {t('collections.explore')}
+                    </span>
+                </div>
+            </Link>
             )}
 
             {/* Shop by Category */}

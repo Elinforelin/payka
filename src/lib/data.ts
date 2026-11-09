@@ -5,6 +5,11 @@ export enum Category {
     Pendants = "Pendants",
 }
 
+/** Named collections that group pieces across categories. Values are URL slugs. */
+export enum Collection {
+    HerName = "her-name",
+}
+
 export interface Product {
     id: number;
     name: string;
@@ -24,6 +29,7 @@ export interface Product {
     readyTimeMinWeeks?: number;
     readyTimeMaxWeeks?: number;
     category: Category;
+    collection?: Collection;
     imageUrl: string | null;
     images?: string[];
     createdAt: string;
@@ -89,6 +95,18 @@ export function getCategoriesWithProducts(): Category[] {
     return Object.values(Category).filter((category) =>
         products.some((product) => product.category === category)
     );
+}
+
+const COLLECTION_COVER_IMAGES: Record<Collection, string> = {
+    [Collection.HerName]: "/assets/collections/herName/IMG_9800.png",
+};
+
+export function getCollectionCoverImage(collection: Collection): string {
+    return COLLECTION_COVER_IMAGES[collection];
+}
+
+export function getCollectionProducts(collection: Collection): Product[] {
+    return products.filter((product) => product.collection === collection);
 }
 
 export const products: Product[] = [
@@ -401,28 +419,6 @@ export const products: Product[] = [
         "weight": 5,
     },
     {
-        "id": 19,
-        "name": "product.names.pendant_three_stones",
-        "description": "product.descriptions.pendant_three_stones",
-        "price": 2500,
-        "inStock": false,
-        "category": Category.Pendants,
-        "imageUrl": "/assets/pendantThreeStones/174BC287.png",
-        "images": [
-            "/assets/pendantThreeStones/174BC287.png",
-            "/assets/pendantThreeStones/0E14CED5.jpg",
-            "/assets/pendantThreeStones/98F47FC1.png",
-            "/assets/pendantThreeStones/E886B343.png",
-        ],
-        "createdAt": "2026-09-18T00:00:00.000Z",
-        "updatedAt": "2026-09-18T00:00:00.000Z",
-        "gemstone": "common.gemstones.moonstone_topaz",
-        "metalStandard": "925",
-        "metalType": "common.metal_types.silver",
-        "rhodiumPlating": true,
-        "weight": 5,
-    },
-    {
         "id": 20,
         "name": "product.names.pearl_earrings",
         "description": "product.descriptions.pearl_earrings",
@@ -467,5 +463,27 @@ export const products: Product[] = [
         "metalType": "common.metal_types.silver",
         "rhodiumPlating": true,
         "weight": 5,
+    },
+    {
+        "id": 22,
+        "name": "product.names.solomia_pendant",
+        "description": "product.descriptions.solomia_pendant",
+        "price": 2500,
+        "inStock": true,
+        "category": Category.Pendants,
+        "collection": Collection.HerName,
+        "imageUrl": "/assets/collections/herName/solomia/IMG_0019.png",
+        "images": [
+            "/assets/collections/herName/solomia/IMG_0019.png",
+            "/assets/collections/herName/solomia/IMG_9892_SnapseedCopy.png",
+            "/assets/collections/herName/solomia/IMG_9914.png",
+            "/assets/collections/herName/solomia/IMG_9912.png",
+        ],
+        "createdAt": "2026-11-06T00:00:00.000Z",
+        "updatedAt": "2026-11-06T00:00:00.000Z",
+        "gemstone": "common.gemstones.tourmaline_citrine",
+        "metalStandard": "925",
+        "metalType": "common.metal_types.silver",
+        "rhodiumPlating": true,
     },
 ];

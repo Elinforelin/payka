@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ChevronLeft, Heart, Info, HandHeart, Search, SlidersHorizontal, X, Check } from "lucide-react";
+import { ChevronLeft, Heart, Info, HandHeart, Search, SlidersHorizontal, X, Check, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Category, products } from "@/lib/data";
+import { Category, Collection, products } from "@/lib/data";
 import { getEffectivePrice, getProductPricing } from "@/lib/product-price";
 import { getCharityPercent } from "@/lib/product-charity";
 import { isProductInStock } from "@/lib/product-stock";
@@ -79,6 +79,10 @@ function CategoryPage() {
   const metalTypes = Array.from(
     new Set(categoryProducts.map((product) => product.metalType).filter(Boolean))
   ) as string[];
+
+  const collections = Array.from(
+    new Set(categoryProducts.map((product) => product.collection).filter(Boolean))
+  ) as Collection[];
 
   const suggestions =
     searchQuery.length > 0
@@ -202,6 +206,22 @@ function CategoryPage() {
           )}
         </button>
       </div>
+
+      {collections.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {collections.map((collection) => (
+            <Link
+              key={collection}
+              to="/collections/$collection"
+              params={{ collection }}
+              className="flex items-center gap-2 rounded-full border border-[#e6dbd3] bg-white px-4 py-2 text-sm font-medium text-[#6b5f59] shadow-sm hover:bg-[#f7f3ef] transition-colors"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-[#b3917d]" />
+              {t("collections.chip", { name: t(`collections.names.${collection}`) })}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {showFilters && (
         <div className="fixed inset-0 z-[60] flex justify-end">

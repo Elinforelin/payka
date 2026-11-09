@@ -24,6 +24,7 @@ import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as CatalogCategoryRouteImport } from './routes/catalog.$category'
+import { Route as CollectionsCollectionRouteImport } from './routes/collections.$collection'
 import { Route as ProductProductIdRouteImport } from './routes/product.$productId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -101,6 +102,11 @@ const CatalogCategoryRoute = CatalogCategoryRouteImport.update({
   path: '/catalog/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CollectionsCollectionRoute = CollectionsCollectionRouteImport.update({
+  id: '/collections/$collection',
+  path: '/collections/$collection',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductProductIdRoute = ProductProductIdRouteImport.update({
   id: '/$productId',
   path: '/$productId',
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/catalog/$category': typeof CatalogCategoryRoute
+  '/collections/$collection': typeof CollectionsCollectionRoute
   '/product/$productId': typeof ProductProductIdRoute
 }
 export interface FileRoutesByTo {
@@ -141,6 +148,7 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/catalog/$category': typeof CatalogCategoryRoute
+  '/collections/$collection': typeof CollectionsCollectionRoute
   '/product/$productId': typeof ProductProductIdRoute
 }
 export interface FileRoutesById {
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/catalog/$category': typeof CatalogCategoryRoute
+  '/collections/$collection': typeof CollectionsCollectionRoute
   '/product/$productId': typeof ProductProductIdRoute
 }
 export interface FileRouteTypes {
@@ -180,6 +189,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/catalog/$category'
+    | '/collections/$collection'
     | '/product/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -198,6 +208,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/catalog/$category'
+    | '/collections/$collection'
     | '/product/$productId'
   id:
     | '__root__'
@@ -216,6 +227,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/catalog/$category'
+    | '/collections/$collection'
     | '/product/$productId'
   fileRoutesById: FileRoutesById
 }
@@ -235,6 +247,7 @@ export interface RootRouteChildren {
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
   CatalogCategoryRoute: typeof CatalogCategoryRoute
+  CollectionsCollectionRoute: typeof CollectionsCollectionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -344,6 +357,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CatalogCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/collections/$collection': {
+      id: '/collections/$collection'
+      path: '/collections/$collection'
+      fullPath: '/collections/$collection'
+      preLoaderRoute: typeof CollectionsCollectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product/$productId': {
       id: '/product/$productId'
       path: '/$productId'
@@ -381,6 +401,7 @@ const rootRouteChildren: RootRouteChildren = {
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
   CatalogCategoryRoute: CatalogCategoryRoute,
+  CollectionsCollectionRoute: CollectionsCollectionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

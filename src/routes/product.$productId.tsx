@@ -323,6 +323,15 @@ function ProductPage() {
         </div>
 
         <div className="flex flex-1 flex-col">
+          {product.collection && (
+            <Link
+              to="/collections/$collection"
+              params={{ collection: product.collection }}
+              className="mb-1 self-start text-xs uppercase tracking-[0.2em] font-bold text-[#b3917d] hover:text-[#9a7a68] transition-colors"
+            >
+              {t(`collections.names.${product.collection}`)}
+            </Link>
+          )}
           <div className="flex items-center justify-between">
             <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a]">{t(product.name)}</h2>
           </div>

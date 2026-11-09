@@ -47,7 +47,8 @@
       "pearl": "Pearl Simulants",
       "tourmaline": "Tourmaline",
       "moonstone": "Moonstone",
-      "moonstone_topaz": "Moonstone and Light Blue Topaz"
+      "moonstone_topaz": "Moonstone and Light Blue Topaz",
+      "tourmaline_citrine": "Tourmaline and Citrine"
     },
     "metal_colors": {
       "white": "White",
@@ -97,8 +98,8 @@
       "vase_earring": "A silver earring with a vase-like shape, perfect for those who appreciate unique and artistic jewelry",
       "ring_with_tourmaline": "A silver ring set with natural tourmaline, highlighting its vibrant and unique color",
       "braided_ring": "A silver ring with a braided texture, weaving together a delicate and timeless design",
-      "pendant_three_stones": "Silver and Moonlight Blue",
-      "moonstone_ring": "A silver ring set with natural moonstone, catching the light with its soft, luminous glow"
+      "moonstone_ring": "A silver ring set with natural moonstone, catching the light with its soft, luminous glow",
+      "solomia_pendant": "A pendant scattered with little rays of sunshine and summer warmth"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
@@ -114,8 +115,8 @@
       "vase_earring": "Vase-Shaped Earring",
       "ring_with_tourmaline": "Ring with Tourmaline",
       "braided_ring": "Braided Ring",
-      "pendant_three_stones": "Three Stones Pendant",
-      "moonstone_ring": "Moonstone Ring"
+      "moonstone_ring": "Moonstone Ring",
+      "solomia_pendant": "Solomiia"
     },
     "details": "Details",
     "about_product": "About Product",
@@ -474,5 +475,24 @@
     "browse_charity_items": "Browse Charity Jewelry",
     "questions_title": "Have questions or partnership ideas?",
     "questions_desc": "Feel free to reach out to us directly through Instagram or email."
+  },
+  "collections": {
+    "eyebrow": "Collection",
+    "eyebrow_new": "New collection",
+    "explore": "Explore the collection",
+    "shop_pieces": "Shop the collection",
+    "pieces_title": "Pieces in the collection",
+    "chip": "{{name}} collection",
+    "see_all_in": "See all {{category}}",
+    "guarantee_link": "Payka Care Guarantee",
+    "handmade_title": "Handmade",
+    "handmade_text": "Every pendant is crafted by hand, so each piece is a little one of a kind.",
+    "gift_title": "Ready to gift",
+    "gift_text": "Arrives in our signature gift packaging — no extra wrapping needed.",
+    "guarantee_title": "Care guarantee",
+    "guarantee_text": "Free cleaning and rhodium renewal under the Payka Care Guarantee.",
+    "names": {
+      "her-name": "Her Name"
+    }
   }
 }
