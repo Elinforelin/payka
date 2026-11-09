@@ -98,7 +98,7 @@ export function getCategoriesWithProducts(): Category[] {
 }
 
 const COLLECTION_COVER_IMAGES: Record<Collection, string> = {
-    [Collection.HerName]: "/assets/collections/herName/IMG_9800.png",
+    [Collection.HerName]: "/assets/collections/herName/collection_aqua.jpeg",
 };
 
 export function getCollectionCoverImage(collection: Collection): string {
@@ -472,16 +472,38 @@ export const products: Product[] = [
         "inStock": true,
         "category": Category.Pendants,
         "collection": Collection.HerName,
-        "imageUrl": "/assets/collections/herName/solomia/IMG_0019.png",
+        "imageUrl": "/assets/collections/herName/solomia/1.jpeg",
         "images": [
             "/assets/collections/herName/solomia/IMG_0019.png",
-            "/assets/collections/herName/solomia/IMG_9892_SnapseedCopy.png",
+            "/assets/collections/herName/solomia/IMG_9892.png",
             "/assets/collections/herName/solomia/IMG_9914.png",
             "/assets/collections/herName/solomia/IMG_9912.png",
         ],
         "createdAt": "2026-11-06T00:00:00.000Z",
         "updatedAt": "2026-11-06T00:00:00.000Z",
         "gemstone": "common.gemstones.tourmaline_citrine",
+        "metalStandard": "925",
+        "metalType": "common.metal_types.silver",
+        "rhodiumPlating": true,
+    },
+    {
+        "id": 23,
+        "name": "product.names.stefania_pendant",
+        "description": "product.descriptions.stefania_pendant",
+        "price": 2500,
+        "inStock": true,
+        "category": Category.Pendants,
+        "collection": Collection.HerName,
+        "imageUrl": "/assets/collections/herName/stefania/2.jpeg",
+        "images": [
+            "/assets/collections/herName/stefania/IMG_9890.png",
+            "/assets/collections/herName/stefania/IMG_0013.png",
+            "/assets/collections/herName/stefania/IMG_9904.png",
+            "/assets/collections/herName/stefania/IMG_0010.png",
+            "/assets/collections/herName/stefania/IMG_9834.png",
+        ],
+        "createdAt": "2026-11-09T00:00:00.000Z",
+        "updatedAt": "2026-11-09T00:00:00.000Z",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
         "rhodiumPlating": true,

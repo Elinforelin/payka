@@ -92,7 +92,9 @@ function CollectionPage() {
       <section id="pieces" className="mt-10 scroll-mt-8">
         <h2 className="text-xl md:text-2xl font-bold text-[#1a1a1a]">
           {t("collections.pieces_title")}
-          <span className="ml-2 text-base font-medium text-[#a19690]">{collectionProducts.length}</span>
+          <span className="ml-2 inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-[#1a1a1a] px-2 align-middle text-sm font-bold text-white">
+            {collectionProducts.length}
+          </span>
         </h2>
         <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
           {collectionProducts.map((product) => (
