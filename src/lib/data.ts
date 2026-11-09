@@ -504,6 +504,7 @@ export const products: Product[] = [
         ],
         "createdAt": "2026-11-09T00:00:00.000Z",
         "updatedAt": "2026-11-09T00:00:00.000Z",
+        "gemstone": "common.gemstones.tourmaline_peridot_rhodolite",
         "metalStandard": "925",
         "metalType": "common.metal_types.silver",
         "rhodiumPlating": true,

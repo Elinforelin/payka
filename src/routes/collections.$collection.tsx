@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ChevronLeft, Gift, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowDown, ChevronLeft, Gift, ShieldCheck, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Category, Collection, getCollectionCoverImage, getCollectionProducts } from "@/lib/data";
@@ -64,27 +64,34 @@ function CollectionPage() {
         </div>
       </header>
 
-      <section className="relative mt-8 overflow-hidden rounded-[32px] bg-[#1a1a1a] shadow-sm">
+      <section className="group mt-8 overflow-hidden rounded-[32px] border border-[#f0ebe7] bg-white shadow-md">
         {coverImage && (
-          <img
-            src={resolveProductImageUrl(coverImage)}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          <div className="overflow-hidden [mask-image:linear-gradient(to_bottom,black_65%,transparent)]">
+            <img
+              src={resolveProductImageUrl(coverImage)}
+              alt=""
+              className="aspect-[4/3] md:aspect-[21/9] w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+            />
+          </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
-        <div className="relative flex min-h-[320px] md:min-h-[420px] flex-col items-center justify-end p-8 md:p-12 text-center text-white">
-          <p className="text-[10px] md:text-xs uppercase tracking-[0.3em] font-medium text-white/80">
-            {t("collections.eyebrow")}
-          </p>
-          <h1 className="mt-2 text-4xl md:text-6xl font-ermilov font-bold tracking-tight">
+        <div className="relative -mt-12 md:-mt-16 flex flex-col items-center px-6 pb-8 md:pb-12 text-center">
+          <div className="flex items-center gap-3 md:gap-4 text-[#b3917d]">
+            <span className="h-px w-8 md:w-14 bg-current opacity-60" />
+            <span className="text-[10px] md:text-xs uppercase tracking-[0.35em] font-bold">
+              {t("collections.eyebrow")}
+            </span>
+            <span className="h-px w-8 md:w-14 bg-current opacity-60" />
+          </div>
+          <h1 className="mt-3 text-5xl md:text-7xl font-ermilov font-bold tracking-tight text-[#1a1a1a]">
             {t(`collections.names.${collection}`)}
           </h1>
+          <p className="mt-2 text-lg text-[#b3917d]">✦</p>
           <a
             href="#pieces"
-            className="mt-6 rounded-2xl bg-white px-6 py-3 text-sm font-bold text-[#1a1a1a] shadow-lg transition-transform hover:scale-[1.02] active:scale-95"
+            className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#1a1a1a] px-8 py-3.5 text-sm font-bold text-white shadow-lg transition-transform hover:scale-[1.03] active:scale-95"
           >
             {t("collections.shop_pieces")}
+            <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
           </a>
         </div>
       </section>
