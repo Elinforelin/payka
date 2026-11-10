@@ -49,7 +49,9 @@
       "moonstone": "Moonstone",
       "moonstone_topaz": "Moonstone and Light Blue Topaz",
       "tourmaline_citrine": "Tourmaline and Citrine",
-      "tourmaline_peridot_rhodolite": "Tourmaline, Peridot and Rhodolite"
+      "tourmaline_peridot_rhodolite": "Tourmaline, Peridot and Rhodolite",
+      "chrysoprase_peridot_tourmaline": "Chrysoprase, Peridot and Tourmaline",
+      "labradorite_blue_topaz": "Labradorite and Blue Topaz"
     },
     "metal_colors": {
       "white": "White",
@@ -100,8 +102,10 @@
       "ring_with_tourmaline": "A silver ring set with natural tourmaline, highlighting its vibrant and unique color",
       "braided_ring": "A silver ring with a braided texture, weaving together a delicate and timeless design",
       "moonstone_ring": "A silver ring set with natural moonstone, catching the light with its soft, luminous glow",
-      "solomia_pendant": "A pendant scattered with little rays of sunshine and summer warmth",
-      "stefania_pendant": "A small hand-formed silver pendant with a textured surface and tiny colored stones"
+      "solomia_pendant": "A pendant scattered with little rays of sunshine and summer warmth\uD83C\uDF1E",
+      "stefania_pendant": "A wide steppe somewhere in the Kherson region, ripe watermelons lying in the melon fields\uD83C\uDF49",
+      "maya_pendant": "Barefoot through cool morning grass\uD83C\uDF31",
+      "oia_pendant": "The power of the elements, splitting the silence with lightning and awakening the sky. ⚡️"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
@@ -119,7 +123,9 @@
       "braided_ring": "Braided Ring",
       "moonstone_ring": "Moonstone Ring",
       "solomia_pendant": "Solomiia",
-      "stefania_pendant": "Stefaniia"
+      "stefania_pendant": "Stefaniia",
+      "maya_pendant": "Maya",
+      "oia_pendant": "Oia"
     },
     "details": "Details",
     "about_product": "About Product",

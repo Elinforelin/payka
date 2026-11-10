@@ -30,6 +30,8 @@ export interface Product {
     readyTimeMaxWeeks?: number;
     category: Category;
     collection?: Collection;
+    /** Set to false to hide the piece from the website. Treated as true when omitted. */
+    isReleased?: boolean;
     imageUrl: string | null;
     images?: string[];
     createdAt: string;
@@ -109,7 +111,7 @@ export function getCollectionProducts(collection: Collection): Product[] {
     return products.filter((product) => product.collection === collection);
 }
 
-export const products: Product[] = [
+const allProducts: Product[] = [
     {
         "id": 6,
         "name": "product.names.ring_plava",
@@ -509,4 +511,58 @@ export const products: Product[] = [
         "metalType": "common.metal_types.silver",
         "rhodiumPlating": true,
     },
+    {
+        "id": 24,
+        "name": "product.names.maya_pendant",
+        "description": "product.descriptions.maya_pendant",
+        "price": 2500,
+        "inStock": true,
+        "category": Category.Pendants,
+        "collection": Collection.HerName,
+        "imageUrl": "/assets/collections/herName/maya/3.jpeg",
+        "images": [
+            "/assets/collections/herName/maya/IMG_0026.png",
+            "/assets/collections/herName/maya/IMG_0027.png",
+            "/assets/collections/herName/maya/IMG_0028.png",
+            "/assets/collections/herName/maya/IMG_0030.png",
+            "/assets/collections/herName/maya/IMG_9884.png",
+        ],
+        "createdAt": "2026-11-09T00:00:00.000Z",
+        "updatedAt": "2026-11-09T00:00:00.000Z",
+        "gemstone": "common.gemstones.chrysoprase_peridot_tourmaline",
+        "metalStandard": "925",
+        "metalType": "common.metal_types.silver",
+        "rhodiumPlating": true,
+    },
+    {
+        "id": 25,
+        "name": "product.names.oia_pendant",
+        "description": "product.descriptions.oia_pendant",
+        "price": 2500,
+        "inStock": true,
+        "category": Category.Pendants,
+        "collection": Collection.HerName,
+        "imageUrl": "/assets/collections/herName/oia/4.jpeg",
+        "images": [
+            "/assets/collections/herName/oia/IMG_0031 3 (1).png",
+            "/assets/collections/herName/oia/IMG_0032 3 (1).png",
+            "/assets/collections/herName/oia/IMG_0033 3 (1).png",
+            "/assets/collections/herName/oia/IMG_0034 3 (1).png",
+            "/assets/collections/herName/oia/IMG_0035 3 (1).png",
+        ],
+        "createdAt": "2026-11-09T00:00:00.000Z",
+        "updatedAt": "2026-11-09T00:00:00.000Z",
+        "gemstone": "common.gemstones.labradorite_blue_topaz",
+        "metalStandard": "925",
+        "metalType": "common.metal_types.silver",
+        "rhodiumPlating": true,
+        "isReleased": false,
+    },
 ];
+
+export function isProductReleased(product: Pick<Product, "isReleased">): boolean {
+    return product.isReleased !== false;
+}
+
+/** Pieces visible on the website; unreleased ones (`isReleased: false`) are left out everywhere. */
+export const products: Product[] = allProducts.filter(isProductReleased);
