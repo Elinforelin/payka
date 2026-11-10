@@ -51,7 +51,10 @@
       "tourmaline_citrine": "Tourmaline and Citrine",
       "tourmaline_peridot_rhodolite": "Tourmaline, Peridot and Rhodolite",
       "chrysoprase_peridot_tourmaline": "Chrysoprase, Peridot and Tourmaline",
-      "labradorite_blue_topaz": "Labradorite and Blue Topaz"
+      "labradorite_blue_topaz": "Labradorite and Blue Topaz",
+      "tourmaline_london_topaz_tanzanite": "Tourmaline, London Topaz and Tanzanite",
+      "garnet": "Garnet",
+      "tourmaline_rhodolite": "Tourmaline and Rhodolite"
     },
     "metal_colors": {
       "white": "White",
@@ -105,7 +108,10 @@
       "solomia_pendant": "A pendant scattered with little rays of sunshine and summer warmth\uD83C\uDF1E",
       "stefania_pendant": "A wide steppe somewhere in the Kherson region, ripe watermelons lying in the melon fields\uD83C\uDF49",
       "maya_pendant": "Barefoot through cool morning grass\uD83C\uDF31",
-      "oia_pendant": "The power of the elements, splitting the silence with lightning and awakening the sky. ⚡️"
+      "oia_pendant": "The power of the elements, splitting the silence with lightning and awakening the sky⚡️",
+      "dana_pendant": "Blue abyss, silver glints and a little fish 🌊",
+      "afrodita_pendant": "A small reminder of a great love ❤️",
+      "kvitoslava_pendant": "Even the smallest flower has the power to bloom\uD83C\uDF37"
     },
     "names": {
       "ring_plava": "PLAVA Ring",
@@ -125,7 +131,10 @@
       "solomia_pendant": "Solomiia",
       "stefania_pendant": "Stefaniia",
       "maya_pendant": "Maya",
-      "oia_pendant": "Oia"
+      "oia_pendant": "Oia",
+      "dana_pendant": "Dana",
+      "afrodita_pendant": "Aphrodite",
+      "kvitoslava_pendant": "Kvitoslava"
     },
     "details": "Details",
     "about_product": "About Product",

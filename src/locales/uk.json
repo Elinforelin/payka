@@ -51,7 +51,10 @@
       "tourmaline_citrine": "Турмалін і цитрин",
       "tourmaline_peridot_rhodolite": "Турмалін, перидот і родоліт",
       "chrysoprase_peridot_tourmaline": "Хризопраз, перидот і турмалін",
-      "labradorite_blue_topaz": "Лабрадорит і блакитний топаз"
+      "labradorite_blue_topaz": "Лабрадорит і блакитний топаз",
+      "tourmaline_london_topaz_tanzanite": "Турмалін, лондон топаз і танзаніт",
+      "garnet": "Гранат",
+      "tourmaline_rhodolite": "Турмалін і родоліт"
     },
     "metal_colors": {
       "white": "Білий",
@@ -105,7 +108,10 @@
       "solomia_pendant": "Підвіска усіяна промінчиками сонечка і літнім теплом\uD83C\uDF1E",
       "stefania_pendant": "Широкий степ десь на Херсонщині, стиглі кавуни лежать на баштанах\uD83C\uDF49",
       "maya_pendant": "Босоніж по прохолодній ранковій траві\uD83C\uDF31",
-      "oia_pendant": "Сила стихії, що розтинає тишу блискавками й пробуджує небо. ⚡️"
+      "oia_pendant": "Сила стихії, що розтинає тишу блискавками й пробуджує небо⚡️",
+      "dana_pendant": "Синя безодня, срібні відблиски та маленька рибка 🌊",
+      "afrodita_pendant": "Маленьке нагадування про велике кохання ❤️",
+      "kvitoslava_pendant": "Навіть найменша квітка має силу розквітнути\uD83C\uDF37"
     },
     "names": {
       "ring_plava": "Кільце PLAVA",
@@ -125,7 +131,10 @@
       "solomia_pendant": "Соломія",
       "stefania_pendant": "Стефанія",
       "maya_pendant": "Майя",
-      "oia_pendant": "Оія"
+      "oia_pendant": "Оія",
+      "dana_pendant": "Дана",
+      "afrodita_pendant": "Афродіта",
+      "kvitoslava_pendant": "Квітослава"
     },
     "details": "Деталі",
     "about_product": "Про виріб",
