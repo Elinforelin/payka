@@ -542,7 +542,7 @@ const allProducts: Product[] = [
         "inStock": true,
         "category": Category.Pendants,
         "collection": Collection.HerName,
-        "isReleased": false,
+        "isReleased": true,
         "imageUrl": "/assets/collections/herName/oia/4.jpeg",
         "images": [
             "/assets/collections/herName/oia/IMG_0031.png",
