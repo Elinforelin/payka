@@ -566,7 +566,7 @@ const allProducts: Product[] = [
         "inStock": true,
         "category": Category.Pendants,
         "collection": Collection.HerName,
-        "isReleased": false,
+        "isReleased": true,
         "imageUrl": "/assets/collections/herName/dana/5.jpeg",
         "images": [
             "/assets/collections/herName/dana/IMG_0037.png",
