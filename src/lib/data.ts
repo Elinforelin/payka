@@ -586,7 +586,7 @@ const allProducts: Product[] = [
         "name": "product.names.afrodita_pendant",
         "description": "product.descriptions.afrodita_pendant",
         "price": 2500,
-        "inStock": true,
+        "inStock": false,
         "category": Category.Pendants,
         "collection": Collection.HerName,
         "isReleased": true,
