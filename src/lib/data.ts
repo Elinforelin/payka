@@ -589,7 +589,7 @@ const allProducts: Product[] = [
         "inStock": true,
         "category": Category.Pendants,
         "collection": Collection.HerName,
-        "isReleased": false,
+        "isReleased": true,
         "imageUrl": "/assets/collections/herName/afrodita/6.jpeg",
         "images": [
             "/assets/collections/herName/afrodita/IMG_0070.png",
