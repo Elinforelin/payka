@@ -612,7 +612,7 @@ const allProducts: Product[] = [
         "inStock": true,
         "category": Category.Pendants,
         "collection": Collection.HerName,
-        "isReleased": false,
+        "isReleased": true,
         "imageUrl": "/assets/collections/herName/kvitoslava/7.jpeg",
         "images": [
             "/assets/collections/herName/kvitoslava/IMG_0074.png",
